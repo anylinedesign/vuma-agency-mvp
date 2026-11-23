@@ -25,6 +25,10 @@
 다시 만들기(순서 상관없음):
 `python -I build/gen_dashboard.py` · `gen_pages.py` · `gen_campaigns.py` · `gen_reports.py` · `gen_agency.py` · `gen_ops.py` · `gen_ops2.py` · `gen_account.py` · `gen_home.py`(홈 `home.html` — 메뉴에서 뺌 · 대행사 신청 `agency_apply.html`)
 
+따로 된 데모(대행사 화면과 CSS 를 나누지 않음):
+- 마스터 대시보드 `master/index.html` ← `gen_master.py` (CSS = `master/css/master.css` 실서버 복사본 + `md.css`)
+- 리뷰어 대시보드 `reviewer/index.html` ← `gen_reviewer.py` (CSS = `reviewer/css/` 실서버 리뷰어 CSS 6개 복사본 + `rd.css`. 복사본은 고치지 않음)
+
 > 주의: PowerShell 5.1 의 `Get-Content`/`Set-Content` 로 생성기를 고치면 한글이 깨진다(BOM 없는 UTF-8). 편집기나 Python(`encoding="utf-8"`)으로만.
 
 ## CSS 나눔 (광고주 ↔ 대행사 — 서로 안 겹치게)

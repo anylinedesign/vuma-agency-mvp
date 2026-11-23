@@ -1,0 +1,1286 @@
+/* ===================================================
+	 뷰마 리뷰어 - 공통 컴포넌트
+	 (버튼 / 뱃지 / 카드 / 탭 / 폼 / 페이지네이션)
+=================================================== */
+
+/* ══════════════════════════════════════════
+	 BUTTONS
+══════════════════════════════════════════ */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	padding: 10px 20px;
+	border-radius: var(--radius-md);
+	font-family: var(--font-korean);
+	font-size: var(--fs-base);
+	font-weight: var(--fw-semibold);
+	line-height: 1;
+	white-space: nowrap;
+	cursor: pointer;
+	border: 1px solid transparent;
+	transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), opacity var(--transition-fast);
+	text-decoration: none;
+}
+
+.btn:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+/* Primary */
+.btn--primary {
+	background: var(--color-primary);
+	color: var(--color-white);
+	border-color: var(--color-primary);
+}
+
+.btn--primary:hover:not(:disabled) {
+	background: var(--color-primary-hover);
+	border-color: var(--color-primary-hover);
+}
+
+/* Secondary (outlined purple) */
+.btn--secondary {
+	background: var(--color-white);
+	color: var(--color-primary);
+	border-color: var(--color-primary);
+}
+
+.btn--secondary:hover:not(:disabled) {
+	background: var(--color-primary-light);
+}
+
+/* Danger */
+.btn--danger {
+	background: var(--color-danger);
+	color: var(--color-white);
+	border-color: var(--color-danger);
+}
+
+.btn--danger:hover:not(:disabled) {
+	background: #b52602;
+	border-color: #b52602;
+}
+
+/* Ghost */
+.btn--ghost {
+	background: transparent;
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-700) */
+	border-color: var(--color-border);
+}
+
+.btn--ghost:hover:not(:disabled) {
+	background: var(--color-gray-100);
+	border-color: var(--color-border-dark);
+}
+
+/* Dark */
+.btn--dark {
+	background: var(--color-dark);
+	color: var(--color-white);
+	border-color: var(--color-dark);
+}
+
+.btn--dark:hover:not(:disabled) {
+	background: #333;
+}
+
+/* Sizes */
+.btn--sm {
+	padding: 6px 14px;
+	font-size: var(--fs-sm);
+	border-radius: var(--radius-sm);
+}
+
+.btn--lg {
+	padding: 14px 28px;
+	font-size: var(--fs-lg);
+	border-radius: var(--radius-lg);
+}
+
+.btn--full {
+	width: 100%;
+}
+
+/* ══════════════════════════════════════════
+	 BADGES / TAGS
+══════════════════════════════════════════ */
+.badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2px 6px;
+	font-family: var(--font-korean);
+	font-size: var(--fs-xs);
+	line-height: 1;
+	white-space: nowrap;
+}
+
+/* Badge colors */
+.badge--primary {
+	background: var(--color-primary);
+	color: var(--color-white);
+}
+
+.badge--primary-light {
+	background: var(--color-primary-light);
+	color: var(--color-primary);
+}
+
+.badge--danger {
+	background: var(--color-danger);
+	color: var(--color-white);
+}
+
+.badge--danger-gradient {
+	background: linear-gradient(to right, #dd3307, #ff815b);
+	border: 1px solid #dc2f02;
+	color: var(--color-white);
+}
+
+.badge--warning {
+	background: var(--color-warning);
+	color: var(--color-white);
+}
+
+.badge--warning-gradient {
+	background: linear-gradient(to right, #f46906, #ffa600);
+	border: 1px solid #f46906;
+	color: var(--color-white);
+}
+
+.badge--success {
+	background: var(--color-success);
+	color: var(--color-white);
+}
+
+.badge--gray {
+	background: var(--color-gray-200);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-600) */
+}
+
+.badge--dark {
+	background: var(--color-dark);
+	color: var(--color-white);
+}
+
+/* Type badges (방문/구매) */
+.badge--visit,
+.badge--purchase {
+	background: var(--color-gray-50);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-700) */
+	border: 1px solid var(--color-gray-200);
+}
+
+/* 오픈 예정 (관리자 승인 완료 · 모집시작 전) */
+.badge--upcoming {
+	background: var(--color-primary-light);
+	color: var(--color-primary);
+	border: 1px solid var(--color-primary);
+}
+
+/* D-Day badge */
+.badge--dday {
+	background: var(--color-primary);
+	color: var(--color-white);
+	font-size: var(--fs-sm);
+	padding: 4px 8px;
+	border-radius: var(--radius-sm);
+}
+
+/* TODAY badge */
+.badge--today {
+	background: linear-gradient(to right, #dd3307, #ff815b);
+	color: var(--color-white);
+	font-size: var(--fs-sm);
+	padding: 4px 8px;
+	border-radius: var(--radius-sm);
+}
+
+/* Status badges */
+.badge--applying {
+	background: var(--color-primary-light);
+	color: var(--color-primary);
+}
+
+.badge--selected {
+	background: #e8f9f1;
+	color: var(--color-success);
+}
+
+.badge--done {
+	background: var(--color-gray-100);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-500) */
+}
+
+.badge--waiting {
+	background: #fff8e6;
+	color: #b87900;
+}
+
+.badge--answered {
+	background: #e8f9f1;
+	color: var(--color-success);
+}
+
+/* ══════════════════════════════════════════
+	 CAMPAIGN CARD
+══════════════════════════════════════════ */
+.campaign-card {
+	overflow: hidden;
+	transition: box-shadow var(--transition-base), transform var(--transition-base);
+	cursor: pointer;
+	container-type: inline-size;
+	container-name: campaign-card;
+}
+
+.campaign-card:hover {
+	transform: translateY(-2px);
+}
+
+.campaign-card__thumb {
+	position: relative;
+	width: 100%;
+	padding-top: 66%;
+	/* 3:2 ratio */
+	overflow: hidden;
+	border-radius: var(--radius-sm);
+	background: var(--color-gray-100);
+}
+
+.campaign-card__thumb img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.campaign-card__thumb-badges {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	gap: 0;
+	border-radius: 0 0 3px 0;
+	overflow: hidden;
+	z-index: 1;
+}
+
+.campaign-card__heart {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	cursor: pointer;
+	z-index: 1;
+}
+
+.campaign-card__heart svg {
+	width: 20px;
+	height: 20px;
+	fill: rgba(0, 0, 0, 0.1);
+	stroke: rgba(255, 255, 255, 0.8);
+	stroke-width: 2;
+	transition: all var(--transition-fast);
+	/*
+	★ [2026-08-26] 흰 테두리 + 거의 투명한 채움이라 밝은 썸네일(하늘·흰 배경) 위에서
+	   찜 버튼이 보이지 않던 문제. 색은 그대로 두고 그림자로만 윤곽을 살린다.
+	*/
+	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+}
+
+.campaign-card__heart:hover svg {
+	transform: scale(1.1);
+	fill: rgba(0, 0, 0, 0.4);
+}
+
+.campaign-card__heart.active svg {
+	/*
+	  ★ [2026-09-17] 보라 → 붉은색
+	    이 사이트는 버튼·탭·뱃지·링크가 전부 보라다.
+	    썸네일 위 20px 하트가 보라여도 '눌렸다' 로 읽히지 않았다.
+	    찜은 껐다 켰다 하는 표시다 — 주변과 달라야 눈에 든다.
+	  ※ 새 색을 만들지 않고 디자인시스템의 --color-danger 를 쓴다.
+	  ※ 그림자를 조금 더 진하게. 밝은 썸네일 위에서 윤곽을 잡아 준다.
+	    (위 2026-08-26 주석과 같은 이유)
+	*/
+	fill: var(--color-danger, #dc2f02) !important;
+	stroke: var(--color-white) !important;
+	filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+}
+
+/* 누르는 순간 눌렸다 펴진다 — 손끝에 반응이 있다는 신호 [2026-09-17] */
+.campaign-card__heart:active svg {
+	transform: scale(0.88);
+}
+
+.campaign-card__body {
+	padding: 10px 0 0 0;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+/* Row 1: SNS icon + badge + separator + category + code */
+.campaign-card__meta {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	flex-wrap: wrap;
+}
+
+/* SNS icon image */
+.sns-icon {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	border-radius: 4px;
+	flex-shrink: 0;
+	vertical-align: middle;
+	object-fit: contain;
+}
+
+.campaign-card__sep {
+	color: var(--color-gray-300);
+	font-size: var(--fs-xs);
+}
+
+.campaign-card__category {
+	font-family: var(--font-korean);
+	font-size: 12px;
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-500) */
+}
+
+.campaign-card__code {
+	font-family: var(--font-latin);
+	font-size: 11px;
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-400) */
+	margin-top: 2px;
+}
+
+/* 카드 너비 180px 이하: 코드를 첫 행, 나머지를 다음 행으로 분리 */
+@container campaign-card (max-width: 180px) {
+	/* 코드를 첫 행으로 올리고 전체 너비 차지하여 강제 줄바꿈 */
+	.campaign-card__code {
+		order: -1;
+		width: 100%;
+		margin-top: 0;
+		margin-bottom: 1px;
+	}
+}
+
+/* Row 2: region prefix + campaign title */
+.campaign-card__name {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+/*
+★ [2026-08-26] 여기 있던 .campaign-card__region 정의는 아래 'Region styling within Info'
+   블록과 중복이라 삭제했다. 뒤 정의가 이기고 있어 color/display 가 죽어 있었다.
+   살아 있던 값(font-weight, line-height)은 아래 블록으로 합쳤다 — 렌더 결과는 동일하다.
+*/
+
+.campaign-card__title {
+	font-family: var(--font-korean);
+	font-size: 14px;
+	font-weight: var(--fw-medium);
+	color: var(--color-dark);
+	line-height: var(--lh-tight);
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	/*
+	★ [2026-08-26] 제목 1줄/2줄 차이 때문에 같은 행 카드의 하단(지역·신청/모집)이
+	   최대 29px 어긋나던 문제. 2줄 높이를 항상 확보해 기준선을 맞춘다.
+	   14px × lh 1.2 × 2행 = 33.6px
+	*/
+	min-height: 34px;
+}
+
+/* Row 3: benefit text */
+.campaign-card__benefit {
+	font-family: var(--font-korean);
+	font-size: 13px;
+	font-weight: var(--fw-regular);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-500) */
+	line-height: 1.4;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	min-height: 36px;
+}
+
+/* Row 4: apply / recruit stats */
+.campaign-card__stats {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--font-korean);
+	font-size: 12px;
+	color: var(--color-dark);
+	margin-top: 2px;
+}
+
+.campaign-card__stat {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}
+
+.campaign-card__stat strong {
+	font-weight: var(--fw-semibold);
+	color: var(--color-dark);
+}
+
+.campaign-card__stat--muted strong {
+	color: var(--color-gray-400);
+}
+
+.campaign-card__stat--muted {
+	color: var(--color-gray-400);
+}
+
+/* Card Thumb Variations */
+.campaign-card__thumb--square {
+	padding-top: 100% !important;
+}
+
+.campaign-card__img-bg {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.campaign-card__img-bg img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+/* Info container (wrapper for reward & region) */
+.campaign-card__info {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.campaign-card__reward {
+	font-family: var(--font-korean);
+	font-size: 13px;
+	font-weight: var(--fw-medium);
+	color: var(--color-primary);
+	line-height: 1.2;
+	overflow: hidden;
+	/*
+	★ [2026-08-26] 혜택 문구가 1줄이냐 2줄이냐에 따라 아래 지역·신청/모집 줄이 밀리던 문제.
+	   2줄로 고정 클램프 + 2줄 높이 확보. 13px × lh 1.2 × 2행 = 31.2px
+	   (min-height:36px 를 가진 .campaign-card__benefit 는 실제 마크업에서 쓰이지 않는다)
+	*/
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	min-height: 32px;
+}
+
+/* Region styling within Info */
+.campaign-card__region {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-family: var(--font-korean);
+	font-size: 13px;
+	font-weight: var(--fw-regular);	/* ★ [2026-08-26] 위 중복 블록에서 합침 */
+	line-height: 1.3;				/* ★ [2026-08-26] 위 중복 블록에서 합침 */
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-500) */
+}
+
+.campaign-card__region svg {
+	flex-shrink: 0;
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-400) */
+}
+
+/* Card Thumb Overlays (Badges) */
+.badge-dday-sm {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px 7px;
+	background: #292929;
+	color: var(--color-white);
+	font-family: var(--font-korean);
+	font-size: 11px;
+	font-weight: var(--fw-bold);
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.badge-dday-sm--urgent {
+	background: var(--color-danger);
+}
+
+.badge-today-sm {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px 7px;
+	background: #ec0086;
+	color: var(--color-white);
+	font-family: var(--font-korean);
+	font-size: 11px;
+	font-weight: var(--fw-bold);
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.badge-shop-sm {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px 7px;
+	background: #ffe500;
+	color: #ec0086;
+	font-family: var(--font-korean);
+	font-size: 11px;
+	font-weight: var(--fw-bold);
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.badge-new-sm {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px 7px;
+	background: var(--color-primary);
+	color: var(--color-white);
+	font-family: var(--font-korean);
+	font-size: 11px;
+	font-weight: var(--fw-bold);
+	line-height: 1;
+	white-space: nowrap;
+}
+
+/* Card grid */
+.campaign-grid {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: 20px;
+}
+
+.campaign-grid--3 {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+/* ══════════════════════════════════════════
+	 TABS
+══════════════════════════════════════════ */
+.tab-list {
+	display: flex;
+	border-bottom: 1px solid var(--color-border);
+	gap: 0;
+}
+
+.tab-item {
+	position: relative;
+	padding: 12px 20px;
+	font-family: var(--font-korean);
+	font-size: var(--fs-base);
+	font-weight: var(--fw-medium);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-500) */
+	cursor: pointer;
+	white-space: nowrap;
+	transition: color var(--transition-fast);
+	border-bottom: 2px solid transparent;
+	margin-bottom: -1px;
+}
+
+.tab-item:hover {
+	color: var(--color-primary);
+}
+
+.tab-item.active {
+	color: var(--color-primary);
+	font-weight: var(--fw-semibold);
+	border-bottom-color: var(--color-primary);
+}
+
+/* Count badge in tab */
+.tab-item .tab-count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 18px;
+	height: 18px;
+	padding: 0 5px;
+	margin-left: 4px;
+	background: var(--color-gray-200);
+	border-radius: var(--radius-full);
+	font-size: var(--fs-xs);
+	font-weight: var(--fw-bold);
+}
+
+.tab-item.active .tab-count {
+	background: var(--color-primary);
+	color: var(--color-white);
+}
+
+/* Region tab (square style) */
+.region-tab-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 24px;
+}
+
+.region-tab-item {
+	padding: 8px 16px;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	font-family: var(--font-korean);
+	font-size: var(--fs-sm);
+	font-weight: var(--fw-medium);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-600) */
+	cursor: pointer;
+	transition: all var(--transition-fast);
+	background: var(--color-white);
+}
+
+.region-tab-item:hover {
+	border-color: var(--color-primary);
+	color: var(--color-primary);
+}
+
+.region-tab-item.active {
+	background: var(--color-primary);
+	border-color: var(--color-primary);
+	color: var(--color-white);
+	font-weight: var(--fw-semibold);
+}
+
+/* ══════════════════════════════════════════
+	 FORM ELEMENTS
+══════════════════════════════════════════ */
+.form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.form-label {
+	font-family: var(--font-korean);
+	font-size: var(--fs-sm);
+	font-weight: var(--fw-medium);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-700) */
+}
+
+.form-label.required::after {
+	content: ' *';
+	color: var(--color-danger);
+}
+
+.form-input {
+	width: 100%;
+	height: 44px;
+	padding: 0 14px;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	font-family: var(--font-korean);
+	font-size: var(--fs-base);
+	color: var(--color-dark);
+	background: var(--color-white);
+	transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-input:focus {
+	outline: none;
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 3px rgba(115, 70, 243, 0.12);
+}
+
+.form-input::placeholder {
+	color: var(--color-gray-400);
+}
+
+.form-input.error {
+	border-color: var(--color-danger);
+}
+
+.form-input:disabled {
+	background: var(--color-gray-50);
+	color: var(--color-gray-400);
+	cursor: not-allowed;
+}
+
+.form-textarea {
+	width: 100%;
+	padding: 12px 14px;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	font-family: var(--font-korean);
+	font-size: var(--fs-base);
+	color: var(--color-dark);
+	resize: vertical;
+	min-height: 120px;
+	transition: border-color var(--transition-fast);
+}
+
+.form-textarea:focus {
+	outline: none;
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 3px rgba(115, 70, 243, 0.12);
+}
+
+.form-select {
+	width: 100%;
+	height: 44px;
+	padding: 0 14px;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	font-family: var(--font-korean);
+	font-size: var(--fs-base);
+	color: var(--color-dark);
+	background: var(--color-white);
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 14px center;
+	cursor: pointer;
+}
+
+.form-select:focus {
+	outline: none;
+	border-color: var(--color-primary);
+}
+
+.form-hint {
+	font-family: var(--font-korean);
+	font-size: var(--fs-sm);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-400) */
+}
+
+.form-error {
+	font-family: var(--font-korean);
+	font-size: var(--fs-sm);
+	color: var(--color-danger);
+}
+
+/* Checkbox / Radio */
+.form-check {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+}
+
+.form-check input[type="checkbox"],
+.form-check input[type="radio"] {
+	width: 18px;
+	height: 18px;
+	accent-color: var(--color-primary);
+	cursor: pointer;
+}
+
+.form-check__label {
+	font-family: var(--font-korean);
+	font-size: var(--fs-base);
+	color: var(--color-dark);
+}
+
+/* ══════════════════════════════════════════
+	 PAGINATION
+══════════════════════════════════════════ */
+.pagination {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	padding: 32px 0;
+}
+
+.pagination-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: var(--radius-sm);
+	font-family: var(--font-korean);
+	font-size: var(--fs-base);
+	font-weight: var(--fw-medium);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-600) */
+	cursor: pointer;
+	border: 1px solid transparent;
+	transition: all var(--transition-fast);
+}
+
+.pagination-item:hover {
+	background: var(--color-primary-light);
+	color: var(--color-primary);
+}
+
+.pagination-item.active {
+	background: var(--color-primary);
+	color: var(--color-white);
+	border-color: var(--color-primary);
+}
+
+.pagination-item.disabled {
+	color: var(--color-gray-300);
+	cursor: not-allowed;
+}
+
+.pagination-item.disabled:hover {
+	background: none;
+	color: var(--color-gray-300);
+}
+
+/* ══════════════════════════════════════════
+	 SORT / FILTER BAR
+══════════════════════════════════════════ */
+.filter-bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.filter-bar-left {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.filter-bar-right {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.sort-select {
+	height: 36px;
+	padding: 0 30px 0 10px;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	font-family: var(--font-korean);
+	font-size: var(--fs-sm);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-700) */
+	background: var(--color-white);
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 10px center;
+	cursor: pointer;
+}
+
+.sort-select:focus {
+	outline: none;
+	border-color: var(--color-primary);
+}
+
+/* Filter chip */
+.filter-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 6px 12px;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-full);
+	font-family: var(--font-korean);
+	font-size: var(--fs-sm);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-600) */
+	cursor: pointer;
+	background: var(--color-white);
+	transition: all var(--transition-fast);
+}
+
+.filter-chip:hover {
+	border-color: var(--color-primary);
+	color: var(--color-primary);
+}
+
+.filter-chip.active {
+	background: var(--color-primary);
+	border-color: var(--color-primary);
+	color: var(--color-white);
+}
+
+/* ══════════════════════════════════════════
+	 INFO BOX / NOTICE BOX
+══════════════════════════════════════════ */
+.info-box {
+	padding: 16px 20px;
+	border-radius: var(--radius-md);
+	background: var(--color-primary-bg);
+	border: 1px solid var(--color-primary-light);
+}
+
+.info-box__title {
+	font-family: var(--font-korean);
+	font-size: var(--fs-base);
+	font-weight: var(--fw-semibold);
+	color: var(--color-primary);
+	margin-bottom: 8px;
+}
+
+.info-box__list {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.info-box__list li {
+	font-family: var(--font-korean);
+	font-size: var(--fs-sm);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-700) */
+	line-height: var(--lh-relaxed);
+	padding-left: 14px;
+	position: relative;
+}
+
+.info-box__list li::before {
+	content: '·';
+	position: absolute;
+	left: 4px;
+}
+
+/* Warning box */
+.warning-box {
+	padding: 16px 20px;
+	border-radius: var(--radius-md);
+	background: var(--color-danger-light);
+	border: 1px solid rgba(220, 47, 2, 0.2);
+}
+
+.warning-box .info-box__title {
+	color: var(--color-danger);
+}
+
+/* ══════════════════════════════════════════
+	 MODAL
+══════════════════════════════════════════ */
+.modal-backdrop {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: var(--z-modal-backdrop);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 1;
+	visibility: visible;
+	transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.modal-backdrop.hidden {
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+}
+
+.modal {
+	background: var(--color-white);
+	border-radius: var(--radius-xl);
+	box-shadow: var(--shadow-lg);
+	width: calc(100% - 32px); /* 모바일 양옆 여백 16px씩 확보 */
+	max-width: 480px;
+	max-height: 90vh;
+	margin: 0 16px;
+	overflow-y: auto;
+	z-index: var(--z-modal);
+	opacity: 1;
+	transform: scale(1);
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.modal-backdrop.hidden .modal {
+	opacity: 0;
+	transform: scale(0.95);
+}
+
+.modal-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 24px 24px 0;
+}
+
+.modal-title {
+	font-family: var(--font-primary);
+	font-size: var(--fs-xl);
+	font-weight: var(--fw-bold);
+	color: var(--color-dark);
+}
+
+.modal-close {
+	width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	cursor: pointer;
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-400) */
+	transition: all var(--transition-fast);
+}
+
+.modal-close:hover {
+	background: var(--color-gray-100);
+	color: var(--color-dark);
+}
+
+.modal-body {
+	padding: 20px 24px;
+}
+
+.modal-footer {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	padding: 0 24px 24px;
+}
+
+/* ══════════════════════════════════════════
+	 LOADING SPINNER
+══════════════════════════════════════════ */
+.spinner {
+	width: 24px;
+	height: 24px;
+	border: 3px solid var(--color-primary-light);
+	border-top-color: var(--color-primary);
+	border-radius: 50%;
+	animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* ══════════════════════════════════════════
+	 TOAST / ALERT
+══════════════════════════════════════════ */
+.toast-container {
+	position: fixed;
+	bottom: 24px;
+	left: 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	z-index: var(--z-toast);
+}
+
+.toast {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 14px 18px;
+	background: var(--color-dark);
+	color: var(--color-white);
+	border-radius: var(--radius-md);
+	box-shadow: var(--shadow-md);
+	font-family: var(--font-korean);
+	font-size: var(--fs-base);
+	min-width: 240px;
+	max-width: 400px;
+	animation: toastIn 0.25s ease;
+}
+
+.toast.success {
+	background: var(--color-success);
+}
+
+.toast.error {
+	background: var(--color-danger);
+}
+
+@keyframes toastIn {
+	from {
+		opacity: 0;
+		transform: translateX(-20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* ══════════════════════════════════════════
+	 LIST TABLE (Standardized)
+══════════════════════════════════════════ */
+.mc-list-table {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	overflow: hidden;
+	gap: 1px;
+	background: var(--color-border);
+	width: 100%;
+}
+
+.mc-list-table__head {
+	display: flex;
+	align-items: center;
+	height: 38px;
+	background: #fff;
+}
+
+.mc-list-table__body {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	background: #e7e7e7;
+}
+
+.mc-list-table__row {
+	display: flex;
+	align-items: center;
+	min-height: 52px;
+	background: #fff;
+	text-decoration: none;
+	transition: background 0.1s;
+	color: inherit;
+	border: none;
+	width: 100%;
+	text-align: left;
+}
+
+.mc-list-table__row:hover {
+	background: #f0ecff;
+}
+
+.mc-list-table__col {
+	display: flex;
+	align-items: center;
+	padding: 8px 12px;
+	font-size: 13px;
+	color: #0e0e0e;
+	box-sizing: border-box;
+}
+
+.mc-list-table__head .mc-list-table__col {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← #525252 */
+	justify-content: center;
+}
+
+/* ══════════════════════════════════════════
+	 FORMS (INPUTS & CHECKBOXES)
+══════════════════════════════════════════ */
+.mc-checkbox-label {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+}
+
+.mc-checkbox {
+	appearance: none;
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	border: 2px solid var(--color-border);
+	border-radius: 4px;
+	background-color: #ffffff;
+	position: relative;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	flex-shrink: 0;
+	margin: 0;
+}
+
+.mc-checkbox:checked {
+	background-color: #0e0e0e;
+	border-color: #0e0e0e;
+}
+
+.mc-checkbox:checked::after {
+	content: '';
+	position: absolute;
+	left: 5px;
+	top: 1px;
+	width: 6px;
+	height: 12px;
+	border: solid white;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+}
+/*=====================================================
+모집종료 캠페인 · 마감 임박 표시   [2026-10-19]
+
+  ── 왜 목록에 남기나 ──────────────────────────────────
+  전에는 모집이 끝나는 순간 목록에서 사라졌다. 어제 본 캠페인을 오늘
+  찾을 수 없고, 공유 링크로 들어와도 목록에는 없어 "없어진 캠페인" 으로
+  보였다. 그래서 남겨 두되 **신청할 수 없다는 것이 한눈에 보이게** 한다.
+
+  ★★ 이 규칙은 **components.css 에 둔다.** .campaign-card 자체가 여기 있기
+    때문이다. 처음에는 campaign/campaign-list.css 에 넣었는데, 메인 화면은
+    그 파일을 싣지 않아 **메인에서만 블러가 안 걸렸다.**
+    카드가 공용이면 카드의 상태 표시도 공용이어야 한다 —
+    쓰는 화면마다 CSS 를 따라 옮기는 구조는 반드시 한 군데를 빠뜨린다.
+
+  ★ 흐림만으로는 이유를 알 수 없다. 글자(.campaign-card__closed)를 함께 얹는다.
+    흐린 이유가 '로딩 중' 인지 '끝난 것' 인지 사용자가 구분해야 한다.
+  ※ 글자·보상 정보까지 흐리게 하지는 않는다 — 어떤 캠페인이었는지는 읽혀야 한다.
+=====================================================*/
+.campaign-card.is-closed .campaign-card__thumb img,
+.campaign-card.is-closed .campaign-card__img-bg img {
+	filter: blur(3px) grayscale(45%);
+	transform: scale(1.06);			/* 흐림 때문에 생기는 가장자리 빈 틈을 덮는다 */
+	opacity: .75;
+}
+
+.campaign-card__closed {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 2;
+	padding: 6px 14px;
+	border-radius: 999px;
+	background: rgba(17, 20, 28, .72);
+	color: #fff;
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: -0.2px;
+	white-space: nowrap;
+	pointer-events: none;			/* 카드 클릭(상세 이동)을 가리지 않는다 */
+}
+
+/* 마감까지 남은 날 — 모집중일 때만 서버가 값을 내려준다 */
+.campaign-card__left {
+	margin-left: auto;				/* 통계 줄 오른쪽 끝으로 */
+	font-weight: 700;
+	color: #0d6efd;
+}
+
+.campaign-card__left--today {
+	color: #c0392b;
+}
+
+/* 오픈 예정 — 'N일 후 시작'. 아직 신청할 수 없어 눈에 덜 띄게   [2026-10-19 점검 2차 회의] */
+.campaign-card__left--soon {
+	color: var(--color-gray-500, #6b7280);
+	font-weight: 600;
+}

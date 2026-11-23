@@ -1,0 +1,357 @@
+@charset "utf-8";
+/* ==========================================================================
+   마이페이지 미니 달력 (오른쪽 패널)   [2026-10-22 점검 4차]
+     조각 : /inc/mypage/miniCalendar.inc.html (mypageSidebar.inc.html 끝에서 include)
+
+   ★ 1281px~ : .mc-layout 오른쪽 세 번째 칸에 붙어 있다 (스크롤해도 따라온다 — sticky).
+   ★ ~1280px : 콘텐츠 자리가 모자라 접는다. 오른쪽 아래 [달력] 버튼 → 오른쪽에서 서랍이 나온다.
+   ※ 색 이름(blue/green/…)은 '나의 일정' 큰 달력(my-calendar.css)과 같은 값 — 그 파일은
+     이 화면들에서 읽지 않아 여기 따로 둔다. 바꿀 때 두 곳을 같이 바꾼다.
+   ========================================================================== */
+
+.mcal {
+	--mcal-line:   #e5e5ea;
+	--mcal-accent: #7346f3;
+
+	flex: 0 0 300px;
+	width: 300px;
+	align-self: stretch;	/* 칸은 끝까지 흰 바탕 — 안쪽(.mcal__inner)만 따라 내려온다 */
+	order: 3;				/* 사이드바보다 먼저 그려지지만 화면에서는 맨 오른쪽 */
+	padding: 24px 20px;
+	background: #ffffff;
+}
+
+/*
+  ★ .mc-panel 이 overflow:hidden(모서리 둥글게 자르기) 이라 그 안의 sticky 가
+    '패널 기준' 으로 붙었다 — 위에서 100px 떨어져 시작하고, 스크롤해도 따라오지 않았다.
+    clip 은 똑같이 잘라 주지만 스크롤 상자를 만들지 않아 sticky 가 화면 기준이 된다.
+*/
+.mc-panel:has(.mcal) {
+	overflow: clip;
+	max-width: 1600px;	/* 세 칸이 되면서 콘텐츠가 좁아진다 — 넓은 화면에서는 패널을 넓혀 되찾는다 (1440 이하는 원래 100%) */
+}
+
+.mcal__inner {
+	position: sticky;
+	top: 190px;			/* 위에 붙는 사이트 머리(실측 175px) 아래 */
+	max-height: calc(100vh - 210px);
+	overflow-y: auto;
+}
+
+/* 색 — '나의 일정' 큰 달력과 같은 값 */
+.mcal-c--blue   { --mcal-c: #3b6fd4; }
+.mcal-c--green  { --mcal-c: #19a974; }
+.mcal-c--orange { --mcal-c: #e8912d; }
+.mcal-c--purple { --mcal-c: #7c5cd6; }
+.mcal-c--pink   { --mcal-c: #d6468c; }
+.mcal-c--gray   { --mcal-c: #8e8e93; }
+.mcal-c--red    { --mcal-c: #e5484d; }
+.mcal-c--teal   { --mcal-c: #0d9b9b; }
+
+/* ── 머리 : ‹ 2026.10 › ───────────────────────────── */
+.mcal__head {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 14px;
+	margin-bottom: 14px;
+}
+
+.mcal__ym {
+	font-size: 16px;
+	font-weight: 700;
+	color: #0e0e0e;
+}
+
+.mcal__nav {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border: 1px solid var(--mcal-line);
+	border-radius: 50%;
+}
+
+/* 꺾쇠 */
+.mcal__nav::before {
+	content: "";
+	width: 7px;
+	height: 7px;
+	border-left: 1.5px solid #1b1b1b;
+	border-bottom: 1.5px solid #1b1b1b;
+	transform: translateX(1px) rotate(45deg);
+}
+
+.mcal__nav--next::before {
+	transform: translateX(-1px) rotate(-135deg);
+}
+
+.mcal__nav:hover {
+	border-color: var(--mcal-accent);
+}
+
+/* 닫기 — 서랍일 때만 */
+.mcal__close {
+	display: none;
+}
+
+/* ── 격자 : 요일 1줄 + 6주 + 고른 날 목록(8번째 줄) ──── */
+.mcal__grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	row-gap: 2px;
+	text-align: center;
+}
+
+.mcal__wk {
+	padding-bottom: 6px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #1b1b1b;
+}
+
+.mcal__cell {
+	display: contents;	/* radio · 날짜 · 목록이 격자에 바로 놓이게 */
+}
+
+.mcal__pick {
+	display: none;
+}
+
+.mcal__day {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 2px;
+	height: 38px;
+	padding-top: 5px;
+	border-radius: 8px;
+	font-size: 13px;
+	color: #1b1b1b;
+	cursor: pointer;
+}
+
+.mcal__day.is-sun { color: #e5484d; }
+.mcal__day.is-sat { color: #3b6fd4; }
+.mcal__wk.is-sun  { color: #e5484d; }
+.mcal__wk.is-sat  { color: #3b6fd4; }
+
+/* 지난달·다음달 꼬리 칸 — 비활성 표기라 흐리게 둔다 */
+.mcal__day.is-out {
+	opacity: 0.35;
+}
+
+.mcal__day:hover {
+	background: #f4f0fe;
+}
+
+.mcal__day.is-today {
+	font-weight: 700;
+	box-shadow: inset 0 0 0 1px var(--mcal-accent);
+}
+
+/* 고른 날 */
+.mcal__pick:checked + .mcal__day {
+	background: var(--mcal-accent);
+	color: #ffffff;
+	font-weight: 700;
+}
+
+.mcal__dots {
+	display: flex;
+	gap: 2px;
+}
+
+.mcal__dots i {
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: var(--mcal-c, #8e8e93);
+}
+
+.mcal__pick:checked + .mcal__day .mcal__dots i {
+	background: #ffffff;
+}
+
+/* ── 고른 날의 일정 카드 ──────────────────────────── */
+.mcal__list {
+	display: none;
+}
+
+.mcal__pick:checked ~ .mcal__list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	grid-column: 1 / -1;
+	grid-row: 8;
+	margin-top: 14px;
+	padding-top: 14px;
+	border-top: 1px solid var(--mcal-line);
+	text-align: left;
+}
+
+.mcal__list-date {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 700;
+	color: #0e0e0e;
+}
+
+.mcal__list-date em {
+	margin-left: 4px;
+	font-style: normal;
+	color: var(--mcal-accent);
+}
+
+.mcal__empty {
+	margin: 0;
+	padding: 14px 0;
+	font-size: 13px;
+	color: #1b1b1b;
+	text-align: center;
+}
+
+.mcal-card {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: 10px 12px;
+	border: 1px solid var(--mcal-line);
+	border-left: 3px solid var(--mcal-c, #8e8e93);
+	border-radius: 8px;
+	background: #ffffff;
+	text-decoration: none;
+}
+
+a.mcal-card:hover {
+	border-color: var(--mcal-c, #8e8e93);
+	background: #fafafc;
+}
+
+/* 신청만 하고 아직 선정 전 등 — 큰 달력과 같이 흐리게 */
+.mcal-card.is-dim {
+	opacity: 0.55;
+}
+
+/*
+  카드 두 줄 — ① 이슈(큰 글자) ② 캠페인명(작은 글자, 한 줄)   [2026-10-27]
+  ★ 이슈는 블록(span 이지만 카드가 세로 flex)이라 늘 제 줄을 차지한다.
+  ★ 캠페인명은 한 줄로 자르고 … — 카드 높이를 고르게 해 목록을 짧게 본다. 전체는 카드 title.
+*/
+.mcal-card__issue {
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.35;
+	color: #0e0e0e;	/* 색은 왼쪽 띠가 맡는다 — 주황 글자는 흰 바탕에서 흐리다 */
+	word-break: keep-all;
+	overflow-wrap: anywhere;
+}
+
+.mcal-card__name {
+	overflow: hidden;
+	font-size: 12px;
+	line-height: 1.4;
+	color: #6e6e73;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.mcal__more {
+	display: block;
+	margin-top: 16px;
+	padding: 10px 0;
+	border: 1px solid var(--mcal-line);
+	border-radius: 8px;
+	font-size: 13px;
+	font-weight: 600;
+	color: #1b1b1b;
+	text-align: center;
+	text-decoration: none;
+}
+
+.mcal__more:hover {
+	border-color: var(--mcal-accent);
+	color: var(--mcal-accent);
+}
+
+/* 서랍 열고 닫기 장치 — PC 에서는 안 쓴다 */
+.mcal-toggle,
+.mcal-fab,
+.mcal-dim {
+	display: none;
+}
+
+/* ── ~1280px : 서랍 ───────────────────────────────── */
+@media (max-width: 1280px) {
+	.mcal {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 11600;		/* 도움말 버튼(#pageHelpBtn 11500) 위 · 도움말 창(12000) 아래 */
+		width: min(340px, 88vw);
+		overflow-y: auto;
+		padding: 20px 18px 28px;
+		box-shadow: -4px 0 20px rgba(0, 0, 0, 0.12);
+		transform: translateX(105%);
+		transition: transform 0.25s ease;
+	}
+
+	.mcal-toggle:checked ~ .mcal {
+		transform: none;
+	}
+
+	.mcal__inner {
+		position: static;
+		max-height: none;
+		overflow: visible;
+	}
+
+	/* 오른쪽 아래 [달력] 버튼 */
+	.mcal-fab {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: fixed;
+		right: 16px;
+		bottom: 84px;
+		z-index: 1000;
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+		background: #7346f3;
+		box-shadow: 0 4px 14px rgba(115, 70, 243, 0.35);
+		font-size: 13px;
+		font-weight: 700;
+		color: #ffffff;
+		cursor: pointer;
+	}
+
+	/* 열렸을 때 뒤를 덮는 막 — 눌러도 닫힌다 */
+	.mcal-toggle:checked ~ .mcal-dim {
+		display: block;
+		position: fixed;
+		inset: 0;
+		z-index: 11550;
+		background: rgba(0, 0, 0, 0.35);
+	}
+
+	.mcal__head {
+		justify-content: flex-start;
+	}
+
+	.mcal__close {
+		display: inline-flex;
+		align-items: center;
+		margin-left: auto;
+		padding: 6px 12px;
+		border: 1px solid var(--mcal-line);
+		border-radius: 999px;
+		font-size: 13px;
+		font-weight: 600;
+		color: #1b1b1b;
+		cursor: pointer;
+	}
+}
