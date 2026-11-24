@@ -453,7 +453,7 @@ def page():
 	<div class="mc-breadcrumb-wrap"><nav class="mc-breadcrumb"><a href="#">홈</a><span class="mc-breadcrumb__sep">›</span><a href="#">MY디마</a><span class="mc-breadcrumb__sep">›</span><span>대시보드</span></nav></div>
 	<div class="mc-layout">
 {sidebar()}
-{minical()}
+<!-- [2026-11-24] 사용자: "리뷰어사이트 대시보드에서는 우측달력 필요없을듯" — 대시보드에선 미니 달력 뺌(이번 주 일정이 대신) -->
 <main class="mc-content rd">
 	<div class="rd-head"><h1 class="mc-content__title"><em>{NICK}님의</em> 대시보드</h1><p class="rd-date">{TODAY.month}월 {TODAY.day}일 ({WEEK[TODAY.weekday()]}) 기준 · 데모 데이터</p></div>
 	<!-- [2026-11-24 v2] 상단 써머리(숫자 4칸) · 패널티 띠 제거 → 2열: 받은 알림 | 표. v1 의 alert · kpi · todo · point · flow · week · news 는 쓰지 않는다 -->
