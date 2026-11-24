@@ -166,10 +166,12 @@ def column():
                       f'<span class="alg-d">{ {"u": "바로 처리", "c": "확인 후 처리", "i": "알아 두기"}[lv] }</span>'
                       f'<em class="js-ab-{lv}">0</em></p><ul>{rows}</ul></div>')
     return ('<section class="alcol" aria-labelledby="alcol-h">'
-            '<div class="alcol-h"><h2 id="alcol-h">받은 알림</h2><span class="alcol-n">처리할 것 <b class="js-al-open">0건</b></span></div>'
+            # [2026-11-24] 사용자: "좌측 알림관련버튼을 상단에 줄여서 배치" — 아래 [모든 알림 보기][알림 설정] → 제목 줄 오른쪽 작은 글자 버튼
+            '<div class="alcol-h"><h2 id="alcol-h">받은 알림</h2><b class="alcol-n js-al-open" title="처리할 것">0건</b>'
+            '<span class="alcol-act"><button type="button" class="js-al-every" data-open-alerts="">전체 보기</button>'
+            '<a href="#" aria-label="알림 설정">설정</a></span></div>'
             f'{"".join(groups)}'
-            '<div class="alcol-f"><button type="button" class="ag-btn sm js-al-every" data-open-alerts="">모든 알림 보기</button>'
-            '<a href="#" class="ag-btn sm ghost">알림 설정</a></div></section>')
+            '</section>')
 
 
 def bar():
