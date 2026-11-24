@@ -34,6 +34,17 @@
 .ak-s > span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ak-t{flex:none}
 .akind.is-zero .ak-n,.akind.is-zero .ak-c,.akind.is-zero .ak-s{color:var(--ag-c-8);font-weight:500}
+/* [2026-11-24] 큰 구분자(즉시 · 확인 · 참고)를 명확하게 — 사용자: "좌측 큰 구분자를 명확하게 표기"
+   묶음 사이 회색 간격 8px + 묶음 머리 = 등급 색 위 선 3px · 옅은 등급 색 띠 · 15px 굵은 등급 색 글자 */
+.alg{--ag-lv:var(--ag-c-9);--ag-lv-bg:var(--ag-fl-head,#fafafb)}
+.alg-u{--ag-lv:var(--ag-danger);--ag-lv-bg:#fff4f0}
+.alg-c{--ag-lv:var(--ag-info);--ag-lv-bg:#eef6ff}
+.alg + .alg{border-top:8px solid var(--ag-c-2)}
+.alcol .alg-h{gap:8px;padding:12px 20px;border-top:3px solid var(--ag-lv);border-bottom:1px solid var(--ag-fl-line,#e8e8ec);background:var(--ag-lv-bg);font-size:13px;color:var(--ag-c-11)}
+.work.ag .alcol .alg-h .lvb{font-size:15px;padding:0;background:none;color:var(--ag-lv);font-weight:800}
+.alcol .alg-h em{font-size:15px;font-weight:800;color:var(--ag-lv)}
+.alg li:first-child .akind{border-top:0}
+.alcol-h{border-bottom:0}
 .alcol-f{display:flex;gap:6px;margin-top:auto;padding:14px 20px 0;border-top:1px solid var(--ag-fl-line,#e8e8ec)}
 .alcol-f .ag-btn{flex:1}
 .alcol-f .ag-btn.ag-on{border-color:var(--ag-main);background:var(--ag-main-light);color:var(--ag-main)}
