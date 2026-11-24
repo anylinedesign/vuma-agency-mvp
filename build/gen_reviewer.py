@@ -8,6 +8,13 @@
           + reviewer/css/rd.css (대시보드 추가분, rd- 접두어)
   JS 없음 — 창은 popover, 미니 달력 날짜는 radio, 달력 서랍은 checkbox(실서버와 같은 방식)
   실행: python -X utf8 -I build/gen_reviewer.py
+
+[2026-11-24 v2] 사용자: "리뷰어 대시보드도 마찬가지로 수정(대행사 대시보드처럼) · 기존 버전 남기고 새 버전으로"
+  · v1 = versions/reviewer-v1/ (그대로 보관, 고치지 않음)
+  · 상단 써머리(숫자 4칸) · 패널티 띠 제거 → 패널티는 왼쪽 '받은 알림'의 한 줄로
+  · 본문 2열: 왼쪽 = 받은 알림(성격별 한 줄, 먼저 확인 / 알아 두기) · 오른쪽 = 지금 할 일 · 진행 현황 · 이번 주 일정 · 내 포인트를 표로
+  · 종류 줄을 누르면 오른쪽 패널(popover 서랍)에 그 종류 목록 — JS 없음
+  · 선 처리 · 표처럼 = reviewer/css/rd-line.css
 """
 import datetime as dt
 import hashlib
@@ -91,6 +98,26 @@ NEWS = [
     ("SNS", "SNS 연결", "인스타 승인 대기", "블로그 · 유튜브 연결됨", False, "snsConnect"),
     ("찜", "찜한 캠페인", "마감 임박 1", "[분당] 베이커리 클래스 모집마감 D-1", False, "campaignPick"),
 ]
+# [2026-11-24 v2] 받은 알림 — 성격별 (등급, key, 이름, 실서버 화면, [(제목, 설명, 언제)])
+AL = [
+    ("u", "penalty", "패널티", "penalty", [("누적 패널티 1점", "2점 더 받으면 30일 캠페인 신청 제한", "11/18"),
+                                         ("리뷰 기한 초과 +1점", "[부천] 떡볶이 체험 — 기한 안에 리뷰 없음", "11/18")]),
+    ("u", "offer", "받은 제안", "offers", [("[강남] 피부관리 체험 · 추가 +5,000P", "제안 기한 D-2", "오늘"),
+                                          ("[분당] 베이커리 클래스", "제안 기한 D-5", "어제")]),
+    ("u", "note", "안 읽은 쪽지", "noteList", [("검수 결과 안내", "[연남] 신메뉴 시식 리뷰 — 반려 사유", "1시간 전"),
+                                              ("방문 일정 확인 부탁드려요", "[합정] 파스타 2인 방문 광고주", "3시간 전"),
+                                              ("배송 출발했어요", "[망원] 홈카페 원두 배송 광고주", "어제")]),
+    ("u", "inquiry", "1:1 문의 답변", "inquiry", [("포인트 지급일 문의 — 새 답변", "운영팀 답변 도착", "2시간 전")]),
+    ("i", "alarm", "안 읽은 알림", "messageList", [("선정 안내", "[홍대] 인스타 릴스 체험에 선정되었어요", "오늘"),
+                                                ("연장 승인", "[잠실] 키즈카페 체험 — 3일 연장", "어제"),
+                                                ("공지", "리뷰어 개인정보처리방침 개정 안내", "어제"),
+                                                ("공지", "12월 정기 점검 안내", "11/20"),
+                                                ("공지", "기자단 캠페인 가이드 변경", "11/19")]),
+    ("i", "video", "받은 영상", "video", [("릴스 — 게시 대기", "[홍대] 인스타 릴스 체험 · 주소 등록 전", "어제")]),
+    ("i", "sns", "SNS 연결", "snsConnect", [("인스타 승인 대기", "블로그 · 유튜브는 연결됨", "11/21")]),
+    ("i", "pick", "찜한 캠페인", "campaignPick", [("[분당] 베이커리 클래스", "모집마감 D-1", "오늘")]),
+]
+AL_LV = {"u": ("먼저 확인", "놓치면 손해"), "i": ("알아 두기", "읽어 두면 되는 것")}
 PENALTY = {"pt": 1, "next": 3, "rule": "3점부터 30일 신청 제한(실서버 '패널티 점수별 제재 기준')"}
 
 MENU = [  # 실서버 사이드바 순서 그대로 + 맨 위 '대시보드'(새로)
@@ -260,6 +287,98 @@ def news():
     return f'<section class="rd-card" aria-labelledby="rd-nw-h"><div class="rd-card__h"><h2 id="rd-nw-h">소식</h2></div><ul class="rd-news">{rows}</ul></section>'
 
 
+def alcol():
+    """[2026-11-24 v2] 왼쪽 '받은 알림' — 묶음 머리(먼저 확인 · 알아 두기) + 종류 한 줄(이름 · 건수 · 최근 · 시각)"""
+    groups = []
+    for lv, (ln, ld) in AL_LV.items():
+        its = [a for a in AL if a[0] == lv]
+        rows = "".join(
+            f'<li><button type="button" class="rd-ak" popovertarget="rd-al-{k}"><span class="rd-ak__n">{h(n)}</span>'
+            f'<em class="rd-ak__c">{len(lst)}</em><span class="rd-ak__s"><span>{h(lst[0][0])}</span><span>{h(lst[0][2])}</span></span></button></li>'
+            for _l, k, n, _s, lst in its)
+        total = sum(len(a[4]) for a in its)
+        groups.append(f'<div class="rd-alg rd-alg--{lv}"><p class="rd-alg__h"><b>{ln}</b><span>{ld}</span><em>{total}</em></p><ul>{rows}</ul></div>')
+    alln = sum(len(a[4]) for a in AL)
+    return (f'<aside class="rd-alcol" aria-label="받은 알림"><div class="rd-alcol__h"><h2>받은 알림</h2><b>{alln}</b>'
+            f'<button type="button" class="rd-alcol__all" popovertarget="rd-al-all">전체 보기</button></div>{"".join(groups)}</aside>')
+
+
+def al_drawers():
+    """종류마다 오른쪽 패널 하나 + 전체 — 줄 = 제목 · 설명 · 시각, 아래 [화면 열기](실서버 화면 안내)"""
+    def one(key, title, scr, items):
+        rows = "".join(f'<li><div><b>{h(t)}</b><span>{h(d)}</span></div><small>{h(w)}</small></li>' for t, d, w in items)
+        go = (f'<button type="button" class="rd-btn rd-btn--pri" popovertarget="rd-stub-{scr}">{h(STUB.get(scr, title))} 화면 열기</button>'
+              if scr else '<button type="button" class="rd-btn" popovertarget="rd-stub-messageList">알림내역 화면 열기</button>')
+        return (f'<aside class="rd-dr" id="rd-al-{key}" popover aria-label="{h(title)}"><header><div><b>{h(title)} {len(items)}건</b>'
+                f'<p>받은 알림 — {"이 종류만" if key != "all" else "모든 종류"}</p></div>'
+                f'<button type="button" class="rd-x" popovertarget="rd-al-{key}" popovertargetaction="hide" aria-label="닫기">✕</button></header>'
+                f'<ul class="rd-dr__l">{rows}</ul><footer>{go}</footer></aside>')
+    out = [one(k, n, scr, lst) for _l, k, n, scr, lst in AL]
+    out.append(one("all", "받은 알림 전체", None, [(f"{n} · {t}", d, w) for _l, _k, n, _s, lst in AL for t, d, w in lst]))
+    return "".join(out)
+
+
+def todo_tbl():
+    """[2026-11-24 v2] 지금 할 일 = 표: 기한 · 할 일 · 캠페인(설명) · 버튼"""
+    def key(t):
+        return (0, (t[0] - TODAY).days) if t[0] is not None else (1, 99)
+    trs = "".join(
+        f'<tr class="is-{urg(d) if d is not None else "later"}"><td class="rd-t-dd">{dday(d) if d is not None else "준비"}</td>'
+        f'<td class="rd-t-k">{h(kind)}</td><td><b>{h(name)}</b><small>{h(desc)}</small></td>'
+        f'<td class="rd-t-b"><button type="button" class="rd-btn rd-btn--pri" popovertarget="rd-act-{pop}">{h(btn)}</button></td></tr>'
+        for d, kind, name, desc, btn, pop in sorted(TODO, key=key))
+    return (f'<section class="rd-tc" aria-labelledby="rd-todo-h"><div class="rd-tc__h"><h2 id="rd-todo-h">지금 할 일 <em>{len(TODO)}</em></h2>'
+            f'<ul class="rd-legend"><li class="is-hot">오늘·지남</li><li class="is-soon">3일 안</li><li class="is-later">그 외</li></ul></div>'
+            f'<div class="rd-tw"><table class="rd-tbl rd-tbl--todo"><thead><tr><th scope="col">기한</th><th scope="col">할 일</th>'
+            f'<th scope="col">캠페인</th><th scope="col"></th></tr></thead><tbody>{trs}</tbody></table></div></section>')
+
+
+def flow_tbl():
+    """진행 현황 = 머리 줄(단계) + 숫자 줄 + 신호 줄 — 칸을 누르면 그 단계 화면"""
+    th = "".join(f'<th scope="col">{n}</th>' for n, *_ in FLOW)
+    tn = "".join(f'<td><button type="button" class="rd-fl" popovertarget="rd-stub-{scr}">{c}</button></td>' for _n, c, _s, _w, scr in FLOW)
+    ts = "".join(f'<td class="{"is-warn" if w else ""}">{h(sg)}</td>' for _n, _c, sg, w, _scr in FLOW)
+    return (f'<section class="rd-tc" aria-labelledby="rd-fl-h"><div class="rd-tc__h"><h2 id="rd-fl-h">진행 현황</h2>'
+            f'<button type="button" class="rd-link" popovertarget="rd-stub-campaignApplying">나의 캠페인 ›</button></div>'
+            f'<div class="rd-tw"><table class="rd-tbl rd-tbl--flow"><thead><tr>{th}</tr></thead>'
+            f'<tbody><tr class="rd-fl-n">{tn}</tr><tr class="rd-fl-s">{ts}</tr></tbody></table></div></section>')
+
+
+def week_tbl():
+    """이번 주 일정 = 날짜 · 일정 표"""
+    by = {}
+    for d, c, issue, name in SCHED:
+        by.setdefault(d, []).append((c, issue, name))
+    trs = []
+    for i in range(7):
+        d = D(i)
+        its = by.get(d, [])
+        lab = "오늘" if i == 0 else ("내일" if i == 1 else WEEK[d.weekday()])
+        body = ("".join(f'<p class="mcal-c--{c}"><i></i><b>{h(iss)}</b> <span>{h(nm)}</span></p>' for c, iss, nm in its)
+                if its else '<p class="rd-none">일정 없음</p>')
+        trs.append(f'<tr{" class=\"is-today\"" if i == 0 else ""}><th scope="row">{md(d)} <small>{lab}</small></th><td>{body}</td></tr>')
+    return (f'<section class="rd-tc" aria-labelledby="rd-wk-h"><div class="rd-tc__h"><h2 id="rd-wk-h">이번 주 일정</h2>'
+            f'<button type="button" class="rd-link" popovertarget="rd-stub-schedule">나의 일정 ›</button></div>'
+            f'<table class="rd-tbl rd-tbl--wk"><tbody>{"".join(trs)}</tbody></table></section>')
+
+
+def point_tbl():
+    """내 포인트 = 키-값 표 + 버튼"""
+    chk = " · ".join(f'<span class="{"is-ok" if ok else "is-no"}">{"✓" if ok else "✕"} {h(t)}</span>' for t, ok in CHECKS)
+    ready = all(ok for _t, ok in CHECKS)
+    btn = ('<button type="button" class="rd-btn rd-btn--pri" popovertarget="rd-act-withdraw">출금 신청</button>' if ready
+           else '<button type="button" class="rd-btn rd-btn--pri" popovertarget="rd-act-bank">출금계좌 등록</button>')
+    d, amt, st = POINT["last"]
+    rows = [("현재 포인트", f'<b class="rd-big">{POINT["now"]:,}</b> P'),
+            ("지급 예정", f'<b class="rd-ok">+{POINT["due"]:,}P</b> <small>검수 승인 {POINT["due_n"]}건</small>'),
+            ("출금 조건", chk),
+            ("최근 출금", f'{d} · {amt:,}P · <span class="rd-ok">{st}</span>')]
+    trs = "".join(f'<tr><th scope="row">{a}</th><td>{b}</td></tr>' for a, b in rows)
+    return (f'<section class="rd-tc" aria-labelledby="rd-pt-h"><div class="rd-tc__h"><h2 id="rd-pt-h">내 포인트</h2>'
+            f'<button type="button" class="rd-link" popovertarget="rd-stub-point">포인트 내역 ›</button></div>'
+            f'<table class="rd-tbl rd-tbl--kv"><tbody>{trs}</tbody></table><div class="rd-tc__f">{btn}</div></section>')
+
+
 def minical():
     """실서버 miniCalendar.inc.html 과 같은 마크업(정적) — 2026년 11월"""
     first = dt.date(2026, 11, 1)
@@ -316,6 +435,7 @@ def page():
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>대시보드 · MY디마 · 뷰마 리뷰어 (데모)</title>
 {links}
+<link rel="stylesheet" href="css/rd-line.css?v={ver("rd-line.css")}">
 </head>
 <body>
 <!-- [2026-11-23] 뷰마 리뷰어 대시보드 데모 — build/gen_reviewer.py 로 생성(직접 수정 금지)
@@ -329,18 +449,16 @@ def page():
 {minical()}
 <main class="mc-content rd">
 	<div class="rd-head"><h1 class="mc-content__title"><em>{NICK}님의</em> 대시보드</h1><p class="rd-date">{TODAY.month}월 {TODAY.day}일 ({WEEK[TODAY.weekday()]}) 기준 · 데모 데이터</p></div>
-	{alert()}
-	{kpi()}
-	<div class="rd-row">{todo()}{point()}</div>
-	{flow()}
-	<div class="rd-row rd-row--2">{week()}{news()}</div>
-	<p class="rd-foot">데모 — 버튼과 메뉴는 실서버의 어느 화면·창으로 이어지는지만 안내합니다. 기획: 조사/20261123/리뷰어대시보드_분석·기획.md</p>
+	<!-- [2026-11-24 v2] 상단 써머리(숫자 4칸) · 패널티 띠 제거 → 2열: 받은 알림 | 표. v1 의 alert · kpi · todo · point · flow · week · news 는 쓰지 않는다 -->
+	<div class="rd-lay">{alcol()}<div class="rd-main">{todo_tbl()}{flow_tbl()}<div class="rd-two">{week_tbl()}{point_tbl()}</div></div></div>
+	<p class="rd-foot">데모 v2 — 버튼과 메뉴는 실서버의 어느 화면·창으로 이어지는지만 안내합니다. <a href="../versions/reviewer-v1/index.html">이전 버전 v1</a> · <a href="../index.html">데모 모음</a></p>
 </main>
 	</div>
 </div></div>
 {footer()}
 </div>
 {stubs()}
+{al_drawers()}
 </body>
 </html>
 '''

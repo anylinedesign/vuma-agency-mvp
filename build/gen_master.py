@@ -5,6 +5,13 @@
   · 메뉴 = core/lib/anyline/master.class.php 의 $pages · $navGroups 를 읽어 둔 build/master_nav.json
   · 대시보드 추가 모양 = master/css/md.css (md- 접두사만)
   · JS 없음 — 역할 탭 = 라디오 + :has() · 큐 서랍/가운데 창/메뉴 안내 = popover
+
+[2026-11-24 v2] 사용자: "마스터 대시보드, 리뷰어 대시보드도 마찬가지로 수정(대행사 대시보드처럼) · 기존 버전 남기고 새 버전으로"
+  · v1 = versions/master-v1/ (그대로 보관, 고치지 않음)
+  · 상단 써머리(처리할 일 · 24시간 넘은 것 · 시스템 경고 줄) · 시스템 경고 띠 제거 → 왼쪽 '받은 알림' 열의 '시스템 경고' 줄로
+  · 왼쪽 = 받은 알림(성격별 한 줄, 즉시 / 확인) + 다가오는 7일 · 가운데 = 처리 대기 표(영역 = 회색 구획 줄) · 현황 · 돈 · 활동
+  · 종류 줄을 누르면 오른쪽 패널(popover 서랍)에 그 종류만 — 늘 열려 있던 오른쪽 즉시 패널은 없앰
+  · 선 처리 · 표처럼 = master/css/md-line.css
 """
 import html
 import json
@@ -134,6 +141,24 @@ NOTI = [("inquiry", "문의", "badge--info", "포인트 지급 언제 되나요?
         ("delay", "매칭", "badge--warning", "선정 발표일 지남 — 선정 0명", "[서촌] 블로그 기자단", "2시간 전"),
         ("recheck", "재검수", "badge--warning", "광고주 재검수 요청", "[익선동] 신메뉴 리뷰", "3시간 전"),
         ("close", "캠페인", "badge--danger", "모집완료 후 광고주가 캠페인 숨김", "[강남] 11월 방문 체험단", "어제")]
+# [2026-11-24 v2] 받은 알림 — 성격(종류)별. 대행사 대시보드와 같은 규칙: 즉시 / 확인 묶음, 종류 줄을 누르면 오른쪽 패널에 그 종류만
+AL_KINDS = [("u", "sys", "시스템 경고"), ("u", "report", "신고 접수"), ("u", "hide", "캠페인 숨김"),
+            ("c", "inquiry", "1:1 문의"), ("c", "refund", "출금 신청"), ("c", "delay", "선정 지연"), ("c", "recheck", "재검수 요청")]
+ALERTS = [  # (종류, 제목, 누가 · 어디, 언제, 처리 창 key — 큐와 같은 key)
+    ("sys", "settlementScan 05:00 실패", "정산 대상 등록 — 타임아웃(DB 연결)", "4시간 전", None),
+    ("sys", "오늘 실패한 자동화 1건", "자동화 로그 확인", "4시간 전", None),
+    ("report", "노쇼 신고 접수", "제주 감귤농원 → 봄날의리뷰", "1시간 전", "report"),
+    ("report", "허위 리뷰 신고", "익선동 와인바 → 카페투어링", "어제", "report"),
+    ("hide", "모집완료 후 광고주가 캠페인 숨김", "[강남] 11월 방문 체험단", "어제", "close"),
+    ("inquiry", "포인트 지급 언제 되나요?", "도토리기록", "8분 전", "inquiry"),
+    ("inquiry", "선정 기준 문의", "서울먹방일기", "40분 전", "inquiry"),
+    ("inquiry", "충전 영수증 요청", "망원 파스타바", "2시간 전", "inquiry"),
+    ("refund", "출금 신청 150,000원", "하늘빛일상", "32분 전", "refund"),
+    ("refund", "출금 신청 80,000원", "주말산책", "3시간 전", "refund"),
+    ("delay", "선정 발표일 지남 — 선정 0명", "[서촌] 블로그 기자단", "2시간 전", "delay"),
+    ("recheck", "광고주 재검수 요청", "[익선동] 신메뉴 리뷰", "3시간 전", "recheck"),
+]
+AL_LV = {"u": ("즉시", "바로 처리"), "c": ("확인", "확인 후 처리")}
 UPCOMING = [("오늘", "모집마감 4건 · 선정 발표 2건", "/calendar.html"), ("11.14 (금)", "리뷰마감 6건", "/calendar.html"),
             ("11.15 (토)", "모집마감 3건", "/calendar.html"), ("11.17 (월)", "세금계산서 발행 (수동 일정)", "/payment/billing.html"),
             ("11.18 (화)", "선정 발표 5건 · 리뷰마감 2건", "/calendar.html"), ("11.20 (목)", "월 정산 결재 (수동 일정)", "/payment/settlement.html")]
@@ -205,9 +230,10 @@ def head_line():
     bad = sum(1 for c in CRON if c[3] != "ok") + sum(1 for s in SYS if s[2] == "bad")
     tabs = "".join(f'<input type="radio" name="md-role" id="md-role-{k}" class="md-role-in"{" checked" if k == "all" else ""}>'
                    f'<label for="md-role-{k}" class="md-role">{n}</label>' for k, n in ROLES)
+    # [2026-11-24 v2] 상단 써머리 제거 — 날짜 · 기준 시각만(건수는 왼쪽 알림 열 · 표에 있다)
+    del total, late, bad
     return ('<div class="page-header"><div><h2 class="page-header__title">운영 대시보드</h2>'
-            f'<p class="page-header__desc">11월 13일 (목) <b>09:10 기준</b> · 처리할 일 <b>{total}건</b> · '
-            f'<span class="md-hot">24시간 넘은 것 {late}</span> · <span class="md-hot">시스템 경고 {bad}</span></p></div>'
+            '<p class="page-header__desc">11월 13일 (목) <b>09:10 기준</b></p></div>'
             f'<div class="md-roles" role="radiogroup" aria-label="역할별 보기"><span class="md-roles-l">보기</span>{tabs}</div></div>')
 
 
@@ -243,6 +269,75 @@ def board():
             '<span class="md-legend">시간 = 가장 오래 기다린 건 · <i class="md-age is-hot">24시간 넘음</i>'
             '<i class="md-age is-soon">8시간 넘음</i><i class="md-age">8시간 안</i></span></div>'
             f'<div class="md-cols">{"".join(cols)}</div></section>')
+
+
+def alcol():
+    """[2026-11-24 v2] 왼쪽 '받은 알림' — 묶음(즉시 · 확인) 머리 + 종류 한 줄(이름 · 건수 · 최근 대상 · 시각) + 다가오는 7일"""
+    groups = []
+    for lv, (ln, ld) in AL_LV.items():
+        kinds = [k for k in AL_KINDS if k[0] == lv]
+        rows = ""
+        for _l, k, name in kinds:
+            its = [a for a in ALERTS if a[0] == k]
+            more = f" 외 {len(its) - 1}건" if len(its) > 1 else ""
+            target = "md-dr-sys" if k == "sys" else f"md-al-{k}"
+            rows += (f'<li><button type="button" class="md-ak" popovertarget="{target}"><span class="md-ak-n">{name}</span>'
+                     f'<em class="md-ak-c">{len(its)}</em><span class="md-ak-s"><span>{esc(its[0][2])}{more}</span>'
+                     f'<span>{its[0][3]}</span></span></button></li>')
+        n = sum(1 for a in ALERTS if a[0] in {k[1] for k in kinds})
+        groups.append(f'<div class="md-alg md-alg-{lv}"><p class="md-alg-h"><b>{ln}</b><span>{ld}</span><em>{n}</em></p><ul>{rows}</ul></div>')
+    up = "".join(f'<li><b>{d}</b><span>{esc(t)}</span></li>' for d, t, _l in UPCOMING)
+    return ('<aside class="md-alcol" aria-label="받은 알림"><div class="md-alcol-h"><h2>받은 알림</h2>'
+            f'<b class="md-alcol-n">{len(ALERTS)}건</b><span class="md-alcol-act">'
+            '<button type="button" popovertarget="md-al-all">전체 보기</button>'
+            '<button type="button" popovertarget="md-stub-inbox">작업 센터</button></span></div>'
+            f'{"".join(groups)}'
+            '<div class="md-alg md-alg-up"><p class="md-alg-h"><b>다가오는 7일</b><span></span>'
+            '<button type="button" class="md-alg-go" popovertarget="md-stub-calendar">운영 캘린더</button></p>'
+            f'<ul class="md-up">{up}</ul></div></aside>')
+
+
+def al_drawer(key, title, desc, items):
+    """받은 알림 종류 하나(또는 전체) — 오른쪽 패널. 줄 = 제목 · 대상 · 시각 · [처리](큐의 처리 창)"""
+    rows = "".join(f'<li><div><b>{esc(t)}</b><span>{esc(w)} · {tm}</span></div>'
+                   + (f'<button type="button" class="btn btn--sm btn--outline" popovertarget="md-cm-{cm}">처리</button>' if cm else "")
+                   + '</li>' for _k, t, w, tm, cm in items)
+    return (f'<aside class="md-dr" id="md-al-{key}" popover aria-label="{title}"><header><div><b>{title} {len(items)}건</b><p>{desc}</p></div>'
+            f'<button type="button" class="md-x" popovertarget="md-al-{key}" popovertargetaction="hide" aria-label="닫기">✕</button></header>'
+            f'<ul class="md-list">{rows}</ul><footer>'
+            '<button type="button" class="btn btn--sm btn--outline" popovertarget="md-stub-inbox">알림·작업 센터에서 모두 보기</button></footer></aside>')
+
+
+def al_drawers():
+    out = [al_drawer(k, n, "받은 알림 — 이 종류만", [a for a in ALERTS if a[0] == k]) for _l, k, n in AL_KINDS if k != "sys"]
+    out.append(al_drawer("all", "받은 알림 전체", "즉시 · 확인 모두 — 위에서부터 처리", ALERTS))
+    return "".join(out)
+
+
+def q_row(q):
+    """[2026-11-24 v2] 처리 대기 표 한 줄 — 업무(누르면 오른쪽 서랍) · 무엇을 · 가장 오래 · 건수. 지켜보기 = 회색 줄"""
+    cls = age_cls(q["age"]) if q["kind"] == "act" else ""
+    age = f'<span class="md-age {cls}">{age_txt(q["age"])}</span>' if q["age"] is not None and q["n"] else ""
+    tag = '<small class="md-wtag">지켜보기</small>' if q["kind"] == "watch" else ""
+    return (f'<tr class="md-q md-tr md-{q["kind"]}{" is-zero" if q["n"] == 0 else ""}" data-roles="{q["roles"]}">'
+            f'<th scope="row"><button type="button" popovertarget="md-dr-{q["key"]}">{q["name"]}</button>{tag}</th>'
+            f'<td class="md-pp">{esc(q["purpose"])}</td><td class="md-c">{age}</td><td class="md-c md-n">{q["n"]}</td></tr>')
+
+
+def queue_table():
+    """[2026-11-24 v2] 사용자: "표처럼 간단한 리스트" — 영역 5개 = 회색 구획 줄, 큐 = 줄"""
+    body = []
+    for a, lab in AREAS:
+        qs = [q for q in QUEUES if q["area"] == a]
+        n = sum(q["n"] for q in qs if q["kind"] == "act")
+        body.append(f'<tbody><tr class="md-sec"><th colspan="4" scope="rowgroup"><b>{lab}</b><em>{n}건</em></th></tr>'
+                    + "".join(q_row(q) for q in qs if q["kind"] == "act")
+                    + "".join(q_row(q) for q in qs if q["kind"] == "watch") + '</tbody>')
+    return ('<section class="card md-board" aria-label="처리 대기"><div class="card__head"><span class="card__title">처리 대기</span>'
+            '<span class="md-legend">시간 = 가장 오래 기다린 건 · <i class="md-age is-hot">24시간 넘음</i>'
+            '<i class="md-age is-soon">8시간 넘음</i><i class="md-age">8시간 안</i> · 회색 줄 = 지켜보기</span></div>'
+            '<div class="md-tw"><table class="tbl md-qt"><thead><tr><th scope="col">업무</th><th scope="col">무엇을</th>'
+            f'<th scope="col" class="md-c">가장 오래</th><th scope="col" class="md-c">건수</th></tr></thead>{"".join(body)}</table></div></section>')
 
 
 def drawer(q):
@@ -342,8 +437,10 @@ def ver(name):
 
 def page():
     # [2026-11-13] 요청 "즉시 처리 알림은 기본이 우측 패널에서" — 오른쪽 패널 = 스크롤해도 붙어 있는 알림(대행사 대시보드의 오른쪽 패널과 같은 자리)
-    body = (f'{head_line()}{sys_strip()}{board()}<div class="md-two">{platform()}{money()}</div>{audit()}{side_noti()}')
-    overlays = "".join(drawer(q) + center(q) for q in QUEUES) + sys_drawer() + stubs()
+    # [2026-11-24 v2] 3열: 받은 알림 | 표 | 오른쪽 패널(누를 때만 — popover 서랍). v1 의 sys_strip · board · side_noti 는 쓰지 않는다
+    body = (f'<div class="md-lay">{alcol()}<div class="md-main">{head_line()}{queue_table()}'
+            f'<div class="md-two">{platform()}{money()}</div>{audit()}</div></div>')
+    overlays = "".join(drawer(q) + center(q) for q in QUEUES) + sys_drawer() + al_drawers() + stubs()
     return f'''<!doctype html>
 <html lang="ko">
 <head>
@@ -356,6 +453,7 @@ def page():
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 <link rel="stylesheet" href="css/master.css?v={ver("master.css")}">
 <link rel="stylesheet" href="css/md.css?v={ver("md.css")}">
+<link rel="stylesheet" href="css/md-line.css?v={ver("md-line.css")}">
 </head>
 <body data-page="dashboard">
 <div class="dashboard md">
@@ -363,7 +461,7 @@ def page():
 <main class="main-content">
 {topbar()}
 <div class="main-view">
-<p class="md-demo">데모 — 뷰마 마스터 대시보드 기획안(2026-11-13) · 숫자는 모두 예시 · <a href="../dashboard.html">대행사 데모로</a></p>
+<p class="md-demo">데모 v2 — 뷰마 마스터 대시보드(2026-11-24) · 숫자는 모두 예시 · <a href="../versions/master-v1/index.html">이전 버전 v1</a> · <a href="../index.html">데모 모음</a></p>
 {body}
 </div>
 </main>

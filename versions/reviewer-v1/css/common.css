@@ -1,0 +1,1318 @@
+/* ===================================================
+	 뷰마 리뷰어 - 공통 레이아웃 / 헤더 / 푸터
+=================================================== */
+
+/* ─── Google Fonts ─── */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
+
+/* ─── Page Layout ─── */
+.page-wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	min-width: 320px;
+}
+
+.page-main {
+	flex: 1;
+	background-color: #ffffff;
+}
+
+/*
+★ [2026-08-26] 1440px 경계에서 콘텐츠 폭이 튀던 문제.
+   전에는 1441px 이상에서 width:1300px 고정, 1440px 이하에서 width:100% + 좌우 40px 이라
+   창을 1px 줄이는 순간 콘텐츠가 1300 → 1345px 으로 45px 넓어졌다.
+   max-width 를 (콘텐츠 1300 + 좌우 패딩 80) = 1380px 으로 잡으면
+   넓은 화면에서는 콘텐츠가 정확히 1300px 으로 유지되고, 좁아질 때는 연속적으로 줄어든다.
+   ※ box-sizing:border-box 는 reset.css 가 * 에 이미 적용해 두었다.
+   ※ 아래 (max-width:1440px) 블록의 width/padding 선언은 같은 값이라 그대로 둬도 무해하다.
+*/
+.container {
+	width: 100%;
+	max-width: calc(var(--content-width) + 80px);
+	padding: 0 40px;
+	margin: 0 auto;
+}
+
+.container--wide {
+	padding: 60px 0;
+}
+
+/* ─── Inner page layout (with sidebar) ─── */
+.page-content {
+	display: flex;
+	gap: 24px;
+	padding: 40px 0;
+}
+
+.page-content--full {
+	display: block;
+	padding: 40px 0;
+}
+
+/* ══════════════════════════════════════════
+	 HEADER
+══════════════════════════════════════════ */
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: var(--z-header);
+	background: var(--color-white);
+	border-bottom: 1px solid var(--color-border);
+	padding: 16px 0;
+}
+
+.header-inner {
+	/* ★ [2026-08-26] .container 와 동일 규칙으로 통일 — 위 .container 주석 참고 */
+	width: 100%;
+	max-width: calc(var(--content-width) + 80px);
+	padding: 0 40px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+}
+
+/* ── Top utility bar ── */
+.header-top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+}
+
+.header-advertiser-btn {
+	flex: 0 0 auto;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+	height: 20px;
+	padding: 0 5px;
+	background: #b8b8b8;
+	border-radius: var(--radius-sm);
+	overflow: hidden;
+	cursor: pointer;
+	font-family: var(--font-primary);
+	font-size: 12px;
+	font-weight: var(--fw-extrabold);
+	color: var(--color-white);
+	text-align: center;
+	white-space: nowrap;
+}
+
+.header-util-links {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	font-family: var(--font-korean);
+	font-size: 13px;
+	font-weight: var(--fw-regular);
+	color: var(--color-black);
+}
+
+.header-util-links a {
+	white-space: nowrap;
+	transition: color var(--transition-fast);
+}
+
+.header-util-links a:hover {
+	color: var(--color-primary);
+}
+
+/* ── Middle header row ── */
+.header-middle {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.header-logo-area {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+.header-logo {
+	font-family: var(--font-display);
+	font-size: 30px;
+	font-weight: var(--fw-regular);
+	color: var(--color-primary);
+	white-space: nowrap;
+	line-height: 1;
+	text-decoration: none;
+}
+
+.header-search {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 501px;
+	height: 40px;
+	padding: 5px 16px;
+	border: 1px solid var(--color-primary);
+	border-radius: 8px;
+	transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.header-search:focus-within {
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 3px rgba(115, 70, 243, 0.15);
+}
+
+.header-search input {
+	flex: 1;
+	font-family: var(--font-korean);
+	font-size: 14px;
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-500) */
+	outline: none;
+}
+
+.header-search input::placeholder {
+	color: var(--color-gray-500);
+}
+
+.header-search-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+}
+
+.header-search-btn svg,
+.header-search-btn img {
+	width: 100%;
+	height: 100%;
+}
+
+/* ── Right icons area ── */
+.header-icons {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+/* ══════════════════════════════════════════
+	 알림 띠 — 헤더 맨 위 한 줄   [2026-09-11]
+
+	 ── 무엇이 바뀌었나 ────────────────────────────────
+	 아이콘 줄 안의 말풍선(폭 고정 260/180px) → 헤더 맨 위 전체폭 한 줄.
+	 고정폭 때문에 내용이 거의 항상 잘리던 것을 없앤다.
+	 마크업 위치와 이유는 inc/header.inc.html 의 같은 날짜 주석 참고.
+
+	 ※ 아래 예전 규칙들(.header-notice-ticker 의 width·말풍선 꼭지 등)은
+	   그대로 두고, 여기서 띠 안쪽일 때만 덮어쓴다.
+	   선택자가 한 단계 깊어 특이도가 높으므로 이 값이 이긴다.
+══════════════════════════════════════════ */
+/*
+	★ [2026-09-11 수정] 띠는 좁은 화면 전용이다.
+
+	  처음에는 모든 폭에서 띠로 바꿨는데, 넓은 화면에서는 원래의
+	  말풍선이 더 낫다고 정리됐다. 넓은 화면은 아이콘 줄에 자리가 충분해
+	  글이 잘리지 않기 때문이다. 좁은 화면에서만 띠로 올린다.
+	  경계는 768px — 이 사이트의 모바일 기준선과 같다.
+*/
+.header-notice-bar {
+	width: 100%;
+	background: #1b1b1b;
+	margin-bottom: 8px;
+}
+
+/* 넓은 화면 : 띠를 감추고 아이콘 줄의 말풍선을 쓴다 */
+@media (min-width: 769px) {
+	.header-notice-bar {
+		display: none;
+	}
+}
+
+/*
+	좁은 화면 : 말풍선을 감추고 위 띠를 쓴다
+
+	※ 선택자를 한 단계 깊게 쓴다.
+	  이 파일 아래쪽 ≤768 블록에 `.header-notice-ticker { display:flex !important }`
+	  가 있어서, 같은 특이도로는 뒤에 있는 그 규칙이 이긴다
+	  (실제로 처음엔 768px 에서 띠와 말풍선이 같이 보였다).
+*/
+@media (max-width: 768px) {
+	.header-icons .header-notice-ticker--pc {
+		display: none !important;
+	}
+}
+
+.header-notice-bar .header-notice-ticker {
+	/* 높이는 한 줄만 — 본문을 밀어내지 않게 */
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	/* 글은 헤더(.header-inner)와 같은 축에 세운다 */
+	width: 100%;
+	max-width: 1380px;
+	margin: 0 auto;
+	padding: 5px 40px;
+
+	/* 배경은 바깥 띠가 갖는다 */
+	height: auto;
+	background: none;
+	border: none;
+	border-radius: 0;
+	opacity: 1;
+}
+
+/* 띠가 되었으니 말풍선 꼭지는 필요 없다 */
+.header-notice-bar .header-notice-ticker::after {
+	display: none;
+}
+
+.header-notice-bar .header-notice-text {
+	flex: 1;
+	min-width: 0;
+	font-size: 13px;
+	line-height: 1.5;
+	opacity: 0.9;
+}
+
+.header-notice-bar .header-notice-badge {
+	height: 18px;
+	padding: 2px 6px;
+	font-size: 11px;
+}
+
+/* 안 읽은 알림이면 띠를 또렷하게 */
+.header-notice-bar.is-unread .header-notice-text {
+	opacity: 1;
+}
+
+@media (max-width: 768px) {
+	.header-notice-bar .header-notice-ticker {
+		padding: 5px 16px;
+		gap: 6px;
+	}
+
+	.header-notice-bar .header-notice-text {
+		font-size: 12px;
+	}
+}
+
+/* Notification ticker */
+.header-notice-ticker {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 260px;
+	height: 30px;
+	padding: 10px;
+	background: #1b1b1b;
+	border: 1px solid #1b1b1b;
+	border-radius: 8px;
+	opacity: 0.85;
+	text-decoration: none;
+	transition: opacity 0.2s;
+}
+
+.header-notice-ticker:hover {
+	opacity: 1;
+}
+
+/* 말풍선 꼭지 (오른쪽) */
+.header-notice-ticker::after {
+	content: '';
+	position: absolute;
+	right: -7px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 0;
+	height: 0;
+	border-top: 6px solid transparent;
+	border-bottom: 6px solid transparent;
+	border-left: 7px solid #1b1b1b;
+}
+
+.header-notice-badge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	height: 20px;
+	padding: 3px 5px 4px;
+	background: linear-gradient(to right, #dd3307, #ff815b);
+	border: 1px solid #dc2f02;
+	border-radius: var(--radius-sm);
+	font-family: var(--font-korean);
+	font-size: 12px;
+	font-weight: var(--fw-bold);
+	color: var(--color-white);
+	white-space: nowrap;
+}
+
+.header-notice-badge--green {
+	background: linear-gradient(to right, #2e9e5b, #44c77a);
+	border-color: #2a9054;
+}
+
+.header-notice-badge--blue {
+	background: linear-gradient(to right, #2563eb, #60a5fa);
+	border-color: #1d4ed8;
+}
+
+.header-notice-badge--orange {
+	background: linear-gradient(to right, #d97706, #fbbf24);
+	border-color: #b45309;
+}
+
+.header-notice-text {
+	flex: 1;
+	font-family: var(--font-korean);
+	font-size: 14px;
+	font-weight: var(--fw-semibold);
+	color: var(--color-white);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1;
+	transition: opacity 0.3s ease;
+}
+
+.header-notice-text .highlight {
+	color: #faa307;
+}
+
+/* Icon button */
+.header-icon-btn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	cursor: pointer;
+	flex-shrink: 0;
+}
+
+.header-icon-btn__icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 18px;
+	height: 18px;
+	position: relative;
+}
+
+.header-icon-btn__icon img,
+.header-icon-btn__icon svg {
+	display: block;
+}
+
+/* 알림 안읽음 배지 */
+.header-icon-btn__badge {
+	position: absolute;
+	top: -6px;
+	right: -8px;
+	min-width: 16px;
+	height: 16px;
+	padding: 0 4px;
+	border-radius: 8px;
+	background: var(--color-danger, #dc2f02);
+	color: #fff;
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 16px;
+	text-align: center;
+	box-sizing: border-box;
+	box-shadow: 0 0 0 2px #fff;
+}
+
+.header-icon-btn__label {
+	font-family: var(--font-korean);
+	font-size: 13px;
+	font-weight: var(--fw-regular);
+	color: var(--color-black);
+	white-space: nowrap;
+	line-height: 1;
+}
+
+/* Cart badge */
+.cart-badge {
+	position: absolute;
+	top: -3.5px;
+	left: 11px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2px 4px;
+	background: var(--color-danger);
+	/* 30px → --radius-full : 알림 개수 뱃지는 알약 모양이다 [2026-09-28] */
+	border-radius: var(--radius-full);
+	font-family: var(--font-korean);
+	font-size: 11px;
+	font-weight: var(--fw-bold);
+	color: var(--color-white);
+	line-height: 1;
+}
+
+/* ── Navigation row ── */
+.header-nav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.header-nav-list {
+	display: flex;
+	align-items: center;
+	/*
+	★ [2026-08-26] 메뉴 간격을 절반으로 축소 (25px → 12px).
+	   25px 의 절반은 12.5px 이지만 --space 스케일(4의 배수)에 맞춰 12px(--space-3)로 정한다.
+	   GNB 가 1300px 컨테이너를 꽉 채워 마지막 항목(광고문의·네이버 메이트)이
+	   잘리던 문제도 함께 완화된다.
+	*/
+	gap: 12px;
+}
+
+.header-nav-item {
+	position: relative;
+	display: flex;
+	align-items: center;
+	padding-bottom: 6px;
+	cursor: pointer;
+}
+
+.header-nav-item a {
+	font-family: var(--font-korean);
+	font-size: 17px;
+	font-weight: var(--fw-medium);
+	color: var(--color-black);
+	white-space: nowrap;
+	transition: color var(--transition-fast);
+}
+
+.header-nav-item:hover a {
+	color: var(--color-primary);
+}
+
+.header-nav-item.active a {
+	color: var(--color-primary);
+}
+
+.header-nav-item.active::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 2px;
+	background: var(--color-primary);
+	border-radius: 1px;
+}
+
+/* Vertical separator between nav groups */
+.header-nav-sep {
+	width: 1px;
+	height: 15px;
+	background: var(--color-border-dark);
+	flex-shrink: 0;
+}
+
+/* Right promo banner */
+.header-promo {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	max-width: 340px;
+	overflow: hidden;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.header-promo-badge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	height: 20px;
+	padding: 3px 5px 4px;
+	background: linear-gradient(to right, #f46906, #ffa600);
+	border: 1px solid #f46906;
+	border-radius: var(--radius-sm);
+	font-family: var(--font-korean);
+	font-size: 12px;
+	font-weight: var(--fw-bold);
+	color: var(--color-white);
+	white-space: nowrap;
+	text-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+	transition: opacity 0.3s ease;
+}
+
+.header-promo-text {
+	font-family: var(--font-korean);
+	font-size: 14px;
+	font-weight: var(--fw-semibold);
+	color: #0e0e0e;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	transition: opacity 0.3s ease;
+}
+
+.header-promo-text .highlight {
+	color: #e85d04;
+}
+
+.header-promo:hover .header-promo-text {
+	color: #7346f3;
+}
+
+.header-promo--top {
+	display: none;
+}
+
+.header-promo--nav {
+	display: flex;
+}
+
+/* ══════════════════════════════════════════
+	 FOOTER
+══════════════════════════════════════════ */
+.site-footer {
+	background: var(--color-white);
+	border-top: 1px solid var(--color-border-light);
+	padding: 40px 0;
+}
+
+.footer-inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+}
+
+/* Footer links row */
+.footer-links {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.footer-links a {
+	font-family: var(--font-korean);
+	font-size: 13px;
+	font-weight: var(--fw-medium);
+	color: #1b1b1b;
+	white-space: nowrap;
+	transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+	color: var(--color-primary);
+}
+
+.footer-link-sep {
+	width: 1px;
+	height: 11px;
+	background: var(--color-border-dark);
+	flex-shrink: 0;
+}
+
+/* Footer info rows */
+.footer-info {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	/* ★ [2026-08-26] .container 와 동일 규칙으로 통일 — 위 .container 주석 참고 */
+	width: 100%;
+	max-width: calc(var(--content-width) + 80px);
+	padding: 0 40px;
+	margin: 0 auto;
+}
+
+.footer-info-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.footer-info-text {
+	font-family: var(--font-korean);
+	font-size: 12px;
+	font-weight: var(--fw-regular);
+	color: #1b1b1b;
+	white-space: nowrap;
+}
+
+.footer-info-sep {
+	width: 1px;
+	height: 11px;
+	background: var(--color-border-dark);
+	flex-shrink: 0;
+}
+
+/* Footer copyright */
+.footer-copyright {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+
+.footer-logo {
+	width: 81px;
+}
+
+.footer-logo img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.footer-copyright-text {
+	font-family: var(--font-korean);
+	font-size: 12px;
+	font-weight: var(--fw-regular);
+	color: #1b1b1b;
+	white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════
+	 MY디마 SIDEBAR
+══════════════════════════════════════════ */
+.my-sidebar {
+	width: var(--sidebar-width);
+	flex-shrink: 0;
+}
+
+.my-sidebar-title {
+	font-family: var(--font-primary);
+	font-size: var(--fs-lg);
+	font-weight: var(--fw-bold);
+	color: var(--color-dark);
+	padding-bottom: 16px;
+	border-bottom: 2px solid var(--color-dark);
+	margin-bottom: 8px;
+}
+
+.my-sidebar-menu {
+	display: flex;
+	flex-direction: column;
+}
+
+.my-sidebar-item {
+	display: flex;
+	align-items: center;
+	padding: 12px 0;
+	font-family: var(--font-korean);
+	font-size: var(--fs-base);
+	font-weight: var(--fw-regular);
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-700) */
+	border-bottom: 1px solid var(--color-border-light);
+	cursor: pointer;
+	transition: color var(--transition-fast);
+}
+
+.my-sidebar-item:hover {
+	color: var(--color-primary);
+}
+
+.my-sidebar-item.active {
+	font-weight: var(--fw-semibold);
+	color: var(--color-primary);
+}
+
+.my-sidebar-content {
+	flex: 1;
+	min-width: 0;
+}
+
+/* ── Section header ── */
+.section-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.section-title {
+	font-family: var(--font-primary);
+	font-size: var(--fs-xl);
+	font-weight: var(--fw-bold);
+	color: var(--color-dark);
+}
+
+/* ── Divider ── */
+.divider {
+	border: none;
+	border-top: 1px solid var(--color-border);
+	margin: 24px 0;
+}
+
+/* ── Empty state ── */
+.empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+	padding: 60px 0;
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-400) */
+}
+
+.empty-state__icon {
+	width: 48px;
+	height: 48px;
+	opacity: 0.4;
+}
+
+.empty-state__text {
+	font-family: var(--font-korean);
+	font-size: var(--fs-base);
+	font-weight: var(--fw-regular);
+	text-align: center;
+	line-height: var(--lh-relaxed);
+}
+
+/* ══════════════════════════════════════════
+	 RESPONSIVE — xl (≤ 1440px)
+	 컨테이너 유동폭 + 좌우 패딩 40px
+══════════════════════════════════════════ */
+@media (max-width: 1440px) {
+
+	.container,
+	.header-inner,
+	.footer-info {
+		width: 100%;
+		padding-left: 40px;
+		padding-right: 40px;
+	}
+}
+
+/* ══════════════════════════════════════════
+	 RESPONSIVE — lg (≤ 1280px)
+	 패딩 24px
+══════════════════════════════════════════ */
+@media (max-width: 1280px) {
+
+	.container,
+	.header-inner,
+	.footer-info {
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+
+	.header-notice-ticker {
+		width: 200px;
+	}
+
+	.header-search {
+		width: 380px;
+	}
+}
+
+/* ══════════════════════════════════════════
+	 RESPONSIVE — 1200px (Custom Review Req)
+══════════════════════════════════════════ */
+@media (max-width: 1200px) {
+
+	/* 1. Promo position change to header-top */
+	.header-promo--nav {
+		display: none;
+	}
+
+	.header-promo--top {
+		display: flex;
+		order: 2;
+		margin-left: auto;
+	}
+
+	.header-advertiser-btn {
+		order: 1;
+	}
+
+	.header-util-links {
+		order: 3;
+	}
+
+	/* 2. Font-size reduction */
+	.header-nav-list {
+		/*
+		★ [2026-08-26] 기본값을 25px → 12px 로 줄이면서 여기도 같이 절반으로 낮췄다.
+		   그대로 15px 로 두면 1200px 이하에서 오히려 간격이 넓어져 역전된다. (15/2 → 8px = --space-2)
+		*/
+		gap: 8px;
+	}
+
+	.header-nav-item a {
+		font-size: 15px;
+	}
+
+	/* 3. Search size reduction */
+	.header-search {
+		width: 320px;
+	}
+
+	/* 4. Ticker size reduction */
+	.header-notice-ticker {
+		width: 180px;
+		gap: 6px;
+		padding: 8px;
+	}
+
+	.header-notice-text {
+		font-size: 12px;
+	}
+}
+
+/* ══════════════════════════════════════════
+	 HAMBURGER BUTTON
+══════════════════════════════════════════ */
+.header-hamburger {
+	display: none;
+	align-items: center;
+	justify-content: center;
+	width: auto;
+	padding: 0px 8px 0 0px;
+	cursor: pointer;
+	flex-shrink: 0;
+	color: var(--color-dark);
+	background: #f8f9fa;
+	border: 1px solid #e9ecef;
+	border-radius: 4px;
+}
+
+.header-hamburger-combined {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+
+/* ══════════════════════════════════════════
+	 RESPONSIVE — sm (≤ 768px)
+	 검색바 숨김, 모바일 헤더, 사이드바 드로어
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+	.site-header {
+		padding: 10px 0 6px 0;
+	}
+
+	.container,
+	.header-inner,
+	.footer-info {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.container.home-container {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.header-inner {
+		gap: 4px;
+	}
+
+	.header-logo {
+		font-size: 20px;
+	}
+
+	.header-promo-badge {
+		font-size: 11px;
+	}
+
+	.header-promo-text {
+		font-size: 12px;
+	}
+
+	/* Hide desktop header elements */
+	.header-nav,
+	.header-search,
+	.header-util-links {
+		display: none;
+	}
+
+	.header-icons {
+		display: flex !important;
+		align-items: center;
+
+		/*
+		★ [2026-08-31] 알림 · MY · 전체메뉴 사이 간격  5px → 12px
+
+		  5px 은 디자인시스템 space 스케일(4/8/12/16/20…)에 없는 값이고,
+		  아이콘이 두 개로 늘면서 세 개가 한 덩어리로 붙어 보였다.
+		  --space-3(12px)로 올려 세 항목이 각각 독립된 버튼으로 읽히게 한다.
+
+		  ※ 아이콘 안쪽(아이콘–라벨) 간격은 4px 이므로
+		    안쪽 4px < 바깥 12px 로 근접성 관계가 뒤집히지 않는다.
+
+		  ※ 실측 (알림 티커가 있는 최악 조건 · 넘침 = scrollWidth − clientWidth)
+		      390px → 티커 108px · 넘침 0
+		      360px → 티커  78px · 넘침 0
+		      320px → 티커  53px · 넘침 0
+		*/
+		gap: var(--space-3);
+		margin-left: auto;
+
+		/*
+		★ [2026-08-26] 좁은 화면에서 티커가 줄어들 수 있게 한다. → 아래 주석 참고
+		  flex 아이템의 min-width 기본값(auto)은 '내용 최소폭'이라 이 값이 없으면
+		  .header-icons 는 티커의 내용 최소폭(144px) 아래로 절대 줄지 않는다.
+		*/
+		min-width: 0;
+	}
+
+	/*
+	★ [2026-08-26] 모바일에서 알림·MY 아이콘을 되살린다.
+
+	  원래 이 자리에 `.header-icon-btn { display: none !important }` 가 있어
+	  알림·MY 두 아이콘이 통째로 숨겨져 있었다. 그 결과
+
+	    · 마이페이지 : 햄버거 드로어 메뉴에도 /mypage/ 링크가
+	      유틸의 '1:1문의' 하나뿐이라(inc/mobileNav.inc.html),
+	      '나의 캠페인·포인트·쪽지함' 을 보려면 엉뚱하게 1:1문의로 들어가
+	      거기 사이드 메뉴를 타야 했다.
+	    · 알림 : 헤더의 알림 티커가 대신한다고 볼 수도 있으나,
+	      티커는 '읽지 않은 알림이 있을 때만' 렌더된다.
+	      알림이 없으면 모바일에서 알림내역으로 갈 길이 아예 없었다.
+
+	  데스크톱은 아이콘 위 / 글자 아래(column)지만
+	  모바일 헤더는 세로가 짧아 아이콘과 글자를 가로로 나란히 놓는다.
+
+	  ※ 폭 배분 : 아이콘 2개와 햄버거는 flex-shrink:0 으로 고정하고,
+	    폭이 모자라면 알림 티커만 줄어들게 한다(min-width:0 3곳).
+	    실측(알림 티커가 있는 상태, 넘침 기준)
+	      430px → 티커 169px · 넘침 0
+	      390px → 티커 129px · 넘침 0
+	      360px → 티커  99px · 넘침 0
+	      320px → 티커  74px · 넘침 0
+	    티커가 없을 때(=알림 0건)는 390·360 모두 여유 있음.
+	*/
+	.header-icon-btn {
+		display: flex !important;
+		flex-shrink: 0;
+		flex-direction: row;
+		align-items: center;
+		gap: 4px;
+	}
+
+	.header-icon-btn__label {
+		/* 13px → 12px(--fs-xs). 가로 배치라 세로 배치보다 조금만 줄인다 */
+		font-size: var(--fs-xs);
+	}
+
+	.header-notice-ticker {
+		display: flex !important;
+		align-items: center;
+		padding: 4px 10px;
+		width: auto;
+		max-width: 180px;
+
+		/* ★ [2026-08-26] 좁은 화면에서 이 요소가 먼저 줄어든다 */
+		min-width: 0;
+	}
+
+	.header-notice-ticker::after {
+		display: none;
+		/* Remove desktop arrow */
+	}
+
+	.header-notice-text {
+		font-size: 11px !important;
+		font-weight: 500;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+
+		/* ★ [2026-08-26] 줄어든 폭만큼 말줄임(…)이 실제로 동작하게 한다 */
+		min-width: 0;
+	}
+
+	.header-notice-badge {
+		font-size: 10px !important;
+		padding: 2px 6px !important;
+		background: linear-gradient(90deg, #ff8c00, #ffb400) !important;
+		border: none !important;
+		color: #fff !important;
+		margin-right: 6px;
+	}
+
+	.header-hamburger {
+		display: flex !important;
+		background: #fff !important;
+		border: 1px solid #e1e1e1 !important;
+		padding: 0 6px 0 4px;
+		height: 30px;
+		border-radius: 8px;
+	}
+
+	/* MY sidebar → full width on mobile */
+	.page-content {
+		flex-direction: column;
+		gap: 0;
+	}
+
+	.my-sidebar {
+		width: 100%;
+		border-bottom: 1px solid var(--color-border);
+		padding-bottom: 16px;
+		margin-bottom: 24px;
+	}
+
+	.my-sidebar-menu {
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 0;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		overflow: hidden;
+	}
+
+	.my-sidebar-item {
+		padding: 10px 16px;
+		border-bottom: none;
+		border-right: 1px solid var(--color-border);
+		font-size: var(--fs-sm);
+	}
+
+	.my-sidebar-item:last-child {
+		border-right: none;
+	}
+
+	/* Footer layout */
+	.footer-info-row {
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 6px;
+	}
+
+	.footer-links {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	/* Footer 폰트 1px 축소 */
+	.footer-links a {
+		font-size: 12px;
+	}
+
+	.footer-info-text {
+		font-size: 11px;
+	}
+
+	.footer-copyright-text {
+		font-size: 11px;
+	}
+}
+
+
+
+/* ══════════════════════════════════════════
+	 MOBILE DRAWER NAV
+══════════════════════════════════════════ */
+.mobile-nav-drawer {
+	position: fixed;
+	top: 0;
+	right: 0;
+	/* 280 → 320 : 서랍 너비 40px 확대  [2026-09-15]
+	   ※ 320px 기기에서는 서랍이 화면을 통째로 덮어 바깥을 눌러 닫을 곳이 없어진다.
+	     뒤 배경이 40px 은 남도록 상한을 같이 둔다. */
+	width: 320px;
+	max-width: calc(100vw - 40px);
+	height: 100vh;
+	height: 100dvh;
+	/* 모바일 주소창이 가리는 만큼 빼 준다 — 마지막 메뉴가 안 눌리던 문제 [2026-08-14] */
+	background: var(--color-white);
+	z-index: var(--z-modal);
+	box-shadow: var(--shadow-lg);
+	transform: translateX(100%);
+	transition: transform var(--transition-base);
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.mobile-nav-drawer.open {
+	transform: translateX(0);
+}
+
+.mobile-nav-backdrop {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.4);
+	z-index: calc(var(--z-modal) - 1);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+
+.mobile-nav-backdrop.open {
+	opacity: 1;
+	visibility: visible;
+}
+
+.mobile-nav-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px 20px 16px;
+	border-bottom: 1px solid var(--color-border);
+}
+
+.mobile-nav-logo {
+	font-family: var(--font-display);
+	font-size: 24px;
+	color: var(--color-primary);
+}
+
+.mobile-nav-close {
+	width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-500) */
+	border-radius: 50%;
+}
+
+.mobile-nav-close:hover {
+	background: var(--color-gray-100);
+}
+
+/* Mobile Util Bar */
+.mobile-nav-util {
+	display: flex;
+	border-bottom: 1px solid var(--color-border-light);
+}
+
+.mobile-util-item {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 12px 2px;
+	font-size: 11px;
+	color: var(--color-dark, #1b1b1b); /* [10-21] ← var(--color-gray-600) */
+	text-decoration: none;
+	border-right: 1px solid var(--color-border-light);
+	font-family: var(--font-korean);
+	white-space: nowrap;
+}
+
+.mobile-util-item:last-child {
+	border-right: none;
+}
+
+.mobile-util-item.highlight {
+	color: var(--color-primary);
+	font-weight: var(--fw-bold);
+}
+
+/* Mobile Search */
+.mobile-nav-search {
+	padding: 16px 20px;
+	background: var(--color-gray-50);
+	border-bottom: 1px solid var(--color-border-light);
+}
+
+.mobile-search-box {
+	position: relative;
+	display: flex;
+	align-items: center;
+	background: #fff;
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
+	padding-right: 40px;
+	overflow: hidden;
+}
+
+.mobile-search-input {
+	flex: 1;
+	/*
+	★ [2026-08-26] flex 아이템의 기본 min-width:auto 때문에 입력창이 줄어들지 못해
+	   .mobile-search-box 가 전 뷰포트에서 상시 11px 가로로 넘치고 있었다.
+	   (overflow:hidden 이라 눈에는 안 띄었다)
+	*/
+	min-width: 0;
+	height: 40px;
+	padding: 0 12px;
+	border: none;
+	background: transparent;
+	font-size: 14px;
+	outline: none;
+}
+
+.mobile-search-btn {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-primary);
+	cursor: pointer;
+}
+
+.mobile-nav-list {
+	display: flex;
+	flex-wrap: wrap;
+	/*
+	★ [2026-08-26] 좌우 10px → 20px.
+	   드로어 안에서 로고(.mobile-nav-header)와 검색창(.mobile-nav-search)은 좌우 20px 인데
+	   메뉴 목록만 10px 이라 메뉴가 10px 왼쪽으로 밀려 기준선이 어긋나 있었다.
+	*/
+	padding: 10px 20px;
+}
+
+.mobile-nav-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 50%;
+	padding: 18px 10px;
+	font-family: var(--font-korean);
+	font-size: 15px;
+	font-weight: var(--fw-medium);
+	color: var(--color-dark);
+	border-bottom: 1px solid var(--color-border-light);
+	border-right: 1px solid var(--color-border-light);
+	text-align: center;
+	transition: all var(--transition-fast);
+}
+
+.mobile-nav-item:nth-child(2n),
+.mobile-nav-item:last-child {
+	/*
+	★ [2026-08-26] :last-child 추가.
+	   메뉴가 13개(홀수)라 마지막 항목이 왼쪽 칸에 혼자 놓이는데,
+	   그때 border-right 가 오른쪽 빈 칸에 세로선만 덩그러니 남았다.
+	*/
+	border-right: none;
+}
+
+.mobile-nav-item:hover {
+	color: var(--color-primary);
+	background: var(--color-primary-bg);
+}
+
+.mobile-nav-item.active {
+	color: var(--color-primary);
+	font-weight: var(--fw-semibold);
+}
+
+/* 안읽은 알림이면 티커를 또렷하게 (헤더 알림 티커 — header.inc.html) */
+.header-notice-ticker.is-unread {
+	opacity: 1;
+	border-color: var(--color-primary, #7346f3);
+}
+
+/* 티커 본문이 길면 줄이지 말고 한 줄로 잘라 보여준다 */
+.header-notice-text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

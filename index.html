@@ -21,9 +21,9 @@
 
 	/* 데모 3개 = 표 한 장: 줄마다 [이름 · 누가 쓰나] [무엇을 보여 주나] [들어가기] */
 	.demos{margin:0 0 32px;padding:0;list-style:none;background:#fff;border:1px solid var(--line-strong)}
-	.demos-h{display:grid;grid-template-columns:220px minmax(0,1fr) 140px;background:var(--head);border-bottom:1px solid var(--line-strong);font-size:12px;font-weight:700;color:var(--sub)}
+	.demos-h{display:grid;grid-template-columns:200px minmax(0,1fr) 220px 130px;background:var(--head);border-bottom:1px solid var(--line-strong);font-size:12px;font-weight:700;color:var(--sub)}
 	.demos-h span{padding:10px 16px}
-	.demo{display:grid;grid-template-columns:220px minmax(0,1fr) 140px;border-top:1px solid var(--line)}
+	.demo{display:grid;grid-template-columns:200px minmax(0,1fr) 220px 130px;border-top:1px solid var(--line)}
 	.demos-h + .demo{border-top:0}
 	.demo > *{padding:18px 16px}
 	.demo > * + *{border-left:1px solid var(--line)}
@@ -35,6 +35,15 @@
 	.go a{display:flex;align-items:center;justify-content:center;height:40px;border-radius:4px;background:var(--main);color:#fff;font-weight:700;text-decoration:none}
 	.go a:hover{background:#5f33d6}
 	.go small{font-size:12px;color:var(--faint);text-align:center}
+	/* [2026-11-24] 사용자: "인덱스에서는 버전별로 볼 수 있게" — 데모마다 버전 목록(지금 = 맨 위 굵게) */
+	.vers{margin:0;padding:0 !important;list-style:none;font-size:13px}
+	.vers li{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 6px;padding:3px 0}
+	.vers li + li{border-top:1px dashed var(--line)}
+	.vers a{font-weight:600;text-decoration:none;color:var(--ink)}
+	.vers a:hover{color:var(--main);text-decoration:underline}
+	.vers li.now a{color:var(--main);font-weight:800}
+	.now-t{padding:0 5px;border-radius:3px;background:var(--main);color:#fff;font-size:11px;font-weight:700}
+	.vers small{flex-basis:100%;font-size:12px;color:var(--faint)}
 	.tag{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:4px;background:var(--main-light);color:var(--main);font-size:11px;font-weight:700;vertical-align:2px}
 
 	/* 대행사 주요 화면 바로가기 = 묶음(회색 머리 줄) × 화면 링크 */
@@ -69,7 +78,7 @@
 	</header>
 
 	<ul class="demos" aria-label="데모">
-		<li class="demos-h" aria-hidden="true"><span>데모 · 사용자</span><span>주요 내용</span><span>입구</span></li>
+		<li class="demos-h" aria-hidden="true"><span>데모 · 사용자</span><span>주요 내용</span><span>버전</span><span>입구</span></li>
 		<li class="demo">
 			<div><h2>대행사<span class="tag">v0.9</span></h2><p>여러 업체 캠페인을 대신 운영하는 대행사</p></div>
 			<ul>
@@ -77,22 +86,27 @@
 				<li>일정 · 업체 · 팀·담당자 · 보고서 링크 등 대행사 전용 관리</li>
 				<li>캠페인 · 리뷰어 · 포인트 등은 광고주 화면 그대로</li>
 			</ul>
+			<div><ul class="vers" aria-label="버전"><li class="now"><a href="dashboard.html">v0.9</a><span class="now-t">지금</span><small>11/24 · 대시보드 3열 · 표 스타일</small></li><li><a href="versions/v0.8/dashboard.html">v0.8</a><small>11/10 · 구조 재설계</small></li><li><a href="versions/v0.6/dashboard.html">v0.6</a><small>11/10</small></li><li><a href="versions/v0.5/dashboard.html">v0.5</a><small>11/10</small></li><li><a href="versions/v0.4/dashboard.html">v0.4</a><small>11/10</small></li><li><a href="versions/v0.3/dashboard.html">v0.3</a><small>11/09 · 첫 시안</small></li></ul></div>
 			<div class="go"><a href="dashboard.html">대행사 데모</a><small>대시보드부터</small></div>
 		</li>
 		<li class="demo">
-			<div><h2>마스터</h2><p>뷰마 운영자(관리자)</p></div>
+			<div><h2>마스터<span class="tag">v2</span></h2><p>뷰마 운영자(관리자)</p></div>
 			<ul>
-				<li>운영 대시보드 — 처리 대기(캠페인 심사 · 리뷰 검수 · 대행사 신청 등)를 기다린 시간별로</li>
-				<li>역할 탭(심사 · 정산 · CS · 콘텐츠) · 시스템 경고(자동화 실패)</li>
+				<li>운영 대시보드 — 왼쪽 받은 알림(시스템 경고 · 신고 · 문의 · 출금 등 성격별)</li>
+				<li>처리 대기 표(영역별 · 기다린 시간 · 건수) · 역할 탭(심사 · 정산 · CS · 콘텐츠)</li>
+				<li>알림 · 업무를 누르면 오른쪽 패널에서 목록 확인</li>
 			</ul>
+			<div><ul class="vers" aria-label="버전"><li class="now"><a href="master/index.html">v2</a><span class="now-t">지금</span><small>11/24 · 받은 알림 왼쪽 · 표 스타일</small></li><li><a href="versions/master-v1/index.html">v1</a><small>11/13 · 첫 시안(영역 5열 · 오른쪽 고정 알림)</small></li></ul></div>
 			<div class="go"><a href="master/index.html">마스터 데모</a><small>운영자 대시보드</small></div>
 		</li>
 		<li class="demo">
-			<div><h2>리뷰어</h2><p>캠페인에 신청 · 참여하는 리뷰어</p></div>
+			<div><h2>리뷰어<span class="tag">v2</span></h2><p>캠페인에 신청 · 참여하는 리뷰어</p></div>
 			<ul>
-				<li>마이페이지 대시보드 — 지금 할 일 · 진행 현황</li>
-				<li>내 포인트 · 이번 주 일정 · 소식</li>
+				<li>마이페이지 대시보드 — 왼쪽 받은 알림(패널티 · 제안 · 쪽지 · 문의 등 성격별)</li>
+				<li>지금 할 일 · 진행 현황 · 이번 주 일정 · 내 포인트를 표로</li>
+				<li>알림을 누르면 오른쪽 패널에서 목록 확인</li>
 			</ul>
+			<div><ul class="vers" aria-label="버전"><li class="now"><a href="reviewer/index.html">v2</a><span class="now-t">지금</span><small>11/24 · 받은 알림 왼쪽 · 표 스타일</small></li><li><a href="versions/reviewer-v1/index.html">v1</a><small>11/23 · 첫 시안(숫자 4칸 · 카드)</small></li></ul></div>
 			<div class="go"><a href="reviewer/index.html">리뷰어 데모</a><small>마이페이지 대시보드</small></div>
 		</li>
 	</ul>
@@ -114,7 +128,7 @@
 	</div>
 
 	<ul class="etc">
-		<li><a href="versions/index.html">지난 버전 보기</a></li>
+		<li><a href="versions/index.html">대행사 지난 버전 설명</a></li>
 		<li><a href="https://github.com/anylinedesign/vuma-agency-mvp/blob/main/CHANGELOG.md">변경 기록</a></li>
 	</ul>
 </main>
