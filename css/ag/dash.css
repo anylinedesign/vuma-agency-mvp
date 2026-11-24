@@ -68,7 +68,7 @@
 /* 표 머리 · 합계 줄 · 묶음 머리 — 면 대신 선 */
 .work.ag.dash .grid thead tr:first-child th{background:#fff;border-bottom:1px solid var(--ag-fl-line)}
 .work.ag.dash .grid thead .sumrow th,.work.ag.dash .grid thead .sumrow td{background:#fff;border-bottom:2px solid var(--ag-c-11)}
-.work.ag.dash .grp th,.work.ag.dash .grp-late th,.work.ag.dash .team th,.work.ag.dash .team-solo th,.work.ag.dash .team-none-owner th{background:#fff}
+.work.ag.dash .grp th,.work.ag.dash .grp-late th{background:#fff}
 
 /* ── 3-2) [2026-11-24] 사용자: "대시보드 구분자와 탭을 1row에서 표기(가능하면 상태표기값도 함께)"
    마크업은 그대로(라디오 :checked ~ .vtabs 동작 유지) — 보드를 격자로: 1줄 = 제목, 2줄 = [업체별|담당자별 탭][유형 거르기 · 알림 있는 업체만 · 상태 범례], 3줄 = (좁을 때만) 거르기, 4줄 = 표
@@ -110,6 +110,15 @@
 .work.ag.dash .grp th,.work.ag.dash .grp-late th{height:34px;border-top:0;border-bottom:1px solid var(--ag-c-4);border-right:0;background:#f4f4f6;box-shadow:none;color:var(--ag-c-14)}
 .work.ag.dash .grp .g-n,.work.ag.dash .grp-late .g-n{color:var(--ag-g-bar)}
 .work.ag.dash .grid tbody tr.biz:hover{background:var(--ag-main-bg)}
+/* [2026-11-24] 사용자: "담당자별 리스트도 업체별처럼" — 팀 머리 = 기한 묶음 머리와 같은 회색 구획 줄(굵은 위 선 없앰, 색은 점 · 글자만)
+   담당자 줄 = 흰 줄 + 굵은 글자 · 업체 줄 = 나무 연결선 없이 들여쓰기만 · 칸 선은 업체별과 같게 */
+.work.ag.dash .team th,.work.ag.dash .team-solo th,.work.ag.dash .team-none-owner th{height:34px;border-top:0;border-bottom:1px solid var(--ag-c-4);border-right:0;background:#f4f4f6;box-shadow:none;color:var(--ag-c-14)}
+.work.ag.dash .team-none-owner th{border-top:0}
+.work.ag.dash .staff th,.work.ag.dash .staff td{height:44px;background:#fff;border-top:0;border-bottom:1px solid var(--ag-fl-line);border-right:1px solid var(--ag-fl-line-soft)}
+.work.ag.dash .staff th{box-shadow:none}
+.work.ag.dash .biz.in-staff .bizname{padding-left:40px}
+.work.ag.dash .biz.in-staff .bizname::before,.work.ag.dash .biz.in-staff .bizname::after{content:none}
+.work.ag.dash .biz.in-staff .bizname b,.work.ag.dash .biz.in-staff .bizname{font-weight:500}
 
 /* ── 4) 오른쪽 패널 — 알림 카드 · 캠페인 묶음 상자 → 선으로 나눈 줄 ── */
 .work.ag.dash .al-list{gap:0}
