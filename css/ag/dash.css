@@ -68,6 +68,47 @@
 .work.ag.dash .grid thead .sumrow th,.work.ag.dash .grid thead .sumrow td{background:#fff;border-bottom:2px solid var(--ag-c-11)}
 .work.ag.dash .grp th,.work.ag.dash .grp-late th,.work.ag.dash .team th,.work.ag.dash .team-solo th,.work.ag.dash .team-none-owner th{background:#fff}
 
+/* ── 3-2) [2026-11-24] 사용자: "대시보드 구분자와 탭을 1row에서 표기(가능하면 상태표기값도 함께)"
+   마크업은 그대로(라디오 :checked ~ .vtabs 동작 유지) — 보드를 격자로: 1줄 = 제목, 2줄 = [업체별|담당자별 탭][유형 거르기 · 알림 있는 업체만 · 상태 범례], 3줄 = (좁을 때만) 거르기, 4줄 = 표
+   보드 자신은 @container 로 못 바꾸므로 줄은 처음부터 4개 — 넓을 때 3줄은 비어 높이 0 */
+.work.ag.dash .board{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto auto minmax(0,1fr);align-items:end}
+.work.ag.dash .board-h{grid-column:1 / -1}
+.work.ag.dash .vtabs{grid-column:1;grid-row:2;align-self:stretch;align-items:flex-end}
+.work.ag.dash .toolbar{grid-column:2;grid-row:2;align-self:stretch;margin:0;padding:0 0 0 16px;gap:4px 12px;border-bottom:1px solid var(--ag-fl-line)}
+.work.ag.dash .tchips{gap:0}
+.work.ag.dash .tchip{height:40px}
+.work.ag.dash .toolbar > .tchip.js-afilter{padding-left:12px;border-left:1px solid var(--ag-fl-line)}
+.work.ag.dash .toolbar .legend{flex-basis:auto;margin:0 0 0 auto;gap:12px}
+.work.ag.dash .legend li:has(.mix){display:none}
+.work.ag.dash .grid-wrap{grid-column:1 / -1;grid-row:4;align-self:stretch;margin-top:12px}
+/* 좁아져도 글자를 세로로 찌그러뜨리지 않음 — 넘치면 다음 줄로 */
+.work.ag.dash .toolbar > *,.work.ag.dash .tchip,.work.ag.dash .legend li{flex:none;white-space:nowrap}
+.work.ag.dash .tchips{flex-wrap:nowrap}
+/* 보드 폭 기준(패널이 열리면 좁아짐): 탭 보조 글자 숨김 → 더 좁으면 범례 다음 줄 */
+.work.ag.dash .board{container-type:inline-size}
+@container (max-width:1180px){
+	.work.ag.dash .vtabs label em{display:none}
+}
+/* 한 줄에 다 안 들어가는 폭: 탭 한 줄 / 거르기 + 범례 한 줄 — 둘 다 같은 선 위 */
+@container (max-width:960px){
+	.work.ag.dash .vtabs{grid-column:1 / -1}
+	.work.ag.dash .toolbar{grid-column:1 / -1;grid-row:3;padding:0}
+	.work.ag.dash .toolbar .legend{padding:6px 0}
+}
+
+/* ── 3-3) 사용자: "대시보드 리스트는 더 테이블스럽게" — 바깥 테두리 · 칸 세로선 · 회색 머리 · 묶음 = 회색 구획 줄 ── */
+.work.ag.dash .grid-wrap{border:1px solid var(--ag-c-4);border-radius:0}
+.work.ag.dash .grid th,.work.ag.dash .grid td{border-bottom:1px solid var(--ag-fl-line);border-right:1px solid var(--ag-fl-line-soft)}
+.work.ag.dash .grid tr > :last-child{border-right:0}
+.work.ag.dash .grid thead tr:first-child th{background:#f4f4f6;color:var(--ag-c-11);font-weight:700;border-bottom:1px solid var(--ag-c-4);border-right-color:var(--ag-fl-line)}
+.work.ag.dash .grid thead .sumrow th,.work.ag.dash .grid thead .sumrow td{background:#fafafb;border-bottom:1px solid var(--ag-c-4)}
+.work.ag.dash .grid thead .bizname{background:#f4f4f6}
+.work.ag.dash .grid thead .sumrow .bizname{background:#fafafb}
+/* 기한 묶음 머리: 색 굵은 선 · 흰 띠 대신 표 안의 회색 구획 줄(색은 점 · 글자에만) */
+.work.ag.dash .grp th,.work.ag.dash .grp-late th{height:34px;border-top:0;border-bottom:1px solid var(--ag-c-4);border-right:0;background:#f4f4f6;box-shadow:none;color:var(--ag-c-14)}
+.work.ag.dash .grp .g-n,.work.ag.dash .grp-late .g-n{color:var(--ag-g-bar)}
+.work.ag.dash .grid tbody tr.biz:hover{background:var(--ag-main-bg)}
+
 /* ── 4) 오른쪽 패널 — 알림 카드 · 캠페인 묶음 상자 → 선으로 나눈 줄 ── */
 .work.ag.dash .al-list{gap:0}
 .work.ag.dash .al-card{margin:0;border:0;border-bottom:1px solid var(--ag-fl-line);border-radius:0;padding:14px 20px;background:#fff}
