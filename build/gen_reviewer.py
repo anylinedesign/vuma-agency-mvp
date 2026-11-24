@@ -322,22 +322,29 @@ def todo_tbl():
     """[2026-11-24 v2] 지금 할 일 = 표: 기한 · 할 일 · 캠페인(설명) · 버튼"""
     def key(t):
         return (0, (t[0] - TODAY).days) if t[0] is not None else (1, 99)
+    # [2026-11-24] 사용자: "지금할일과 이번 주 일정을 1row로" — 폭이 줄어 '할 일' 칸을 캠페인 칸 위 작은 글자로 합침(3칸)
     trs = "".join(
         f'<tr class="is-{urg(d) if d is not None else "later"}"><td class="rd-t-dd">{dday(d) if d is not None else "준비"}</td>'
-        f'<td class="rd-t-k">{h(kind)}</td><td><b>{h(name)}</b><small>{h(desc)}</small></td>'
+        f'<td><span class="rd-t-k">{h(kind)}</span><b>{h(name)}</b><small>{h(desc)}</small></td>'
         f'<td class="rd-t-b"><button type="button" class="rd-btn rd-btn--pri" popovertarget="rd-act-{pop}">{h(btn)}</button></td></tr>'
         for d, kind, name, desc, btn, pop in sorted(TODO, key=key))
     return (f'<section class="rd-tc" aria-labelledby="rd-todo-h"><div class="rd-tc__h"><h2 id="rd-todo-h">지금 할 일 <em>{len(TODO)}</em></h2>'
             f'<ul class="rd-legend"><li class="is-hot">오늘·지남</li><li class="is-soon">3일 안</li><li class="is-later">그 외</li></ul></div>'
-            f'<div class="rd-tw"><table class="rd-tbl rd-tbl--todo"><thead><tr><th scope="col">기한</th><th scope="col">할 일</th>'
-            f'<th scope="col">캠페인</th><th scope="col"></th></tr></thead><tbody>{trs}</tbody></table></div></section>')
+            f'<div class="rd-tw"><table class="rd-tbl rd-tbl--todo"><thead><tr><th scope="col">기한</th>'
+            f'<th scope="col">할 일 · 캠페인</th><th scope="col"></th></tr></thead><tbody>{trs}</tbody></table></div></section>')
 
 
 def flow_tbl():
-    """진행 현황 = 머리 줄(단계) + 숫자 줄 + 신호 줄 — 칸을 누르면 그 단계 화면"""
-    th = "".join(f'<th scope="col">{n}</th>' for n, *_ in FLOW)
-    tn = "".join(f'<td><button type="button" class="rd-fl" popovertarget="rd-stub-{scr}">{c}</button></td>' for _n, c, _s, _w, scr in FLOW)
-    ts = "".join(f'<td class="{"is-warn" if w else ""}">{h(sg)}</td>' for _n, _c, sg, w, _scr in FLOW)
+    """진행 현황 = 머리 줄(단계) + 숫자 줄 + 신호 줄 — 칸을 누르면 그 단계 화면
+    [2026-11-24] 사용자: "현황서머리 최상단으로, 현황서머리에 포인트를 추가" — 맨 위 + 마지막 칸 = 포인트(현재 · 지급 예정)
+                 따로 있던 '내 포인트' 표는 이 칸으로 흡수(출금계좌 등록은 지금 할 일에 있다)"""
+    th = "".join(f'<th scope="col">{n}</th>' for n, *_ in FLOW) + '<th scope="col" class="rd-fl-pt">포인트</th>'
+    tn = ("".join(f'<td><button type="button" class="rd-fl" popovertarget="rd-stub-{scr}">{c}</button></td>' for _n, c, _s, _w, scr in FLOW)
+          + f'<td class="rd-fl-pt"><button type="button" class="rd-fl" popovertarget="rd-stub-point">{POINT["now"]:,}<small>P</small></button></td>')
+    ready = all(ok for _t, ok in CHECKS)
+    ts = ("".join(f'<td class="{"is-warn" if w else ""}">{h(sg)}</td>' for _n, _c, sg, w, _scr in FLOW)
+          + f'<td class="rd-fl-pt"><b class="rd-ok">+{POINT["due"]:,}P 예정</b>'
+          + ("" if ready else '<br><button type="button" class="rd-link rd-link--warn" popovertarget="rd-act-bank">출금계좌 미등록 ›</button>') + '</td>')
     return (f'<section class="rd-tc" aria-labelledby="rd-fl-h"><div class="rd-tc__h"><h2 id="rd-fl-h">진행 현황</h2>'
             f'<button type="button" class="rd-link" popovertarget="rd-stub-campaignApplying">나의 캠페인 ›</button></div>'
             f'<div class="rd-tw"><table class="rd-tbl rd-tbl--flow"><thead><tr>{th}</tr></thead>'
@@ -450,7 +457,7 @@ def page():
 <main class="mc-content rd">
 	<div class="rd-head"><h1 class="mc-content__title"><em>{NICK}님의</em> 대시보드</h1><p class="rd-date">{TODAY.month}월 {TODAY.day}일 ({WEEK[TODAY.weekday()]}) 기준 · 데모 데이터</p></div>
 	<!-- [2026-11-24 v2] 상단 써머리(숫자 4칸) · 패널티 띠 제거 → 2열: 받은 알림 | 표. v1 의 alert · kpi · todo · point · flow · week · news 는 쓰지 않는다 -->
-	<div class="rd-lay">{alcol()}<div class="rd-main">{todo_tbl()}{flow_tbl()}<div class="rd-two">{week_tbl()}{point_tbl()}</div></div></div>
+	<div class="rd-lay">{alcol()}<div class="rd-main">{flow_tbl()}<div class="rd-two">{todo_tbl()}{week_tbl()}</div></div></div>
 	<p class="rd-foot">데모 v2 — 버튼과 메뉴는 실서버의 어느 화면·창으로 이어지는지만 안내합니다. <a href="../versions/reviewer-v1/index.html">이전 버전 v1</a> · <a href="../index.html">데모 모음</a></p>
 </main>
 	</div>

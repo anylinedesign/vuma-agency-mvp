@@ -10,7 +10,8 @@
 /* ── 2열: 받은 알림 | 표 ── */
 .rd-lay { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 20px; align-items: start; }
 .rd-main { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
-.rd-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+/* [2026-11-24] 사용자: "지금할일과 이번 주 일정을 1row로" — 왼쪽 할 일(넓게) | 오른쪽 일정(좁게) */
+.rd-two { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 16px; align-items: start; }
 
 /* ── 왼쪽 '받은 알림' ── */
 .rd-alcol { background: #fff; border: 1px solid var(--rd-line2); }
@@ -53,13 +54,16 @@
 .rd .rd-btn { border-radius: 4px; min-height: 32px; }
 
 /* 지금 할 일 — 기한 칸 = 급함 색 글자(칩 대신) */
-.rd-tbl--todo { min-width: 520px; }
-.rd-t-dd { width: 72px; font-weight: 800; text-align: center !important; white-space: nowrap; }
+.rd-tbl--todo { min-width: 0; }
+.rd-t-dd { width: 56px; padding-left: 6px !important; padding-right: 6px !important; font-weight: 800; text-align: center !important; white-space: nowrap; }
 .rd-tbl--todo .is-hot .rd-t-dd, .rd-tbl--todo .is-hot .rd-t-k { color: var(--rd-hot); }
 .rd-tbl--todo .is-soon .rd-t-dd { color: var(--rd-soon); }
 .rd-tbl--todo .is-later .rd-t-dd { color: var(--rd-later); }
-.rd-t-k { width: 112px; font-size: 12px; font-weight: 700; color: var(--rd-sub); white-space: nowrap; }
-.rd-tbl--todo td b { font-size: 14px; color: #0e0e0e; }
+.rd-t-k { display: block; font-size: 12px; font-weight: 700; color: var(--rd-sub); }
+.rd-tbl--todo .is-hot .rd-t-k { color: var(--rd-hot); }
+.rd-tbl--todo td b { display: block; font-size: 14px; color: #0e0e0e; }
+.rd-tbl--todo td small { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.rd-tbl--todo .rd-btn { min-height: 30px; padding: 0 10px; font-size: 12px; }
 .rd-t-b { width: 1%; white-space: nowrap; text-align: right !important; }
 
 /* 진행 현황 — 단계 = 열 */
@@ -72,9 +76,12 @@
 .rd-fl-s td { padding: 2px 6px 10px; font-size: 12px; color: var(--rd-meta); }
 .rd-fl-s td.is-warn { color: var(--rd-hot); font-weight: 700; }
 
-/* 이번 주 일정 — 날짜 = 머리 칸 */
-.rd-tbl--wk th { width: 84px; background: #fafafb; font-size: 14px; font-weight: 700; color: #0e0e0e; white-space: nowrap; vertical-align: top; }
-.rd-tbl--wk th small { display: inline; margin: 0 0 0 2px; font-weight: 500; }
+/* 이번 주 일정 — 날짜 = 머리 칸 (좁은 오른쪽 열: 날짜 칸 줄임 · 캠페인 이름은 다음 줄) */
+.rd-tbl--wk th, .rd-tbl--wk td { padding: 8px 10px; }
+.rd-tbl--wk td p { flex-wrap: wrap; row-gap: 0; }
+.rd-tbl--wk td span { flex-basis: 100%; padding-left: 14px; font-size: 12px; }
+.rd-tbl--wk th { width: 64px; background: #fafafb; font-size: 14px; font-weight: 700; color: #0e0e0e; white-space: nowrap; vertical-align: top; }
+.rd-tbl--wk th small { display: block; margin: 0; font-weight: 500; }
 .rd-tbl--wk .is-today th { color: var(--color-primary); }
 .rd-tbl--wk td p { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
 .rd-tbl--wk td p + p { margin-top: 4px; }
@@ -90,6 +97,14 @@
 .rd-tbl--kv small { display: inline; margin-left: 4px; }
 .rd-tbl--kv .is-ok { color: var(--rd-ok); font-weight: 600; }
 .rd-tbl--kv .is-no { color: var(--rd-hot); font-weight: 600; }
+
+/* 현황 요약 — 맨 위, 마지막 칸 = 포인트(옅은 주색 바탕으로 단계와 구분) */
+.rd-tbl--flow { min-width: 560px; }
+.rd-tbl--flow .rd-fl-pt { width: 17%; background: #f7f5ff; border-left: 2px solid #dcd2ff !important; }
+.rd-tbl--flow thead .rd-fl-pt { background: #efeaff; color: var(--color-primary); }
+.rd-tbl .rd-fl small { display: inline; margin: 0 0 0 1px; font-size: 13px; font-weight: 700; color: inherit; }
+.rd-fl-pt .rd-fl { white-space: nowrap; font-size: 20px; }
+.rd-link--warn { margin-top: 2px; font-size: 12px; color: var(--rd-hot); }
 
 /* ── 오른쪽 패널(서랍) — 종류 목록, 표처럼 ── */
 .rd-dr { position: fixed; inset: 0 0 0 auto; width: min(400px, 100vw); height: 100vh; max-height: none; margin: 0; padding: 0; border: 0;
@@ -116,7 +131,7 @@
 .rd-foot a { color: var(--color-primary); }
 
 /* ── 좁아질 때 — 본문 폭 기준 ── */
-@container (max-width: 860px) {
+@container (max-width: 900px) {
 	.rd-two { grid-template-columns: minmax(0, 1fr); }
 }
 @container (max-width: 720px) {
