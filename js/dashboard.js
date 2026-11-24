@@ -469,7 +469,19 @@
 		setText('.js-ab-ukinds', kindsText(by.u)); setText('.js-ab-ckinds', kindsText(by.c));
 		setText('.js-alv-all', open.length); setText('.js-alv-u', by.u.length); setText('.js-alv-c', by.c.length); setText('.js-alv-i', by.i.length);
 		setText('.js-al-open', (by.u.length + by.c.length) + '건');
-		document.querySelector('.alertbar').classList.toggle('has-u', by.u.length > 0);
+		var abar = document.querySelector('.alertbar');      // [2026-11-24] 띠는 왼쪽 열로 옮겨 없을 수 있다
+		if (abar) abar.classList.toggle('has-u', by.u.length > 0);
+		// [2026-11-24] 왼쪽 '받은 알림' 열 — 종류(성격)별 건수 · 가장 최근 시각 · 최근 업체(외 n곳)
+		Object.keys(KIND_NAME).forEach(function (k) {
+			var list = open.filter(function (a) { return a.dataset.kind === k; });
+			setText('.js-ak-' + k, list.length);
+			var first = list[0];
+			setText('.js-akt-' + k, first ? first.querySelector('.al-t').textContent : '');
+			var bizs = list.map(function (a) { return a.querySelector('.al-biz').firstChild.textContent.trim(); })
+				.filter(function (b, i, arr) { return arr.indexOf(b) === i; });
+			setText('.js-akb-' + k, bizs.length ? bizs[0] + (bizs.length > 1 ? ' 외 ' + (bizs.length - 1) + '곳' : '') : '없음');
+			document.querySelectorAll('.akind[data-open-kind="' + k + '"]').forEach(function (b) { b.classList.toggle('is-zero', !list.length); });
+		});
 		var need = by.u.length + by.c.length;          // 처리해야 하는 것만 센다(참고 제외)
 		// [2026-11-12 v0.9] 위 막대의 종(.bell)이 광고주 사이드바 아이콘 줄로 바뀜 — 없는 .bell 을 건드려 스크립트가 멈추고
 		//   대시보드 클릭이 모두 안 되던 문제. 이제 사이드바 [알림] 아이콘의 빨간 점을 처리할 알림이 있을 때만 보인다
@@ -501,7 +513,7 @@
 		alPane.dataset.lv = lv;
 		alPane.querySelectorAll('.alv').forEach(function (b) { b.classList.toggle('ag-on', b.dataset.alv === lv); });
 	}
-	function showAlerts(lv, biz) {
+	function showAlerts(lv, biz, kind) {
 		panel.querySelectorAll('.pane').forEach(function (p) { p.hidden = true; });
 		panel.querySelector('.pane-done').hidden = true;
 		alPane.hidden = false;
@@ -514,10 +526,27 @@
 		var note = alPane.querySelector('.al-bizf');
 		note.hidden = !biz;
 		if (biz) note.querySelector('.js-al-bizname').textContent = grid.querySelector('.bizlink[data-biz="' + biz + '"]').textContent;
+		// [2026-11-24] 종류(성격) 하나만 — 왼쪽 열 줄을 누르면
+		alPane.dataset.kind = kind || '';
+		alPane.querySelectorAll('.al-card').forEach(function (a) { a.classList.toggle('k-out', !!kind && a.dataset.kind !== kind); });
+		var kn = alPane.querySelector('.al-kindf');
+		if (kn) { kn.hidden = !kind; kn.querySelector('.js-al-kindname').textContent = kind ? KIND_NAME[kind] : ''; }
+		document.querySelectorAll('.akind, .js-al-every').forEach(function (b) {
+			b.classList.toggle('ag-on', b.matches('.akind') ? b.dataset.openKind === (kind || '') : !kind && !lv && !biz);
+		});
 	}
 	function closeAlerts() {
 		alPane.hidden = true;
 		panel.classList.remove('has-pane');
+		document.querySelectorAll('.akind.ag-on, .js-al-every.ag-on').forEach(function (b) { b.classList.remove('ag-on'); });
+	}
+	// [2026-11-24] 패널 닫기(✕) — 패널은 무언가를 눌렀을 때만 열린다(css/ag/dash.css)
+	function closePanel() {
+		panel.querySelectorAll('.pane').forEach(function (p) { p.hidden = true; });
+		panel.querySelector('.pane-done').hidden = true;
+		grid.querySelectorAll('.cell.sel').forEach(function (c) { c.classList.remove('sel'); });
+		current = null;
+		closeAlerts();
 	}
 
 	// 처리 / 나중에 — 카드를 아래 접힌 묶음으로 옮긴다
@@ -578,10 +607,13 @@
 		if (blog) { e.preventDefault(); return checkBlog(blog); }
 		var t = e.target.closest('button');
 		if (!t) return;
-		if (t.matches('[data-open-alerts]')) return showAlerts(t.dataset.openAlerts, '');
+		if (t.matches('[data-open-alerts]')) return showAlerts(t.dataset.openAlerts, '', '');
+		if (t.matches('[data-open-kind]')) return showAlerts('', '', t.dataset.openKind);
+		if (t.matches('.js-al-allkind')) return showAlerts(alPane.dataset.lv, alPane.dataset.biz, '');
+		if (t.matches('.js-pnl-close')) return closePanel();
 		if (t.matches('.adot')) return showAlerts('', t.dataset.abiz);
-		if (t.matches('.alv')) return setAlertLevel(t.dataset.alv);
-		if (t.matches('.js-al-allbiz')) return showAlerts(alPane.dataset.lv, '');
+		if (t.matches('.alv')) return showAlerts(t.dataset.alv, alPane.dataset.biz, '');
+		if (t.matches('.js-al-allbiz')) return showAlerts(alPane.dataset.lv, '', alPane.dataset.kind);
 		if (t.matches('.js-close-alerts')) return closeAlerts();
 		if (t.matches('[data-adone]')) return alertDone(t);
 		if (t.matches('[data-snooze]')) return alertSnooze(t);

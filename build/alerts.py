@@ -136,7 +136,10 @@ def pane(shown, snoozed, demo):
         '<h2>처리할 알림 <em class="js-al-open"></em></h2>'
         '<p class="pane-camp">읽기만 해서는 사라지지 않습니다 — [처리] 또는 [나중에]를 누르세요</p>'
         f'{chips}<p class="al-bizf" hidden><span class="js-al-bizname"></span> 알림만 보는 중 '
-        '<button type="button" class="ag-btn link js-al-allbiz">모든 업체</button></p></header>'
+        '<button type="button" class="ag-btn link js-al-allbiz">모든 업체</button></p>'
+        # [2026-11-24] 왼쪽 열에서 종류(성격)를 골라 열었을 때 — 그 종류만 보는 중
+        '<p class="al-kindf" hidden><b class="js-al-kindname"></b> 알림만 보는 중 '
+        '<button type="button" class="ag-btn link js-al-allkind">모든 종류</button></p></header>'
         '<div class="pane-b">'
         '<p class="al-morning">☀ 어제 못 끝낸 알림 <b>2건</b>이 남아 있어요 — 위에서부터 처리하세요</p>'
         f'<div class="al-list js-al-list">{"".join(card(a) for a in shown)}{card(demo, demo=True)}</div>'
@@ -145,6 +148,28 @@ def pane(shown, snoozed, demo):
         '</div>'
         '<footer class="pane-f"><a href="#" class="ag-btn ghost">알림 설정 →</a>'
         '<button type="button" class="ag-btn primary js-close-alerts">격자로 돌아가기</button></footer></section>')
+
+
+def column():
+    """[2026-11-24] 대시보드 왼쪽 '받은 알림' 열 — 요청 "알림을 좌측으로 · 알림의 성격대로 한눈에 · 각 성격의 상세 리스트는 클릭하면 우측패널에서"
+       등급(즉시 · 확인 · 참고) 아래에 종류(성격)별 한 줄: 이름 · 건수 · 가장 최근 시각 · 최근 업체.
+       숫자 · 시각 · 업체는 js/dashboard.js recountAlerts() 가 패널 안 알림 카드에서 세어 채운다(처리하면 바로 줄어듦).
+       줄을 누르면 오른쪽 패널에 그 종류 알림만 열린다(data-open-kind)."""
+    groups = []
+    for lv, lv_name in LEVEL.items():
+        rows = "".join(
+            f'<li><button type="button" class="akind" data-open-kind="{k}">'
+            f'<span class="ak-n">{name}</span><em class="ak-c js-ak-{k}">0</em>'
+            f'<span class="ak-s"><span class="js-akb-{k}"></span><span class="ak-t js-akt-{k}"></span></span></button></li>'
+            for k, (klv, name) in KINDS.items() if klv == lv)
+        groups.append(f'<div class="alg alg-{lv}"><p class="alg-h"><span class="lvb lv-{lv}">{lv_name}</span>'
+                      f'<span class="alg-d">{ {"u": "바로 처리", "c": "확인 후 처리", "i": "알아 두기"}[lv] }</span>'
+                      f'<em class="js-ab-{lv}">0</em></p><ul>{rows}</ul></div>')
+    return ('<section class="alcol" aria-labelledby="alcol-h">'
+            '<div class="alcol-h"><h2 id="alcol-h">받은 알림</h2><span class="alcol-n">처리할 것 <b class="js-al-open">0건</b></span></div>'
+            f'{"".join(groups)}'
+            '<div class="alcol-f"><button type="button" class="ag-btn sm js-al-every" data-open-alerts="">모든 알림 보기</button>'
+            '<a href="#" class="ag-btn sm ghost">알림 설정</a></div></section>')
 
 
 def bar():

@@ -1,0 +1,90 @@
+/* [2026-11-24] 대행사 대시보드 — 3열 · 선 처리 목록
+   요청 1) 상단 써머리 제거  2) 알림을 좌측, 업체별(담당자별)을 우측  3) 알림은 성격대로 한눈에, 상세 리스트는 클릭하면 우측패널
+        + "전체적으로 일반적인 선처리, 표처럼 간단한 리스트 표기하는 것으로 기본 디자인 스타일 변경"
+   규칙: 상자 · 둥근 판 · 칩 테두리 대신 가로 1px 선으로 나눈 줄. 고른 것 = 옅은 주색 바탕 + 왼쪽 3px 주색 선
+   범위: 대시보드(.work.ag.dash)만 — gen_dashboard.py 머리에서만 싣는다. flat.css 다음 */
+
+/* ── 1) 3열: 받은 알림 | 업체별·담당자별 표 | 패널(무언가를 눌렀을 때만) ── */
+.work.ag.dash{grid-template-columns:280px minmax(0,1fr)}
+.work.ag.dash:has(> .panel.has-pane){grid-template-columns:280px minmax(0,1fr) var(--ag-panel-w)}
+.work.ag.dash > .panel:not(.has-pane){display:none}
+.work.ag.dash .pane-empty{display:none}
+.work.ag.dash .pnl-x{position:absolute;top:12px;right:12px;z-index:2;width:32px;height:32px;border:0;border-radius:6px;background:none;font-size:16px;color:var(--ag-c-9);cursor:pointer}
+.work.ag.dash .pnl-x:hover{background:var(--ag-c-2);color:var(--ag-c-14)}
+.work.ag.dash .pane-h{padding-right:52px}
+
+/* ── 2) 왼쪽 '받은 알림' 열 — 등급 머리 + 종류(성격)별 한 줄 ── */
+.alcol{display:flex;flex-direction:column;min-height:0;overflow-y:auto;padding:24px 0 16px;background:#fff;border-right:1px solid var(--ag-fl-line,#e8e8ec)}
+.alcol-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:0 20px 14px;border-bottom:1px solid var(--ag-fl-line,#e8e8ec)}
+.alcol-h h2{margin:0;font-size:18px;font-weight:700;color:var(--ag-c-14)}
+.alcol-n{font-size:12px;color:var(--ag-c-9)}
+.alcol-n b{font-size:15px;color:var(--ag-danger)}
+.alg-h{display:flex;align-items:center;gap:6px;margin:0;padding:14px 20px 6px;font-size:12px;color:var(--ag-c-9)}
+.alg-h em{margin-left:auto;font-style:normal;font-weight:700;color:var(--ag-c-11)}
+.alg ul{margin:0;padding:0;list-style:none}
+.akind{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:2px 8px;width:100%;padding:10px 20px;border:0;border-top:1px solid var(--ag-fl-line-soft,#f1f1f4);background:none;font:inherit;text-align:left;cursor:pointer}
+.alg li:first-child .akind{border-top-color:var(--ag-fl-line,#e8e8ec)}
+.akind:hover{background:var(--ag-fl-hover,#f7f7f9)}
+.akind.ag-on{background:var(--ag-main-light);box-shadow:inset 3px 0 0 var(--ag-main)}
+.ak-n{font-size:14px;font-weight:600;color:var(--ag-c-14)}
+.ak-c{font-style:normal;font-size:18px;font-weight:800;color:var(--ag-c-14)}
+.alg-u .akind:not(.is-zero) .ak-c{color:var(--ag-danger)}
+.alg-c .akind:not(.is-zero) .ak-c{color:var(--ag-info)}
+.ak-s{grid-column:1 / -1;display:flex;gap:8px;justify-content:space-between;min-width:0;font-size:12px;color:var(--ag-c-9)}
+.ak-s > span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ak-t{flex:none}
+.akind.is-zero .ak-n,.akind.is-zero .ak-c,.akind.is-zero .ak-s{color:var(--ag-c-8);font-weight:500}
+.alcol-f{display:flex;gap:6px;margin-top:auto;padding:14px 20px 0;border-top:1px solid var(--ag-fl-line,#e8e8ec)}
+.alcol-f .ag-btn{flex:1}
+.alcol-f .ag-btn.ag-on{border-color:var(--ag-main);background:var(--ag-main-light);color:var(--ag-main)}
+
+/* ── 3) 가운데 표 — 탭 · 거르기도 선으로 ── */
+/* 업체별/담당자별: 폴더 탭 → 밑줄 탭 */
+.work.ag.dash .vtabs{gap:0;padding:0;background:none;border:0;border-bottom:1px solid var(--ag-fl-line)}
+.work.ag.dash .vtabs label{height:40px;padding:0 16px;border:0;border-radius:0;margin-bottom:-1px;background:none;color:var(--ag-c-9);box-shadow:none}
+.work.ag.dash .vtabs label:hover{background:none;color:var(--ag-c-14)}
+.work.ag.dash #v-biz:checked ~ .vtabs label[for=v-biz],.work.ag.dash #v-staff:checked ~ .vtabs label[for=v-staff]{height:40px;background:none;border:0;box-shadow:inset 0 -2px 0 var(--ag-main);color:var(--ag-c-14);font-weight:700}
+.work.ag.dash .vtabs + .grid-wrap{border:0;border-radius:0}
+.work.ag.dash .grid-wrap{border:0;border-radius:0}
+/* 유형 · 알림 거르기: 테두리 칩 → 글자 + 건수, 고른 것 = 주색 글자 + 밑줄 */
+.work.ag.dash .tchip{border-color:transparent;background:none;border-radius:0;padding:0 10px}
+.work.ag.dash .tchip:hover{background:var(--ag-fl-hover)}
+.work.ag.dash .tchip.ag-on{border-color:transparent;background:none;box-shadow:inset 0 -2px 0 var(--ag-main);color:var(--ag-main)}
+.work.ag.dash .tchip.js-afilter.ag-on{background:none;box-shadow:inset 0 -2px 0 var(--ag-danger);color:var(--ag-danger)}
+.work.ag.dash .ty{background:none;padding:0;font-weight:700}
+/* 표 머리 · 합계 줄 · 묶음 머리 — 면 대신 선 */
+.work.ag.dash .grid thead tr:first-child th{background:#fff;border-bottom:1px solid var(--ag-fl-line)}
+.work.ag.dash .grid thead .sumrow th,.work.ag.dash .grid thead .sumrow td{background:#fff;border-bottom:2px solid var(--ag-c-11)}
+.work.ag.dash .grp th,.work.ag.dash .grp-late th,.work.ag.dash .team th,.work.ag.dash .team-solo th,.work.ag.dash .team-none-owner th{background:#fff}
+
+/* ── 4) 오른쪽 패널 — 알림 카드 · 캠페인 묶음 상자 → 선으로 나눈 줄 ── */
+.work.ag.dash .al-list{gap:0}
+.work.ag.dash .al-card{margin:0;border:0;border-bottom:1px solid var(--ag-fl-line);border-radius:0;padding:14px 20px;background:#fff}
+.work.ag.dash .al-card.is-new{background:#fff}
+.work.ag.dash .al-card.k-out{display:none}
+.work.ag.dash .pane-alert .pane-b{padding:0}
+.work.ag.dash .al-morning{margin:0;padding:10px 20px;border-bottom:1px solid var(--ag-fl-line);border-radius:0;background:var(--ag-fl-head)}
+.work.ag.dash .al-fold{margin:0;border:0;border-bottom:1px solid var(--ag-fl-line);border-radius:0}
+.work.ag.dash .al-fold > summary{padding:12px 20px}
+.al-kindf{margin:8px 0 0;font-size:13px;color:var(--ag-c-9)}
+.al-kindf b{color:var(--ag-main)}
+.work.ag.dash .cgroup{border:0;border-top:1px solid var(--ag-fl-line);border-radius:0}
+.work.ag.dash .cgroup:first-child{border-top:0}
+
+/* ── 좁은 화면 ── */
+@media (max-width:1280px){
+	.work.ag.dash{grid-template-columns:240px minmax(0,1fr)}
+	.work.ag.dash:has(> .panel.has-pane){grid-template-columns:240px minmax(0,1fr) var(--ag-panel-w)}
+}
+@media (max-width:1100px){
+	/* 패널은 표 위에 겹쳐 열림(agency.css) — 열 자리는 만들지 않는다 */
+	.work.ag.dash:has(> .panel.has-pane){grid-template-columns:240px minmax(0,1fr)}
+}
+@media (max-width:860px){
+	.work.ag.dash,.work.ag.dash:has(> .panel.has-pane){grid-template-columns:minmax(0,1fr)}
+	/* 쌓아 보일 때: 바깥 틀(main-content)이 화면 높이로 잘라내므로 작업 영역이 직접 세로 스크롤 — 줄은 내용 높이대로 */
+	.work.ag.dash{overflow-y:auto;grid-auto-rows:max-content}
+	.alcol{overflow:visible;border-right:0;border-bottom:1px solid var(--ag-fl-line,#e8e8ec)}
+	.work.ag.dash .vtabs label{white-space:nowrap}
+	.work.ag.dash .vtabs label em{display:none}
+}

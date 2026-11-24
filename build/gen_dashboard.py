@@ -1029,6 +1029,7 @@ def build():
 <link rel="stylesheet" href="css/ag/agency.css">
 <link rel="stylesheet" href="css/bridge/shell.css">
 <link rel="stylesheet" href="css/ag/flat.css"><!-- [2026-11-13] 대행사 전용 화면 단순화 -->
+<link rel="stylesheet" href="css/ag/dash.css"><!-- [2026-11-24] 대시보드 3열 · 선 처리 목록 -->
 <link rel="stylesheet" href="css/bridge/legible.css"><!-- [2026-11-17] 시안성 층 -->
 </head>
 <body>
@@ -1037,18 +1038,15 @@ def build():
 <div class="dashboard">
 {sidebar(total_issue)}
 <main class="main-content"><div class="main-view">
-<div class="work ag">
+<div class="work ag dash">
+<!-- [2026-11-24] 3열: 왼쪽 받은 알림(성격별) · 가운데 업체별/담당자별 표 · 오른쪽 패널(무언가를 눌렀을 때만 열림 — css/ag/dash.css) -->
+{alerts.column()}
 <section class="board" aria-labelledby="board-title">
 	<div class="board-h">
 		<div>
 			<h1 id="board-title">대시보드</h1>
 			<p class="sub">{TODAY_LABEL} 기준</p>
-			<!-- [2026-11-17] 시안성 — 가장 먼저 볼 숫자를 크게(전엔 문장 속 13px) -->
-			<dl class="ag-kpi">
-				<div><dt>이슈</dt><dd><b>{total_issue}</b>건</dd></div>
-				<div><dt>이슈 있는 업체</dt><dd><b>{with_issue}</b>곳 <small>/ {len(bizs)}곳</small></dd></div>
-				<div class="is-hot-k"><dt>기한 지남 · 오늘</dt><dd><b>{hot}</b>곳</dd></div>
-			</dl>
+			<!-- [2026-11-24] 상단 숫자 요약(이슈 · 이슈 있는 업체 · 기한 지남) 뺌 — 요청 "상단 써머리 제거" (합계는 표 첫 줄 '전체 합계'에 그대로) -->
 		</div>
 		<div class="vw-box">
 		<div class="seg" role="group" aria-label="보기 범위">
@@ -1058,8 +1056,7 @@ def build():
 		</div>
 	</div>
 
-	<!-- [2026-11-10] 받은 알림 띠 — 순차 흐름(격자)과 따로, 수시 알림을 항상 같은 자리에 -->
-	{alerts.bar()}
+	<!-- [2026-11-24] 받은 알림 띠는 왼쪽 열(alerts.column)로 옮김 — 요청 "알림을 좌측으로, 업체별(담당자별)을 우측으로" -->
 
 	<!-- [2026-11-09] 업체별/담당자별 전환은 라디오 + CSS (JS 없음) -->
 	<input type="radio" name="view" id="v-biz" class="vr" checked>
@@ -1092,6 +1089,7 @@ def build():
 </section>
 
 <aside class="panel" aria-label="이슈 처리" aria-live="polite">
+	<button type="button" class="pnl-x js-pnl-close" aria-label="패널 닫기">✕</button>
 	<div class="pane-empty">
 		<p class="empty-ico" aria-hidden="true">☰</p>
 		<p><b>격자에서 칸을 고르세요</b></p>
