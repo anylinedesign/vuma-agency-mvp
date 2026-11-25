@@ -90,6 +90,65 @@
 	body:has(.md-dr:popover-open) .main-content { margin-right: var(--panel-w); transition: margin-right .2s ease; }
 }
 
+/* ── 6) [2026-11-25] 촘촘하게 · 한 항목 = 한 줄 · 글자 크기 맞춤 — 대행사 대시보드(css/ag/dash.css 5)와 같은 규칙
+   사용자: "마스터 대시보드도 같은 방식으로 촘촘하게 / 마스터는 v1의 처리대기 방식을 사용"
+   규칙: 제목 15 · 이름 13 · 보조 12px · 수치 = 옆 글자와 같은 크기 / 색은 등급 머리 · 경과 시간에만 / 줄 사이 여백 최소 */
+.md-demo { margin-bottom: 8px; }
+.md .page-header { margin-bottom: 10px; }
+.md .page-header__title { font-size: 17px; }
+.md-lay { gap: 16px; }
+
+/* 왼쪽 받은 알림 — [종류 · 최근 대상 · 건수] 한 줄, 시각 뺌 */
+.md-alcol-h { padding: 10px 10px 8px 14px; }
+.md-alcol-h h2, .md-alcol-n { font-size: 15px; }
+.md-alg-h { padding: 6px 12px 6px 14px; }
+.md-alg-h b, .md-alg-h em { font-size: 13px; }
+.md-alg + .md-alg { border-top-width: 4px; }
+.md-ak { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 6px 12px 6px 14px; }
+.md-ak-n { grid-column: 1; white-space: nowrap; }
+.md-ak-s { grid-column: 2; grid-row: 1; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.md-ak-s > span:last-child { display: none; }
+.md-ak-c { grid-column: 3; font-size: 13px; font-weight: 700; color: var(--c-14); }
+.md-alcol .md-up li { grid-template-columns: 64px minmax(0, 1fr); padding: 6px 12px 6px 14px; }
+.md-alcol .md-up li span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* 처리 대기 = v1 보드(영역 5열 × 큐 줄) — 표 한 장처럼: 영역 머리 = 회색 머리 줄, 열 사이 1px 선, 큐 한 줄 */
+.md .md-board .card__head { padding: 10px 14px; }
+.md-cols { border-top: 0; }
+.md-col { padding: 0 0 6px; border-left-color: var(--c-3); }
+.md-area { align-items: center; margin: 0 0 4px; padding: 8px 12px; background: #f4f4f6; border-bottom: 1px solid var(--c-4); }
+.md-area b { font-size: 13px; }
+.md-area em { font-size: 13px; font-weight: 700; color: var(--c-9); }
+.md-q { grid-template-columns: minmax(0, 1fr) auto 26px; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 0; }
+.md-q span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; overflow-wrap: normal; }
+.md-q b { font-size: 13px; font-weight: 700; }
+.md-q .md-age { font-size: 12px; font-weight: 600; }
+.md-wl { margin: 6px 12px 0; padding: 6px 0 2px; font-size: 12px; }
+.md-q.md-watch { padding: 3px 12px; }
+.md-q.md-watch b { font-size: 12px; font-weight: 500; }
+
+/* 아래 판(플랫폼 현황 · 돈 흐름 · 최근 운영 활동) — 값과 설명을 한 줄로, 줄 높이 줄임 */
+.md-two, .md-audit { margin-top: 16px; }
+.md .md-main .card__head { padding: 10px 14px; }
+.md .md-main .tbl tbody td, .md .md-main .tbl tbody th { padding-top: 7px; padding-bottom: 7px; }
+.md .md-main .tbl thead th { padding-top: 8px; padding-bottom: 8px; }
+.md-kv th { width: 88px; padding-left: 14px; font-size: 13px; }
+.md-kv b { font-weight: 700; }
+.md-kv-s { display: inline; margin: 0 0 0 8px; }
+.md-bars { padding: 0 14px 10px; }
+
+/* 오른쪽 패널(서랍) — 제목 15 · 줄 = [제목 · 대상 · 시각 ··· 처리] 한 줄 */
+.md-dr header { padding: 14px 16px 10px; }
+.md-dr header b { font-size: 15px; }
+.md-dr .md-list { margin: 10px 12px; }
+.md-dr .md-list li { gap: 8px; padding: 6px 10px; }
+.md-dr .md-list div { flex-direction: row; align-items: baseline; gap: 8px; }
+.md-dr .md-list div b { flex: none; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.md-dr .md-list div span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.md-dr .md-cron div { flex-wrap: wrap; }
+.md-dr .btn--sm { height: 26px; padding: 0 9px; font-size: 12px; }
+.md-dr footer { padding: 10px 16px; }
+
 /* ── 좁은 화면 ── */
 @media (max-width: 1100px) {
 	.md-lay { grid-template-columns: 230px minmax(0, 1fr); gap: 16px; }

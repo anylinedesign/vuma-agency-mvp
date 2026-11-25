@@ -329,7 +329,8 @@ def q_row(q):
 
 
 def queue_table():
-    """[2026-11-24 v2] 사용자: "표처럼 간단한 리스트" — 영역 5개 = 회색 구획 줄, 큐 = 줄"""
+    """[2026-11-24 v2] 사용자: "표처럼 간단한 리스트" — 영역 5개 = 회색 구획 줄, 큐 = 줄
+       [2026-11-25] 지금은 쓰지 않음 — "마스터는 v1의 처리대기 방식을 사용" → board(). 되돌릴 때를 위해 남겨 둠"""
     body = []
     for a, lab in AREAS:
         qs = [q for q in QUEUES if q["area"] == a]
@@ -441,8 +442,9 @@ def ver(name):
 
 def page():
     # [2026-11-13] 요청 "즉시 처리 알림은 기본이 우측 패널에서" — 오른쪽 패널 = 스크롤해도 붙어 있는 알림(대행사 대시보드의 오른쪽 패널과 같은 자리)
-    # [2026-11-24 v2] 3열: 받은 알림 | 표 | 오른쪽 패널(누를 때만 — popover 서랍). v1 의 sys_strip · board · side_noti 는 쓰지 않는다
-    body = (f'<div class="md-lay">{alcol()}<div class="md-main">{head_line()}{queue_table()}'
+    # [2026-11-24 v2] 3열: 받은 알림 | 표 | 오른쪽 패널(누를 때만 — popover 서랍). v1 의 sys_strip · side_noti 는 쓰지 않는다
+    # [2026-11-25] 사용자: "마스터는 v1의 처리대기 방식을 사용" — queue_table()(긴 표) → board()(영역 5열 × 큐 줄), 모양은 md-line.css 6) 촘촘하게
+    body = (f'<div class="md-lay">{alcol()}<div class="md-main">{head_line()}{board()}'
             f'<div class="md-two">{platform()}{money()}</div>{audit()}</div></div>')
     overlays = "".join(drawer(q) + center(q) for q in QUEUES) + sys_drawer() + al_drawers() + stubs()
     return f'''<!doctype html>
