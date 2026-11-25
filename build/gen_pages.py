@@ -14,6 +14,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gen_dashboard as G  # noqa: E402
+import brand  # noqa: E402  # [2026-11-25] 파비콘 · SNS(OG) 태그
 
 ROOT = Path(__file__).resolve().parent.parent
 TODAY = date(2026, 11, 9)          # 더미 기준일(대시보드와 같음)
@@ -129,6 +130,7 @@ def page(title, active, body, panel, extra_style="", js="pages.js"):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{brand.head('agency')}
 <title>{title} · 뷰마 대행사 ({G.VERSION} 시안)</title>
 {G.HEAD_ADV}
 <link rel="stylesheet" href="css/ag/agency.css">

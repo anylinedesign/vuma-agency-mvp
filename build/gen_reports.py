@@ -13,6 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import camp_data as D  # noqa: E402
+import brand  # noqa: E402  # [2026-11-25] 파비콘 · SNS(OG) 태그
 
 P, G = D.P, D.G
 esc = P.esc
@@ -175,6 +176,7 @@ def public_page():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{brand.head('agency')}
 <meta name="robots" content="noindex">
 <title>캠페인 보고서 · {AGENCY}</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">

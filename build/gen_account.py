@@ -22,6 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import camp_data as D  # noqa: E402
+import brand  # noqa: E402  # [2026-11-25] 파비콘 · SNS(OG) 태그
 import ops_kit as K  # noqa: E402
 
 P, G = D.P, D.G
@@ -1183,6 +1184,7 @@ def help_page():
     write("inquiry.html", "1:1 문의", "qna", qna + qna_pop)
     write("faq.html", "자주묻는 질문", "faq", pane_faq())
     html = ('<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">'
+            + brand.head('agency') +
             f'<title>도움말 · 뷰마 대행사 ({P.G.VERSION} 시안)</title>'
             '<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">'

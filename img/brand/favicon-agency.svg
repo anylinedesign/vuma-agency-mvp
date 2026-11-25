@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="linear-gradient-1" x1="2" y1="2" x2="62" y2="62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8b64ff"/>
+      <stop offset="1" stop-color="#5b2fe0"/>
+    </linearGradient>
+  </defs>
+  <title>favicon-agency</title>
+  <g id="파비콘">
+    <path id="파비콘_타일" d="M15.2 2 L48.8 2 C56.09 2 62 7.91 62 15.2 L62 48.8 C62 56.09 56.09 62 48.8 62 L15.2 62 C7.91 62 2 56.09 2 48.8 L2 15.2 C2 7.91 7.91 2 15.2 2 Z" fill="url(#linear-gradient-1)"/>
+    <g id="파비콘_글자">
+      <path d="M19.021 47.9 L27.891 19.292 L36.109 19.292 L44.979 47.9 L37.76 47.9 L34.189 33.615 C33.805 32.182 33.427 30.658 33.056 29.046 C32.685 27.433 32.307 25.897 31.923 24.438 L31.77 24.438 C31.437 25.922 31.078 27.465 30.694 29.065 C30.31 30.665 29.939 32.182 29.581 33.615 L26.01 47.9 Z M25.05 41.334 L25.05 36.034 L38.874 36.034 L38.874 41.334 Z" fill="#ffffff"/>
+    </g>
+  </g>
+</svg>

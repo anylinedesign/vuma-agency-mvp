@@ -16,7 +16,11 @@
 import html
 import json
 import random
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import brand  # noqa: E402  # [2026-11-25] 파비콘 · SNS(OG) 태그
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "master" / "index.html"
@@ -446,6 +450,7 @@ def page():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{brand.head('master', '../')}
 <title>대시보드 - 뷰마 MASTER (데모)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

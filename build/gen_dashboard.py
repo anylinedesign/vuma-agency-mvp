@@ -13,6 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))   # -I 로 돌려도 같은 폴더 모듈을 찾게
 import alerts  # noqa: E402  [2026-11-10] 수시 알림 (v0.4)
+import brand  # noqa: E402  # [2026-11-25] 파비콘 · SNS(OG) 태그
 
 VERSION = "v0.9"   # 시안 버전 — mvp/CHANGELOG.md · git 태그와 맞춘다
 
@@ -1024,6 +1025,7 @@ def build():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{brand.head('agency')}
 <title>대시보드 · 뷰마 대행사 ({VERSION} 시안)</title>
 {HEAD_ADV}
 <link rel="stylesheet" href="css/ag/agency.css">
