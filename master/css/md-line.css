@@ -152,6 +152,10 @@
 .md-dr .md-list div span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .md-dr .md-cron div { flex-wrap: wrap; }
 .md-dr .btn--sm { height: 26px; padding: 0 9px; font-size: 12px; }
+/* [2026-11-25] 사용자: "프라이머리 색상 버튼을 더 가볍게 — 처리, 승인 이런 우측 패널 버튼" (대행사 dash.css 와 같은 색)
+   서랍 목록 줄의 [처리](진한 보라 테두리) → 옅은 보라 바탕 + 옅은 테두리. 맨 아래 [처리 화면 열기]는 그대로 */
+.md-dr .md-list .btn--outline { border-color: #e0d6ff; background: #f6f3ff; color: var(--color-main); font-weight: 600; }
+.md-dr .md-list .btn--outline:hover { border-color: #cbbcff; background: #ece6ff; }
 .md-dr footer { padding: 10px 16px; }
 
 /* ── 좁은 화면 ── */

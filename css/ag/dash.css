@@ -251,6 +251,11 @@
 .work.ag.dash .panel .mini-go:not(.go-doc,.go-iss){height:20px;margin-left:2px;padding:0 4px;border:0;background:none;font-size:12px;font-weight:500;color:var(--ag-c-8)}
 .work.ag.dash .panel .mini-go:not(.go-doc,.go-iss):hover{background:var(--ag-main-light);color:var(--ag-main)}
 .work.ag.dash .panel .ag-btn.sm{height:26px;padding:0 9px;font-size:12px}
+/* [2026-11-25] 사용자: "프라이머리 색상 버튼을 더 가볍게 — 처리, 승인 이런 우측 패널에 사용하는 버튼"
+   패널 본문(.pane-b) 안의 주색 버튼(승인 · 선정 · 취소 승인 · 답장 · 발송 완료 · 선정 완료 …) = 꽉 찬 보라 → 옅은 보라 바탕 + 보라 글자
+   패널 맨 아래(.pane-f)의 [다음 ▶] · [격자로 돌아가기]는 그대로(화면 단위 이동 버튼). 잠긴 버튼은 회색 그대로 */
+.work.ag.dash .panel .pane-b .ag-btn.primary:not(:disabled){border-color:#e0d6ff;background:#f6f3ff;color:var(--ag-main);font-weight:600;box-shadow:none}
+.work.ag.dash .panel .pane-b .ag-btn.primary:not(:disabled):hover{border-color:#cbbcff;background:#ece6ff;color:var(--ag-main-hover)}
 
 /* 캠페인 묶음 머리 = 한 줄: 캠페인명(13px) · 문서 아이콘 · 이슈 보기 · 유형 · 채널 · 상태 · 기한 ··· 건수 */
 .work.ag.dash .panel .cgroup{margin:0 0 8px}
