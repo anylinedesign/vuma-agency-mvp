@@ -482,8 +482,12 @@ def evidence_html(bi, hist, memo):
         s1 = '<span class="bi ag-bi-none">지수 수집 전</span>'
         t1 = "아직 수집 전"
     if hist:
-        warn = '<span class="pen">패널티 이력</span>' if hist["penalty"] else ""
-        ours = f'<span class="ours">우리와 {hist["ours"]}회</span>' if hist["ours"] else ""
+        # [2026-11-25] 사용자: "각 이슈들은 hover로 따로 말풍선 제공" — 글자 배지 → 작은 아이콘(+횟수), 뜻은 아이콘마다 따로 말풍선(data-tip)
+        #   좁은 패널에서 배지가 [선정] 버튼 밑으로 겹치던 문제도 같이 없어짐
+        warn = ('<span class="ap-iss ap-pen" tabindex="0" data-tip="패널티 이력 있음 — 지난 캠페인에서 패널티를 받았습니다" '
+                'aria-label="패널티 이력 있음"></span>' if hist["penalty"] else "")
+        ours = (f'<span class="ap-iss ap-ours" tabindex="0" data-tip="우리와 해본 리뷰어 — 함께한 캠페인 {hist["ours"]}회" '
+                f'aria-label="우리와 {hist["ours"]}회">{hist["ours"]}</span>' if hist["ours"] else "")
         s2 = f'<span class="star" aria-label="평점 {hist["rating"]}점">★ {hist["rating"]}</span>{ours}{warn}'
         t2 = f'참여 {hist["part"]}회 · 기한 내 등록 {hist["ontime"]}% · 검수 승인 {hist["pass"]}%'
     else:

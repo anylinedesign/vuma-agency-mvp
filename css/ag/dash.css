@@ -283,6 +283,17 @@
 .work.ag.dash .panel .ap-tip em{display:inline-block;min-width:64px;margin-right:6px;font-style:normal;color:#c9c3e6}
 .work.ag.dash .panel .item.ap:is(:hover,:focus-within) .ap-tip{opacity:1;clip-path:none;transition:opacity .12s .15s}
 .work.ag.dash .panel .item.ap:is(:hover,:focus-within){z-index:4;background:var(--ag-fl-hover)}
+/* [2026-11-25] 사용자: "각 이슈들은 hover로 따로 말풍선 제공" — 우리와 N회 · 패널티 이력 = 작은 아이콘, 뜻은 아이콘 위 말풍선(data-tip)
+   아이콘에 올라가 있는 동안은 줄 전체 말풍선(블로거 상세)을 숨겨 두 개가 겹치지 않게 */
+.work.ag.dash .panel .ap-sum{min-width:0}
+.work.ag.dash .ap-iss{position:relative;display:inline-flex;align-items:center;gap:1px;flex:none;height:18px;padding:0 2px;border-radius:4px;font-size:12px;font-weight:700;cursor:help;outline-offset:1px}
+.work.ag.dash .ap-iss::before{content:"";width:13px;height:13px;background:currentColor;-webkit-mask:var(--ag-ico) center / contain no-repeat;mask:var(--ag-ico) center / contain no-repeat}
+.work.ag.dash .ap-ours{--ag-ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='8' r='3.5'/%3E%3Cpath d='M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5'/%3E%3C/svg%3E");color:var(--ag-main)}
+.work.ag.dash .ap-pen{--ag-ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z'/%3E%3Cpath d='M12 9v4M12 17h.01'/%3E%3C/svg%3E");color:var(--ag-danger)}
+.work.ag.dash .ap-iss::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 6px);z-index:6;width:max-content;max-width:220px;padding:5px 8px;border-radius:5px;background:var(--ag-c-14);font-size:12px;font-weight:500;line-height:1.4;color:#fff;white-space:normal;text-align:left;pointer-events:none;opacity:0;transform:translateX(-50%);transition:opacity .1s}
+.work.ag.dash .ap-iss:is(:hover,:focus-visible){background:var(--ag-c-2)}
+.work.ag.dash .ap-iss:is(:hover,:focus-visible)::after{opacity:1}
+.work.ag.dash .panel .item.ap:has(.ap-iss:is(:hover,:focus-visible)) .ap-tip{opacity:0;clip-path:inset(50%);transition:none}
 .work.ag.dash .panel :is(.bi,.ours){padding:0;background:none;font-size:12px}
 .work.ag.dash .panel .bi{color:var(--ag-c-11)}
 .work.ag.dash .panel :is(.ag-bi-score,.star){font-size:12px;color:var(--ag-c-14)}
