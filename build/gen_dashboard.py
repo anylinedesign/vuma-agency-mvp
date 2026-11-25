@@ -470,21 +470,28 @@ def make_evidence():
 GRADE_CLS = {"최적화": "bi-opt", "준최적화": "bi-semi", "일반": "bi-normal"}
 
 
-def evidence_html(bi, hist):
-    """신청자 줄의 근거 두 줄: ① 블로그지수 ② 뷰마 이력·평점"""
+def evidence_html(bi, hist, memo):
+    """신청자 근거 — [2026-11-25] 사용자: "블로거 상세정보는 hover시 말풍선으로 보여주기"
+       반환: (줄에 보이는 요약, 말풍선 속 상세)
+         요약 = 지수 등급 · 점수 · 평점 · 우리와 N회 · 패널티 (줄 하나)
+         상세 = 블로그지수(일 방문 · 최근 30일 글 · 이웃) · 뷰마 이력(참여 · 기한 내 등록 · 검수 승인) · 신청 메모"""
     if bi:
-        l1 = (f'<span class="bi {GRADE_CLS[bi["grade"]]}">{bi["grade"]}</span><b class="ag-bi-score">{bi["score"]}</b>'
-              f'<span class="ev">일 방문 {bi["visit"]:,} · 최근 30일 {bi["post30"]}글 · 이웃 {bi["neighbor"]:,}</span>')
+        s1 = f'<span class="bi {GRADE_CLS[bi["grade"]]}">{bi["grade"]}</span><b class="ag-bi-score">{bi["score"]}</b>'
+        t1 = f'일 방문 {bi["visit"]:,} · 최근 30일 {bi["post30"]}글 · 이웃 {bi["neighbor"]:,}'
     else:
-        l1 = '<span class="bi ag-bi-none">지수 수집 전</span>'
+        s1 = '<span class="bi ag-bi-none">지수 수집 전</span>'
+        t1 = "아직 수집 전"
     if hist:
         warn = '<span class="pen">패널티 이력</span>' if hist["penalty"] else ""
         ours = f'<span class="ours">우리와 {hist["ours"]}회</span>' if hist["ours"] else ""
-        l2 = (f'<span class="star" aria-label="평점 {hist["rating"]}점">★ {hist["rating"]}</span>'
-              f'<span class="ev">뷰마 참여 {hist["part"]}회 · 기한 내 등록 {hist["ontime"]}% · 검수 승인 {hist["pass"]}%</span>{ours}{warn}')
+        s2 = f'<span class="star" aria-label="평점 {hist["rating"]}점">★ {hist["rating"]}</span>{ours}{warn}'
+        t2 = f'참여 {hist["part"]}회 · 기한 내 등록 {hist["ontime"]}% · 검수 승인 {hist["pass"]}%'
     else:
-        l2 = '<span class="ev new">뷰마 첫 참여 — 이력·평점 없음</span>'
-    return f'<span class="evi">{l1}</span><span class="evi">{l2}</span>'
+        s2 = '<span class="ev new">첫 참여</span>'
+        t2 = "뷰마 첫 참여 — 이력 · 평점 없음"
+    tip = (f'<span class="ap-tip" role="tooltip"><span><em>블로그지수</em>{t1}</span>'
+           f'<span><em>뷰마 이력</em>{t2}</span><span><em>신청 메모</em>"{memo}"</span></span>')
+    return f'<span class="ap-sum">{s1}{s2}</span>', tip
 
 
 def applicant_li(due, mark=False):
@@ -500,10 +507,12 @@ def applicant_li(due, mark=False):
             f' data-ours="{hist["ours"] if hist else 0}"')
     lock = ' disabled title="블로그를 먼저 확인하세요"' if need_check else ""
     gate = ('<span class="gate">근거 없음 · 블로그를 열어 확인한 뒤 선정할 수 있어요</span>' if need_check else "")
+    memo = rnd.choice(["주말 방문 가능해요", "아이와 함께 방문 예정", "사진 위주로 작성합니다", "평일 저녁 방문"])
+    summary, tip = evidence_html(bi, hist, memo)
+    # [2026-11-25] 사용자: "블로그보기 버튼 아이콘처리" — go-ext = 새 창 아이콘(글자는 화면 읽기 · 말풍선으로만), js-blog 동작은 그대로
     return (f'<li class="item ap{" need-check" if need_check else ""}"{li_attr}{sort}>'
-            f'<div class="item-main"><b>{nick}</b>{evidence_html(bi, hist)}'
-            f'<span class="memo">"{rnd.choice(["주말 방문 가능해요", "아이와 함께 방문 예정", "사진 위주로 작성합니다", "평일 저녁 방문"])}"</span>'
-            f'<a href="#" class="blog-open js-blog">블로그 보기 ↗</a>{gate}</div>'
+            f'<div class="item-main"><b>{nick}</b>{summary}'
+            f'<a href="#" class="blog-open js-blog go-ext" title="블로그 보기 (새 창)">블로그 보기</a>{tip}{gate}</div>'
             f'<div class="acts"><button type="button" class="ag-btn sm primary js-pick"{b_attr}{lock} data-done="선정됨">선정</button>'
             f'<button type="button" class="ag-btn sm"{b_attr} data-done="보류">보류</button></div></li>')
 

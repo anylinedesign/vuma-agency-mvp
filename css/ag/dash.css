@@ -270,13 +270,19 @@
 .work.ag.dash .panel .item .acts{gap:4px;margin-left:auto}
 .work.ag.dash .panel .ship-f{display:flex;gap:4px;margin-left:auto}
 .work.ag.dash .panel .ship-f .input{width:150px;height:26px;font-size:12px}
-/* 신청자: 1줄 = 이름 · 아이콘 · 지수 등급 · 점수 · 평점 · 우리와 · 블로그 보기 / 2줄 = 근거 글(회색) · 메모 */
+/* 신청자 한 줄 = 이름 · 문서 아이콘 · [지수 등급 · 점수 · 평점 · 우리와 · 패널티] · 블로그(새 창 아이콘) ··· [선정][보류]
+   [2026-11-25] 사용자: "블로거 상세정보는 hover시 말풍선으로" — 줄에 마우스(또는 키보드 초점)를 올리면 아래로 말풍선
+   숨김 상태도 clip 으로만 가려 화면 읽기는 그대로 읽는다 */
+.work.ag.dash .panel .item.ap{position:relative}
 .work.ag.dash .panel .item.ap .acts{padding-top:0;border-top:0}
-.work.ag.dash .panel .item.ap .evi{display:contents}
-.work.ag.dash .panel .item.ap .item-main::after{content:"";order:1;flex-basis:100%;height:0}
-.work.ag.dash .panel .item.ap :is(.ev,.memo){order:2;color:var(--ag-c-9)}
-.work.ag.dash .panel .item.ap .evi + .evi .ev::before{content:"· "}
-.work.ag.dash .panel .item.ap .gate{order:3;margin:2px 0 0;font-size:12px}
+.work.ag.dash .panel .blog-open.go-ext{margin:0;font-size:0}
+.work.ag.dash .panel .ap-sum{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.work.ag.dash .panel .item.ap .gate{flex-basis:100%;margin:2px 0 0;font-size:12px}
+.work.ag.dash .panel .ap-tip{position:absolute;left:10px;top:calc(100% - 4px);z-index:5;display:grid;gap:3px;width:max-content;max-width:calc(100% - 20px);padding:8px 10px;border-radius:6px;background:var(--ag-c-14);box-shadow:0 4px 14px rgb(0 0 0 / .18);font-size:12px;line-height:1.45;color:#fff;white-space:normal;pointer-events:none;opacity:0;clip-path:inset(50%)}
+.work.ag.dash .panel .ap-tip::before{content:"";position:absolute;top:-5px;left:16px;border:5px solid transparent;border-top:0;border-bottom-color:var(--ag-c-14)}
+.work.ag.dash .panel .ap-tip em{display:inline-block;min-width:64px;margin-right:6px;font-style:normal;color:#c9c3e6}
+.work.ag.dash .panel .item.ap:is(:hover,:focus-within) .ap-tip{opacity:1;clip-path:none;transition:opacity .12s .15s}
+.work.ag.dash .panel .item.ap:is(:hover,:focus-within){z-index:4;background:var(--ag-fl-hover)}
 .work.ag.dash .panel :is(.bi,.ours){padding:0;background:none;font-size:12px}
 .work.ag.dash .panel .bi{color:var(--ag-c-11)}
 .work.ag.dash .panel :is(.ag-bi-score,.star){font-size:12px;color:var(--ag-c-14)}
