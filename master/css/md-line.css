@@ -125,6 +125,11 @@
 .md-q .md-age { font-size: 12px; font-weight: 600; }
 .md-wl { margin: 6px 12px 0; padding: 6px 0 2px; font-size: 12px; }
 .md-q.md-watch { padding: 3px 12px; }
+/* [2026-11-25] 사용자: "경과시간 표기 빼기" — 시간 글자 숨김, 급한 정도 = 건수 색(대행사 표 칸과 같은 방식), 자세히 = 말풍선(title) */
+.md-q { grid-template-columns: minmax(0, 1fr) auto; }
+.md-q small { display: none; } /* 시간 없는 줄의 빈 small 도 — 칸을 차지해 건수가 다음 줄로 밀리지 않게 */
+.md-q.md-is-hot b { color: var(--color-danger); }
+.md-q.md-is-soon b { color: var(--color-warning); }
 .md-q.md-watch b { font-size: 12px; font-weight: 500; }
 
 /* 아래 판(플랫폼 현황 · 돈 흐름 · 최근 운영 활동) — 값과 설명을 한 줄로, 줄 높이 줄임 */

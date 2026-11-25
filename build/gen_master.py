@@ -254,8 +254,10 @@ def q_btn(q):
     zero = " is-zero" if q["n"] == 0 else ""
     cls = age_cls(q["age"]) if q["kind"] == "act" else ""
     age = f'<small class="md-age {cls}">{age_txt(q["age"])}</small>' if q["age"] is not None and q["n"] else "<small></small>"
-    return (f'<li><button type="button" class="md-q md-{q["kind"]}{zero}" data-roles="{q["roles"]}" popovertarget="md-dr-{q["key"]}" '
-            f'title="{esc(q["purpose"])}"><span>{q["name"]}</span>{age}<b>{q["n"]}</b></button></li>')
+    # [2026-11-25] 사용자: "경과시간 표기 빼기" — 시간 글자는 md-line.css 에서 숨기고, 급한 정도는 건수 색(md-{cls}) · 자세히는 말풍선(title)
+    tip = esc(q["purpose"]) + (f" · 가장 오래 기다린 건 {age_txt(q['age'])}" if q["age"] is not None and q["n"] else "")
+    return (f'<li><button type="button" class="md-q md-{q["kind"]}{zero}{" md-" + cls if cls else ""}" data-roles="{q["roles"]}" '
+            f'popovertarget="md-dr-{q["key"]}" title="{tip}"><span>{q["name"]}</span>{age}<b>{q["n"]}</b></button></li>')
 
 
 def board():
@@ -269,9 +271,10 @@ def board():
         cols.append(f'<div class="md-col" data-area="{a}"><p class="md-area"><b>{lab}</b><em>{n}건</em></p>'
                     f'<ul class="md-qs">{act}</ul>'
                     + (f'<p class="md-wl">지켜보기</p><ul class="md-ws">{watch}</ul>' if watch else "") + '</div>')
+    # [2026-11-25] 경과시간 글자를 뺐으므로 범례 = 건수 색의 뜻
     return ('<section class="card md-board" aria-label="처리 대기"><div class="card__head"><span class="card__title">처리 대기</span>'
-            '<span class="md-legend">시간 = 가장 오래 기다린 건 · <i class="md-age is-hot">24시간 넘음</i>'
-            '<i class="md-age is-soon">8시간 넘음</i><i class="md-age">8시간 안</i></span></div>'
+            '<span class="md-legend">건수 색 = 가장 오래 기다린 건 · <i class="md-age is-hot">24시간 넘음</i>'
+            '<i class="md-age is-soon">8시간 넘음</i><i class="md-age">8시간 안</i> · 자세히는 말풍선</span></div>'
             f'<div class="md-cols">{"".join(cols)}</div></section>')
 
 
