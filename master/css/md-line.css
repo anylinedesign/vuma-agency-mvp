@@ -158,11 +158,16 @@
 .md-dr .md-list .btn--outline:hover { border-color: #cbbcff; background: #ece6ff; }
 .md-dr footer { padding: 10px 16px; }
 
+/* [2026-11-26] 사용자: "알림을 우측에 배치하기" — 받은 알림 열을 오른쪽으로(본문 | 받은 알림). 마크업 순서는 그대로, 보이는 자리만 */
+.md-lay { grid-template-columns: minmax(0, 1fr) 260px; }
+.md-lay > .md-alcol { order: 2; }
+
 /* ── 좁은 화면 ── */
 @media (max-width: 1100px) {
-	.md-lay { grid-template-columns: 230px minmax(0, 1fr); gap: 16px; }
+	.md-lay { grid-template-columns: minmax(0, 1fr) 230px; gap: 16px; }
 }
 @media (max-width: 860px) {
 	.md-lay { grid-template-columns: minmax(0, 1fr); }
 	.md-alcol { position: static; }
+	.md-lay > .md-alcol { order: 0; } /* 쌓일 때는 알림이 맨 위 */
 }

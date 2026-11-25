@@ -214,6 +214,11 @@
 .rd-dr__l span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rd-dr footer { padding: 10px 16px; }
 
+/* [2026-11-26] 사용자: "리뷰어 대시보드 버튼도 더 가볍게" — 대행사 · 마스터 패널 버튼과 같은 옅은 보라
+   (지금 할 일 버튼: 흰 바탕 → 옅은 보라 바탕 / 서랍 맨 아래 [~ 화면 열기]: 꽉 찬 보라 → 같은 옅은 보라) */
+.rd-tbl--todo .rd-btn--pri, .rd-dr footer .rd-btn--pri { border-color: #e0d6ff; background: #f6f3ff; color: var(--color-primary); font-weight: 600; }
+.rd-tbl--todo .rd-btn--pri:hover, .rd-dr footer .rd-btn--pri:hover { border-color: #cbbcff; background: #ece6ff; color: var(--color-primary); }
+
 /* ── 좁아질 때 — 본문 폭 기준 ── */
 @container (max-width: 900px) {
 	.rd-two { grid-template-columns: minmax(0, 1fr); }

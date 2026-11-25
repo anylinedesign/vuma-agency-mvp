@@ -322,3 +322,13 @@
 .work.ag.dash .al-card .al-txt{order:5;font-size:13px}
 .work.ag.dash .al-card :is(.al-esc,.al-sz){order:6;font-size:12px}
 .work.ag.dash .al-card .al-acts{order:7;gap:4px;margin-top:4px}
+
+/* ── 6) [2026-11-26] 사용자: "대시보드 테두리 대행사에도 반영" — 마스터처럼 회색 바탕 위 1px 테두리 흰 상자
+   받은 알림 · 업체별 표 · 오른쪽 패널을 각각 상자로, 사이는 12px 회색 틈. 둥근 모서리 · 그림자 없음 */
+.work.ag.dash{gap:12px;padding:12px;background:#f4f4f6}
+.work.ag.dash > .alcol,.work.ag.dash > .board,.work.ag.dash > .panel{border:1px solid #dbdbdb;background:#fff}
+.work.ag.dash > .alcol{border-right:1px solid #dbdbdb}
+@media (max-width:860px){
+	.work.ag.dash > .alcol{border-bottom:1px solid #dbdbdb}
+	.work.ag.dash{gap:8px;padding:8px} /* 폰: 틈을 줄여 표 폭 확보 */
+}
