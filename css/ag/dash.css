@@ -283,6 +283,12 @@
 .work.ag.dash .panel .ap-tip em{display:inline-block;min-width:64px;margin-right:6px;font-style:normal;color:#c9c3e6}
 .work.ag.dash .panel .item.ap:is(:hover,:focus-within) .ap-tip{opacity:1;clip-path:none;transition:opacity .12s .15s}
 .work.ag.dash .panel .item.ap:is(:hover,:focus-within){z-index:4;background:var(--ag-fl-hover)}
+/* [2026-11-25] 사용자: "리스트 마지막 항목의 hover 말풍선은 부모에 가려짐"
+   ① 캠페인 묶음의 overflow:clip(agency.css — 둥근 모서리용, 여기선 모서리 0)을 풀고
+   ② 묶음의 마지막 줄(둘 이상일 때)은 말풍선을 위로 — 패널 스크롤 끝에서도 잘리지 않게 */
+.work.ag.dash .panel .cgroup{overflow:visible}
+.work.ag.dash .panel .items > .item.ap:last-child:not(:first-child) .ap-tip{top:auto;bottom:calc(100% - 4px)}
+.work.ag.dash .panel .items > .item.ap:last-child:not(:first-child) .ap-tip::before{top:auto;bottom:-5px;border-top:5px solid var(--ag-c-14);border-bottom:0}
 /* [2026-11-25] 사용자: "각 이슈들은 hover로 따로 말풍선 제공" — 우리와 N회 · 패널티 이력 = 작은 아이콘, 뜻은 아이콘 위 말풍선(data-tip)
    아이콘에 올라가 있는 동안은 줄 전체 말풍선(블로거 상세)을 숨겨 두 개가 겹치지 않게 */
 .work.ag.dash .panel .ap-sum{min-width:0}
