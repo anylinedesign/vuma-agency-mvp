@@ -133,10 +133,96 @@
 .rd-dr footer .rd-btn { width: 100%; border-radius: 4px; }
 .rd-foot a { color: var(--color-primary); }
 
+/* ==========================================================================
+   [2026-11-25] 촘촘하게 — 사용자: "리뷰어 대시보드도 같은 방식으로 촘촘하게"
+   대행사 dash.css 5절 · 마스터 md-line.css 6절과 같은 규칙:
+   항목 = 한 줄 · 숫자 = 항목 글자와 같은 크기 · 제목 15 / 이름 13~14 / 보조 12 · 색은 급함 글자에만 · 긴 설명은 hover 말풍선
+   ========================================================================== */
+.rd-lay { gap: 16px; }
+.rd-main { gap: 14px; }
+.rd-two { grid-template-columns: minmax(0, 1fr) 270px; gap: 12px; }
+
+/* 제목 줄 — 제목과 건수 같은 크기 */
+.rd-tc__h { margin-bottom: 6px; }
+.rd-tc__h h2, .rd-alcol__h h2 { font-size: 15px; }
+.rd-tc__h h2 em, .rd-alcol__h > b { margin-left: 2px; font-size: 15px; }
+.rd-tc__h .rd-link, .rd-legend { font-size: 12px; }
+
+/* 왼쪽 받은 알림 — 종류 한 줄: 이름 · 최근 제목(말줄임) · 건수, 시각은 뺌 */
+.rd-alcol__h { padding: 8px 12px; }
+.rd-alg + .rd-alg { border-top: 0; }
+.rd-alg__h { padding: 5px 12px; border-top: 1px solid var(--rd-line2); background: var(--rd-head); font-size: 12px; }
+.rd-alg__h b, .rd-alg__h em { font-size: 13px; }
+.rd-alg--i .rd-alg__h b, .rd-alg--i .rd-alg__h em { color: #363636; }
+.rd-ak { grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 6px 12px; }
+.rd-ak__n { font-size: 13px; white-space: nowrap; }
+.rd-ak__c { order: 3; font-size: 13px; font-weight: 700; }
+.rd-alg--i .rd-ak__c { color: #363636; }
+.rd-ak__s { grid-column: auto; order: 2; display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rd-ak__s > span:last-child { display: none; }
+
+/* 표 공통 — 칸 여백 줄임 */
+.rd-tbl th, .rd-tbl td { padding: 6px 10px; }
+.rd-tbl thead th { padding-top: 5px; padding-bottom: 5px; }
+
+/* 진행 현황 — 숫자 = 15px(항목과 비슷한 크기로), 줄 사이 줄임 */
+.rd-fl-n td { padding: 4px 4px 0; }
+.rd-fl, .rd-fl-pt .rd-fl { padding: 2px 0; font-size: 15px; }
+.rd-tbl .rd-fl small { font-size: 12px; }
+.rd-fl-s td { padding: 0 6px 6px; }
+.rd-fl-s .rd-link--warn { margin-top: 0; }
+
+/* 지금 할 일 — 한 줄: 기한 | 할 일(고정 폭) · 캠페인(말줄임) | 버튼, 설명은 hover 말풍선
+   .rd-tw 의 overflow-x:auto 는 말풍선을 자르므로 이 표만 visible (min-width 0 이라 가로 스크롤 필요 없음) */
+.rd-two .rd-tw { overflow: visible; }
+.rd-tbl--todo td:nth-child(2) { position: relative; }
+.rd-tbl--todo tbody td { padding-top: 5px; padding-bottom: 5px; }
+/* 칸은 table-cell 그대로(flex 로 바꾸면 열이 어긋남) — 고정 표 + 안쪽은 inline-block 두 개 */
+.rd-tbl--todo { table-layout: fixed; }
+.rd-tbl--todo thead th:first-child { width: 48px; }
+.rd-tbl--todo thead th:last-child { width: 150px; }
+.rd-tbl--todo td:nth-child(2) { white-space: nowrap; }
+.rd-tbl--todo .rd-t-k { display: inline-block; width: 82px; margin-right: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
+.rd-tbl--todo td b { display: inline-block; max-width: calc(100% - 90px); overflow: hidden; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
+.rd-t-dd { width: 48px; font-size: 13px; }
+.rd-tbl--todo .rd-btn { min-height: 26px; padding: 0 8px; }
+/* 설명 = 말풍선(숨길 때도 화면 읽기 프로그램은 읽도록 display:none 대신 opacity · clip-path) */
+.rd-tbl--todo td small { position: absolute; z-index: 5; top: calc(100% - 2px); left: 10px; display: block; width: max-content; max-width: 340px; margin: 0;
+	padding: 7px 10px; border-radius: 6px; background: #2b2b33; color: #fff; font-size: 12px; line-height: 1.5;
+	-webkit-line-clamp: unset; overflow: visible; box-shadow: 0 4px 12px rgba(0, 0, 0, .15); pointer-events: none;
+	opacity: 0; clip-path: inset(50%); transition: opacity .12s; }
+.rd-tbl--todo tr:is(:hover, :focus-within) td small { opacity: 1; clip-path: none; }
+.rd-tbl--todo tbody tr:hover > * { background: #fafafb; }
+/* 맨 아래 줄은 위로 띄워 표 밖으로 넘치지 않게 */
+.rd-tbl--todo tbody tr:last-child:not(:first-child) td small { top: auto; bottom: calc(100% - 2px); }
+
+/* 이번 주 일정 — 일정 하나 = 한 줄(점 · 이슈 · 캠페인 말줄임), 날짜도 한 줄 */
+.rd-tbl--wk th, .rd-tbl--wk td { padding: 5px 10px; }
+.rd-tbl--wk th { width: 78px; font-size: 13px; }
+.rd-tbl--wk th small { display: inline; margin-left: 2px; font-size: 12px; }
+.rd-tbl--wk td p { flex-wrap: nowrap; }
+.rd-tbl--wk td p + p { margin-top: 2px; }
+.rd-tbl--wk td span { flex: 1 1 auto; flex-basis: auto; min-width: 0; padding-left: 0; }
+
+/* 오른쪽 서랍 — 줄 = 제목 · 설명(말줄임) · 시각 한 줄 */
+.rd-dr header { padding: 12px 16px 10px; }
+.rd-dr header b { font-size: 15px; }
+.rd-dr__l { margin: 10px 12px; }
+.rd-dr__l li { padding: 6px 10px; }
+.rd-dr__l div { flex-direction: row; align-items: baseline; gap: 8px; }
+.rd-dr__l b { flex: none; max-width: 60%; overflow: hidden; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.rd-dr__l span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rd-dr footer { padding: 10px 16px; }
+
 /* ── 좁아질 때 — 본문 폭 기준 ── */
 @container (max-width: 900px) {
 	.rd-two { grid-template-columns: minmax(0, 1fr); }
 }
 @container (max-width: 720px) {
 	.rd-lay { grid-template-columns: minmax(0, 1fr); }
+}
+/* [2026-11-25] 촘촘하게 — 폰처럼 좁으면 '할 일' 종류를 캠페인 이름 위 작은 줄로(이름이 잘려 안 보이는 것 방지) */
+@container (max-width: 560px) {
+	.rd-tbl--todo .rd-t-k { display: block; width: auto; margin: 0; }
+	.rd-tbl--todo td b { display: block; max-width: none; }
 }

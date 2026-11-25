@@ -310,7 +310,7 @@ def alcol():
 def al_drawers():
     """종류마다 오른쪽 패널 하나 + 전체 — 줄 = 제목 · 설명 · 시각, 아래 [화면 열기](실서버 화면 안내)"""
     def one(key, title, scr, items):
-        rows = "".join(f'<li><div><b>{h(t)}</b><span>{h(d)}</span></div><small>{h(w)}</small></li>' for t, d, w in items)
+        rows = "".join(f'<li title="{h(t)} — {h(d)}"><div><b>{h(t)}</b><span>{h(d)}</span></div><small>{h(w)}</small></li>' for t, d, w in items)
         go = (f'<button type="button" class="rd-btn rd-btn--pri" popovertarget="rd-stub-{scr}">{h(STUB.get(scr, title))} 화면 열기</button>'
               if scr else '<button type="button" class="rd-btn" popovertarget="rd-stub-messageList">알림내역 화면 열기</button>')
         return (f'<aside class="rd-dr" id="rd-al-{key}" popover aria-label="{h(title)}"><header><div><b>{h(title)} {len(items)}건</b>'
@@ -365,7 +365,8 @@ def week_tbl():
         d = D(i)
         its = by.get(d, [])
         lab = "오늘" if i == 0 else ("내일" if i == 1 else WEEK[d.weekday()])
-        body = ("".join(f'<p class="mcal-c--{c}"><i></i><b>{h(iss)}</b> <span>{h(nm)}</span></p>' for c, iss, nm in its)
+        # [2026-11-25] 촘촘하게 — 일정 한 줄(캠페인 말줄임)이라 전체 글자는 title 로
+        body = ("".join(f'<p class="mcal-c--{c}" title="{h(iss)} · {h(nm)}"><i></i><b>{h(iss)}</b> <span>{h(nm)}</span></p>' for c, iss, nm in its)
                 if its else '<p class="rd-none">일정 없음</p>')
         trs.append(f'<tr{" class=\"is-today\"" if i == 0 else ""}><th scope="row">{md(d)} <small>{lab}</small></th><td>{body}</td></tr>')
     return (f'<section class="rd-tc" aria-labelledby="rd-wk-h"><div class="rd-tc__h"><h2 id="rd-wk-h">이번 주 일정</h2>'
