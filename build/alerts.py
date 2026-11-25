@@ -74,7 +74,7 @@ def card(a, demo=False):
     biz_go = f' <button type="button" class="mini-go bdr-go" popovertarget="bdr-{a["bid"]}">업체 보기</button>'
     camp_title = f'[{a["biz"].split()[0]}] {a["camp"]}' if a.get("camp") else ""
     camp = (f'<span class="al-camp"><span class="ty ty-{tb}">{a["tyname"]}</span> {esc(camp_title)}'
-            f'<a class="mini-go js-cm" href="campaigns.html#c-{a["bid"]}-{a["code"]}-{CAMP_TAB.get(kind, "rev")}" '
+            f'<a class="mini-go js-cm go-doc" title="캠페인 보기" href="campaigns.html#c-{a["bid"]}-{a["code"]}-{CAMP_TAB.get(kind, "rev")}" '
             f'data-cm-title="{esc(a["biz"])} · {esc(camp_title)}">캠페인 보기</a></span>' if a.get("camp") else "")
     esc_tag = (f'<p class="al-esc">처리 안 된 지 2시간이 넘어 <b>팀장 {a["lead"]}</b>님에게도 알렸습니다</p>' if a.get("esc") else "")
     snooze = "" if lv == "i" else (

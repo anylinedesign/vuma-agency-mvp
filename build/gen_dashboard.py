@@ -435,9 +435,11 @@ def cgroup(camp, due, n, unit, inner):
     return (f'<section class="cgroup cg-{ty}" id="{gid}" data-type="{ty}" data-camp="{ccode(camp)}" aria-label="{esc(camp)} 캠페인">'
             # [2026-11-13] 요청 "캠페인 이름을 앞단으로, 기자단·블로그 같은 라벨은 그 아래로, 영역 색 띠는 제목칸에"
             f'<header class="cgroup-h"><div class="cg-l1"><b class="cg-name">{esc(camp_title(b, camp))}</b>'
-            f'<a class="mini-go js-cm" href="{camp_href(camp)}" data-cm-title="{esc(b["name"]) if b else ""} · {esc(camp_title(b, camp))}">캠페인 보기</a>'
+            # [2026-11-25] go-doc = 문서 아이콘(글자는 화면 읽기 · 말풍선으로만) — 사용자: "캠페인에서보기는 문서아이콘처리"
+            f'<a class="mini-go js-cm go-doc" title="캠페인 보기" href="{camp_href(camp)}" data-cm-title="{esc(b["name"]) if b else ""} · {esc(camp_title(b, camp))}">캠페인 보기</a>'
             # [2026-11-13] 회의(11/12) "캠페인 이슈만 별도로 정리하는 UI" → 이슈 모아보기 탭
-            f'<a class="mini-go js-cm" href="{camp_href(camp, "iss")}" data-cm-title="{esc(b["name"]) if b else ""} · {esc(camp_title(b, camp))} · 이슈">이슈 보기</a>'
+            # [2026-11-25] go-iss = 느낌표 아이콘 — 묶음 머리를 한 줄에 담으려고(글자는 화면 읽기 · 말풍선으로만)
+            f'<a class="mini-go js-cm go-iss" title="이슈 보기" href="{camp_href(camp, "iss")}" data-cm-title="{esc(b["name"]) if b else ""} · {esc(camp_title(b, camp))} · 이슈">이슈 보기</a>'
             f'<em>{unit} {n}</em></div>'
             f'<div class="cg-l2"><span class="ty ty-{ty}">{TYPE_NAME[ty]}</span><span class="chn">{ch}</span>'
             f'<span class="cg-state">{state}</span><span class="due {due_class(due)}">{due_label(due)}</span></div></header>'
@@ -516,7 +518,8 @@ SORT_CHIPS = ('<div class="sorts" role="group" aria-label="신청자 정렬">'
 def review_li(due):
     ch, _u = rnd.choice(CHANNELS)
     return (f'<li class="item col" data-due="{due}"><div class="item-main"><b>{rnd.choice(REVIEWERS)}</b>'
-            f'<span class="meta">{ch} · 등록 {rnd.randint(1, 3)}일 전 · <a href="#" class="ext">리뷰 보기 ↗</a></span></div>'
+            # [2026-11-25] 사용자: "리뷰보기는 새창아이콘처리" — go-ext = 새 창 아이콘(글자는 화면 읽기 · 말풍선으로만)
+            f'<span class="meta">{ch} · 등록 {rnd.randint(1, 3)}일 전</span><a href="#" class="ext go-ext" title="리뷰 보기 (새 창)">리뷰 보기</a></div>'
             # [2026-11-13] 검수 체크 항목(필수 키워드 · 글자 수 · 사진 · 광고 표시) 뺌 — 요청 "검수해야 할 항목 표기는 필요 없다"
             '<div class="acts"><button type="button" class="ag-btn sm primary" data-done="승인">승인</button>'
             '<button type="button" class="ag-btn sm" data-done="수정 요청 보냄">수정 요청</button>'
@@ -566,7 +569,7 @@ def typed(li, camp):
     m = re.search(r'<div class="item-main"><b>([^<]+)</b>', li)
     if m:
         b = CUR.get("biz")
-        go = (f'<a class="mini-go js-cm" href="{camp_href(camp)}" '
+        go = (f'<a class="mini-go js-cm go-doc" title="캠페인에서 보기" href="{camp_href(camp)}" '
               f'data-cm-title="{esc(b["name"]) if b else ""} · {esc(camp_title(b, camp))} · {m.group(1)}">캠페인에서 보기</a>')
         li = li.replace(m.group(0), f'<div class="item-main"><div class="it-h"><b>{m.group(1)}</b>{go}</div>', 1)
     return li

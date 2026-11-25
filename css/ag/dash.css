@@ -189,3 +189,108 @@
 	.work.ag.dash .vtabs label{white-space:nowrap}
 	.work.ag.dash .vtabs label em{display:none}
 }
+
+/* ── 5) [2026-11-25] 촘촘하게 · 한 항목 = 한 줄 · 글자 크기 맞춤
+   사용자 의견: 항목과 색이 많아 분간이 어렵다 / 글자 크기가 제각각 / 한 항목이 여러 줄로 나뉨 / 한 화면에 적게 보임
+   요청 1) 좌측 항목 간격 최소화 · 1줄  2) 업체 줄 알림 = 작은 종 + 숫자  3) 패널 캠페인명 = 업체 목록 이름 크기(13px)
+        4) 패널 항목 1줄 · 간격 최소화  5) 캠페인에서 보기 = 문서 아이콘 · 리뷰 보기 = 새 창 아이콘
+        + 수치는 옆 항목과 같은 크기 / 경과 표시는 빼도 됨
+   규칙: 이름 13px · 보조 12px · 수치 = 옆 글자와 같은 크기 / 색은 등급 머리 · 기한(칸 글자색)에만 */
+.work.ag.dash{
+	--ag-row-h:34px;
+	--ag-ico-doc:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z'/%3E%3Cpath d='M14 3v5h5M9 13h6M9 17h6'/%3E%3C/svg%3E");
+	--ag-ico-ext:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9'/%3E%3Cpath d='M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E");
+	--ag-ico-iss:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5v5.5M12 16.5h.01'/%3E%3C/svg%3E");
+	--ag-ico-bell:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9'/%3E%3Cpath d='M10.3 21a1.94 1.94 0 0 0 3.4 0'/%3E%3C/svg%3E");
+}
+
+/* 5-1) 좌측 받은 알림 — [종류 이름 · 최근 업체 · 건수] 한 줄, 시각(경과)은 뺌 */
+.alcol{padding:14px 0 10px}
+.alcol-h{padding:0 12px 10px 16px}
+.alcol-h h2,.alcol-n{font-size:15px}
+.alcol .alg-h{gap:6px;padding:6px 16px;font-size:12px}
+.work.ag .alcol .alg-h .lvb,.alcol .alg-h em{font-size:13px}
+.alg + .alg{border-top-width:4px}
+.akind{grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:6px 16px}
+.ak-n{grid-column:1;font-size:13px;white-space:nowrap}
+.ak-s{grid-column:2;grid-row:1;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ak-s .ak-t{display:none}
+.alcol .alg .akind .ak-c{grid-column:3;font-size:13px;font-weight:700;color:var(--ag-c-14)}
+.alcol .alg .akind.is-zero .ak-c{color:var(--ag-c-8);font-weight:500}
+
+/* 5-2) 가운데 표 — 칸의 경과 글자(1일 지남 · D-2)는 뺌(기한은 칸 글자색 · 자세히는 말풍선), 줄 높이 44 → 34 */
+.work.ag.dash .cell{height:26px}
+.work.ag.dash .cell small{display:none}
+.work.ag.dash .cell b,.work.ag.dash .grid .tot{font-size:13px}
+.work.ag.dash .grp th,.work.ag.dash .grp-late th,.work.ag.dash :is(.team,.team-solo,.team-none-owner) th{height:30px}
+.work.ag.dash .staff th,.work.ag.dash .staff td{height:var(--ag-row-h)}
+/* 업체 이름 옆 알림 = 작은 종 + 숫자(바탕 없음) · 즉시 등급이 있으면 빨간 글자 */
+.work.ag.dash .adot{gap:1px;height:18px;margin-left:4px;padding:0 3px;border-radius:4px;background:none;color:var(--ag-c-8);font-size:12px;font-weight:700}
+.work.ag.dash .adot.lv-u{background:none;color:var(--ag-danger)}
+.work.ag.dash .adot:hover{background:var(--ag-fl-hover)}
+.work.ag.dash .adot i{width:12px;height:12px;border-radius:0;background:currentColor;-webkit-mask:var(--ag-ico-bell) center / contain no-repeat;mask:var(--ag-ico-bell) center / contain no-repeat}
+
+/* 5-3) 아이콘 링크 — 글자는 화면 읽기용으로 남기고(font-size 0) 말풍선(title)으로 */
+.work.ag.dash :is(.go-doc,.go-ext,.go-iss){display:inline-flex;align-items:center;justify-content:center;flex:none;width:20px;height:20px;margin-left:2px;padding:0;border:0;border-radius:4px;background:none;font-size:0;color:var(--ag-c-8);vertical-align:middle;text-decoration:none}
+.work.ag.dash :is(.go-doc,.go-iss)::after{content:none}
+.work.ag.dash :is(.go-doc,.go-ext,.go-iss)::before{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:var(--ag-ico-doc) center / contain no-repeat;mask:var(--ag-ico-doc) center / contain no-repeat}
+.work.ag.dash .go-ext::before{-webkit-mask-image:var(--ag-ico-ext);mask-image:var(--ag-ico-ext)}
+.work.ag.dash .go-iss::before{-webkit-mask-image:var(--ag-ico-iss);mask-image:var(--ag-ico-iss)}
+.work.ag.dash :is(.go-doc,.go-ext,.go-iss):hover{background:var(--ag-main-light);color:var(--ag-main)}
+
+/* 5-4) 오른쪽 패널 글자 크기 — 제목 15 · 이름 13 · 보조 12, 수치는 옆 글자와 같게, 기한은 테두리 없이 글자색만 */
+.work.ag.dash .panel .pane-h{padding:14px 52px 0 16px}
+.work.ag.dash .panel .pane-h h2{margin:4px 0 2px;font-size:15px;font-weight:700}
+.work.ag.dash .panel .pane-h h2 em{font-size:15px;font-weight:700;color:var(--ag-c-14)}
+.work.ag.dash .panel :is(.pane-biz,.pane-camp){font-size:12px}
+.work.ag.dash .panel .due{padding:0;border:0;background:none;font-size:12px}
+.work.ag.dash .panel :is(.alv,.pchip,.sort){height:32px;padding:0 10px;font-size:12px}
+.work.ag.dash .panel .alv .lvb{font-size:12px}
+.work.ag.dash .panel .pane-b{padding:10px 12px 12px}
+.work.ag.dash .panel .sorts{margin:0 0 8px}
+.work.ag.dash .panel .mini-go:not(.go-doc,.go-iss){height:20px;margin-left:2px;padding:0 4px;border:0;background:none;font-size:12px;font-weight:500;color:var(--ag-c-8)}
+.work.ag.dash .panel .mini-go:not(.go-doc,.go-iss):hover{background:var(--ag-main-light);color:var(--ag-main)}
+.work.ag.dash .panel .ag-btn.sm{height:26px;padding:0 9px;font-size:12px}
+
+/* 캠페인 묶음 머리 = 한 줄: 캠페인명(13px) · 문서 아이콘 · 이슈 보기 · 유형 · 채널 · 상태 · 기한 ··· 건수 */
+.work.ag.dash .panel .cgroup{margin:0 0 8px}
+.work.ag.dash .panel .cgroup-h{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px;padding:7px 10px}
+.work.ag.dash .panel :is(.cg-l1,.cg-l2){display:contents}
+.work.ag.dash .panel .cg-l1 .cg-name{font-size:13px;font-weight:700}
+.work.ag.dash .panel .cg-l2 > *{margin:0;font-size:12px}
+.work.ag.dash .panel .cg-l1 em{order:9;margin-left:auto;font-size:12px}
+.work.ag.dash .panel .cgroup-b > :not(.items){padding:7px 10px}
+.work.ag.dash .panel :is(.ctx,.names){margin:0;font-size:12px}
+
+/* 건 한 줄: [이름 · 아이콘 · 보조 글자] ··· [버튼] — 좁으면 버튼만 다음 줄 */
+.work.ag.dash .panel .cgroup-b .item{flex-direction:row;flex-wrap:wrap;align-items:center;gap:4px 8px;padding:6px 10px}
+.work.ag.dash .panel .item-main{flex:1 1 180px;flex-direction:row;flex-wrap:wrap;align-items:center;gap:2px 8px}
+.work.ag.dash .panel .item-main b,.work.ag.dash .panel .it-h b{font-size:13px}
+.work.ag.dash .panel :is(.meta,.memo,.ev,.blog-open,.amt){margin:0;font-size:12px}
+.work.ag.dash .panel .item .acts{gap:4px;margin-left:auto}
+.work.ag.dash .panel .ship-f{display:flex;gap:4px;margin-left:auto}
+.work.ag.dash .panel .ship-f .input{width:150px;height:26px;font-size:12px}
+/* 신청자: 1줄 = 이름 · 아이콘 · 지수 등급 · 점수 · 평점 · 우리와 · 블로그 보기 / 2줄 = 근거 글(회색) · 메모 */
+.work.ag.dash .panel .item.ap .acts{padding-top:0;border-top:0}
+.work.ag.dash .panel .item.ap .evi{display:contents}
+.work.ag.dash .panel .item.ap .item-main::after{content:"";order:1;flex-basis:100%;height:0}
+.work.ag.dash .panel .item.ap :is(.ev,.memo){order:2;color:var(--ag-c-9)}
+.work.ag.dash .panel .item.ap .evi + .evi .ev::before{content:"· "}
+.work.ag.dash .panel .item.ap .gate{order:3;margin:2px 0 0;font-size:12px}
+.work.ag.dash .panel :is(.bi,.ours){padding:0;background:none;font-size:12px}
+.work.ag.dash .panel .bi{color:var(--ag-c-11)}
+.work.ag.dash .panel :is(.ag-bi-score,.star){font-size:12px;color:var(--ag-c-14)}
+
+/* 알림 카드: 1줄 = [등급 종류 · 업체 · 시각] / 캠페인 / 내용 / 버튼 — 머리 점선 · 사이 여백 뺌 */
+.work.ag.dash .al-card{display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;padding:8px 12px}
+.work.ag.dash .al-card .al-h{display:contents}
+.work.ag.dash .al-card .al-h b{font-size:13px}
+.work.ag.dash .panel .al-card .lvb{font-size:13px}
+.work.ag.dash .al-card .al-biz{order:1;margin:0;font-size:12px;font-weight:500;color:var(--ag-c-9)}
+.work.ag.dash .al-card .al-t{order:2;font-size:12px}
+.work.ag.dash .al-card .new-dot{order:3}
+.work.ag.dash .al-card :is(.al-camp,.al-txt,.al-esc,.al-sz,.al-acts){flex-basis:100%;margin:0}
+.work.ag.dash .al-card .al-camp{order:4;font-size:12px}
+.work.ag.dash .al-card .al-txt{order:5;font-size:13px}
+.work.ag.dash .al-card :is(.al-esc,.al-sz){order:6;font-size:12px}
+.work.ag.dash .al-card .al-acts{order:7;gap:4px;margin-top:4px}
