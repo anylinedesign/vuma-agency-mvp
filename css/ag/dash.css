@@ -370,3 +370,9 @@
 /* ── 8) [2026-11-26] 사용자: "배정 버튼 검정색으로" — 미담당 업체 옆 [배정] 빨강 → 검정 바탕 흰 글자 (빨강은 '미담당' 글자에만) */
 .work.ag.dash .own-go .own-plus{background:var(--ag-c-14,#0e0e0e);color:#fff}
 .work.ag.dash .own-go:hover .own-plus{filter:none;background:#3a3a3a}
+
+/* ── 9) [2026-11-26] 사용자: "우측 패널에 버튼 시스템, 버튼 내 여백 더 줄여서 버튼 축소하기"
+   패널 본문(.pane-b)의 버튼 · [나중에] 모두: 높이 28 → 24 · 좌우 여백 12 → 7 · 버튼 사이 4px. 맨 아래(.pane-f) 버튼은 그대로 */
+.work.ag.dash .panel .pane-b .ag-btn,
+.work.ag.dash .panel .pane-b .snooze summary{height:24px;min-height:0;padding:0 7px;gap:2px;font-size:12px;line-height:1}
+.work.ag.dash .panel .pane-b :is(.al-acts,.acts){gap:4px}
