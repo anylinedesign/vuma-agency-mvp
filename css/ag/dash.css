@@ -323,12 +323,38 @@
 .work.ag.dash .al-card :is(.al-esc,.al-sz){order:6;font-size:12px}
 .work.ag.dash .al-card .al-acts{order:7;gap:4px;margin-top:4px}
 
-/* ── 6) [2026-11-26] 사용자: "대시보드 테두리 대행사에도 반영" — 마스터처럼 회색 바탕 위 1px 테두리 흰 상자
-   받은 알림 · 업체별 표 · 오른쪽 패널을 각각 상자로, 사이는 12px 회색 틈. 둥근 모서리 · 그림자 없음 */
+/* ── 6) [2026-11-26] 마스터처럼 회색 바탕 위 1px 테두리 흰 상자
+   1차 "대시보드 테두리 대행사에도 반영" → 2차 "큰 테두리 제거 · 리스트 테두리 반영 · 알림 위치 변경"
+   - 보드 전체를 감싼 큰 상자는 없앰: 제목 줄(대시보드 · 기준일 · 보는 범위)은 회색 바탕 위에
+   - 리스트 상자 = 탭 줄 + 표. 보드는 격자라 감싸는 요소가 없으므로 ::before 를 2~4줄에 깔아 상자로 씀(마크업 그대로)
+   - 받은 알림 = 오른쪽 열(표 | 받은 알림 | 패널). 마크업 순서는 그대로, order 로 자리만 */
 .work.ag.dash{gap:12px;padding:12px;background:#f4f4f6}
-.work.ag.dash > .alcol,.work.ag.dash > .board,.work.ag.dash > .panel{border:1px solid #dbdbdb;background:#fff}
-.work.ag.dash > .alcol{border-right:1px solid #dbdbdb}
+.work.ag.dash > .alcol,.work.ag.dash > .panel{border:1px solid #dbdbdb;background:#fff}
+.work.ag.dash > .board{padding:8px 4px 0;background:none}
+.work.ag.dash > .board::before{content:"";grid-column:1 / -1;grid-row:2 / 5;align-self:stretch;border:1px solid #dbdbdb;background:#fff}
+.work.ag.dash > .board > :is(.vtabs,.toolbar,.grid-wrap){position:relative}
+.work.ag.dash > .board > .vtabs{margin-left:1px;padding-left:12px}
+.work.ag.dash > .board > .toolbar{margin-right:1px;padding-right:12px}
+.work.ag.dash > .board > .grid-wrap{margin:12px 12px 1px}
+/* 받은 알림 오른쪽 */
+.work.ag.dash > .board{order:1}
+.work.ag.dash > .alcol{order:2}
+.work.ag.dash > .panel{order:3}
+.work.ag.dash{grid-template-columns:minmax(0,1fr) 280px}
+.work.ag.dash:has(> .panel.has-pane){grid-template-columns:minmax(0,1fr) 280px var(--ag-panel-w)}
+@media (max-width:1280px){
+	.work.ag.dash{grid-template-columns:minmax(0,1fr) 240px}
+	.work.ag.dash:has(> .panel.has-pane){grid-template-columns:minmax(0,1fr) 240px var(--ag-panel-w)}
+}
+@media (max-width:1100px){
+	.work.ag.dash:has(> .panel.has-pane){grid-template-columns:minmax(0,1fr) 240px}
+}
 @media (max-width:860px){
-	.work.ag.dash > .alcol{border-bottom:1px solid #dbdbdb}
+	.work.ag.dash,.work.ag.dash:has(> .panel.has-pane){grid-template-columns:minmax(0,1fr)}
+	.work.ag.dash > .alcol{order:0} /* 쌓일 때는 알림이 맨 위 */
 	.work.ag.dash{gap:8px;padding:8px} /* 폰: 틈을 줄여 표 폭 확보 */
+}
+/* 패널이 열려 거르기 줄이 탭 아래로 내려갈 때 — 상자 안쪽 왼쪽 여백 */
+@container (max-width:960px){
+	.work.ag.dash > .board > .toolbar{margin-left:1px;padding-left:12px}
 }

@@ -219,12 +219,17 @@
 .rd-tbl--todo .rd-btn--pri, .rd-dr footer .rd-btn--pri { border-color: #e0d6ff; background: #f6f3ff; color: var(--color-primary); font-weight: 600; }
 .rd-tbl--todo .rd-btn--pri:hover, .rd-dr footer .rd-btn--pri:hover { border-color: #cbbcff; background: #ece6ff; color: var(--color-primary); }
 
+/* [2026-11-26] 사용자: "알림 위치 변경 — 리뷰어도 같이" — 받은 알림 열을 오른쪽으로(표 | 받은 알림). 마크업 순서 그대로 */
+.rd-lay { grid-template-columns: minmax(0, 1fr) 230px; }
+.rd-lay > .rd-alcol { order: 2; }
+
 /* ── 좁아질 때 — 본문 폭 기준 ── */
 @container (max-width: 900px) {
 	.rd-two { grid-template-columns: minmax(0, 1fr); }
 }
 @container (max-width: 720px) {
 	.rd-lay { grid-template-columns: minmax(0, 1fr); }
+	.rd-lay > .rd-alcol { order: 0; } /* 쌓일 때는 알림이 맨 위 */
 }
 /* [2026-11-25] 촘촘하게 — 폰처럼 좁으면 '할 일' 종류를 캠페인 이름 위 작은 줄로(이름이 잘려 안 보이는 것 방지) */
 @container (max-width: 560px) {
