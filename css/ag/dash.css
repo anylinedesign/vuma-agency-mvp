@@ -379,3 +379,7 @@
 
 /* ── 10) [2026-11-26] 사용자: "경과표시에 다트 제거" — 알림 카드 시각(방금 · 4분 전) 옆 빨간 점(새 알림 표시)을 뺌 */
 .work.ag.dash .al-card .new-dot{display:none}
+
+/* ── 11) [2026-11-26] 펼친 캠페인 줄 제목 = 캠페인 창(모달) 링크 — 글자는 그대로, 마우스를 올리면 주색 밑줄 */
+.work.ag.dash .cname .cn-go{color:inherit;text-decoration:none}
+.work.ag.dash .cname .cn-go:hover b,.work.ag.dash .cname .cn-go:focus-visible b{color:var(--ag-main);text-decoration:underline;text-underline-offset:2px}

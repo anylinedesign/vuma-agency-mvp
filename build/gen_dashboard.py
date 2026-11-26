@@ -280,7 +280,9 @@ def camp_rows(b):
         nxt = f' · 다음 기한 {due_label(min(dues))}' if dues else ""
         rows.append(f'<tr class="camp {has_classes(keys)}" data-of-biz="{b["id"]}">'
                     f'<th scope="row" class="bizname cname"><span class="cn-l1"><span class="ty ty-{ty}">{TYPE_NAME[ty]}</span>'
-                    f'<span class="chn">{ch}</span><b>{esc(c)}</b></span>'
+                    f'<span class="chn">{ch}</span>'
+                    # [2026-11-26] 사용자: "대시보드 열림에서 제목 클릭하면 해당 캠페인 모달로" — 제목 = js-cm 링크(scope.js 가 가운데 캠페인 창으로 염)
+                    f'<a class="cn-go js-cm" href="campaigns.html#c-{b["id"]}-{code}-ov" data-cm-title="{esc(b["name"])} · {esc(camp_title(b, c))}"><b>{esc(c)}</b></a></span>'
                     f'<span class="cn-l2">{camp_state(b, c)}{nxt}</span></th>'
                     f'<td class="tot">{len(dues) or ""}</td>{"".join(cells)}</tr>')
     return "".join(rows)
