@@ -376,3 +376,6 @@
 .work.ag.dash .panel .pane-b .ag-btn,
 .work.ag.dash .panel .pane-b .snooze summary{height:24px;min-height:0;padding:0 7px;gap:2px;font-size:12px;line-height:1}
 .work.ag.dash .panel .pane-b :is(.al-acts,.acts){gap:4px}
+
+/* ── 10) [2026-11-26] 사용자: "경과표시에 다트 제거" — 알림 카드 시각(방금 · 4분 전) 옆 빨간 점(새 알림 표시)을 뺌 */
+.work.ag.dash .al-card .new-dot{display:none}
