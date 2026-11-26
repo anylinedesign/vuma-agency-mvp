@@ -939,7 +939,7 @@ def sidebar(issue_total, active="dash"):
              f'{ms("storefront")}<b class="js-scope-name">전체 업체</b>{ms("expand_more")}</button>{scope_pop()}</div>')
     card += who_pop()
     return (f'<aside class="sidebar"><div class="sidebar-inner">'
-            f'<div class="sidebar-brand"><p class="brand-label">뷰마 대행사 <a class="ver add" href="versions/" title="이전 버전 보기">{VERSION} 시안</a></p>'
+            f'<div class="sidebar-brand"><p class="brand-label"><img class="brand-logo" src="img/brand/logo-viewma.svg" alt="뷰마" width="72" height="28"> 대행사 <a class="ver add" href="versions/" title="이전 버전 보기">{VERSION} 시안</a></p>'
             f'<h1 class="brand-name">애니라인 마케팅</h1></div>'
             f'<div class="sidebar-icons">{icons}</div>'
             f'<div class="sidebar-section">{card}</div>'

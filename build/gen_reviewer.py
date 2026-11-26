@@ -161,7 +161,7 @@ def header():
 		<nav class="header-util-links"><a href="#">공지사항</a><a href="#">자주묻는질문</a><a href="#">도움말</a><a href="#">1:1문의</a><a href="#">로그아웃</a></nav>
 	</div>
 	<div class="header-middle">
-		<div class="header-logo-area"><a href="#" class="header-logo">뷰마</a>
+		<div class="header-logo-area"><a href="#" class="header-logo"><img src="../img/brand/logo-viewma.svg" alt="뷰마 VIEWMA" width="97" height="38"></a>
 			<div class="header-search"><input type="text" placeholder="검색어를 입력하세요, 캠페인 코드로 검색" maxlength="50"><button type="button" class="header-search-btn" aria-label="검색"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7346F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button></div>
 		</div>
 		<div class="header-icons">

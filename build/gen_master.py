@@ -203,7 +203,7 @@ def sidebar():
             + (f'<span class="nav-item__badge" title="처리 대기 {badge[k]}건">{badge[k] if badge[k] < 100 else "99+"}</span>' if badge.get(k) else "")
             + "</button>" for k in g["items"])
         out.append(f'<div class="nav-group">{lab}{items}</div>')
-    return ('<aside class="sidebar" id="sidebar"><div class="sidebar-brand"><span class="brand-label">REVIEW.COM</span>'
+    return ('<aside class="sidebar" id="sidebar"><div class="sidebar-brand"><span class="brand-label"><img class="brand-logo" src="../img/brand/logo-viewma.svg" alt="뷰마" width="72" height="28"></span>'
             f'<span class="brand-name">{ms("shield_person")}MASTER</span></div><nav class="sidebar-nav">{"".join(out)}</nav>'
             '<div class="sidebar-footer">ⓒ ANYRIZE · 운영자 콘솔 · 데모</div></aside>')
 

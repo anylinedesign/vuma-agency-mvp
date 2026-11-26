@@ -27,3 +27,8 @@ html.is-embed .sidebar{display:none}
 html.is-embed .dashboard{width:100%}
 /* 캠페인 상세의 닫기(✕ = 목록으로)는 창 안에선 숨김 — 바깥 창의 ✕ 하나만(닫기 두 개가 헷갈림) */
 html.is-embed .cdetail > .modal-close{display:none}
+
+/* [2026-11-26] 뷰마 로고(261125_뷰마_로고out.ai → img/brand/logo-viewma.svg) — 사이드바 위 '뷰마 대행사' 글자 자리 */
+.sidebar-brand .brand-label{display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.sidebar-brand .brand-label .ver{white-space:nowrap}
+.sidebar-brand .brand-logo{display:block;height:28px;width:auto}

@@ -1316,3 +1316,6 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
+/* [2026-11-26] 뷰마 로고 — 머리글 '뷰마' 글자 자리 (모바일은 높이만 줄임) */
+.header-logo img{display:block;height:38px;width:auto}
+@media (max-width:768px){.header-logo img{height:30px}}

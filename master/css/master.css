@@ -5246,3 +5246,7 @@ body:not([data-frame="1"]) .card__body .tab-panel > p[style*="padding:14px 18px"
 /* 어두운 바탕에서는 굵은 글씨가 묻힌다 — 색으로 띄운다 */
 .hint__bubble b,
 .hint__bubble strong{ color: #ffd479; font-weight: 700; }
+
+/* [2026-11-26] 뷰마 로고 — 사이드바 위 'REVIEW.COM' 글자 자리 */
+.sidebar-brand .brand-label{display:block}
+.sidebar-brand .brand-logo{display:block;height:28px;width:auto}
