@@ -151,8 +151,8 @@ def pane(shown, snoozed, demo):
         f'<details class="al-fold js-al-later"><summary>나중에 <em>{len(snoozed)}</em></summary><div class="al-list">{later}</div></details>'
         '<details class="al-fold js-al-done"><summary>처리됨 <em>0</em></summary><div class="al-list"></div></details>'
         '</div>'
-        '<footer class="pane-f"><a href="#" class="ag-btn ghost">알림 설정 →</a>'
-        '<button type="button" class="ag-btn primary js-close-alerts">격자로 돌아가기</button></footer></section>')
+        # [2026-11-26] 사용자: "격자로돌아가기 제거" — 닫기는 패널 오른쪽 위 ✕ 로
+        '<footer class="pane-f"><a href="#" class="ag-btn ghost">알림 설정 →</a></footer></section>')
 
 
 def column():
