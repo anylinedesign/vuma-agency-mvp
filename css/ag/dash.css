@@ -365,3 +365,7 @@
 .work.ag.dash .go-biz::after{content:none}
 .work.ag.dash .go-biz::before{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:var(--ag-ico-biz) center / contain no-repeat;mask:var(--ag-ico-biz) center / contain no-repeat}
 .work.ag.dash .go-biz:hover{background:var(--ag-main-light);color:var(--ag-main)}
+
+/* ── 8) [2026-11-26] 사용자: "배정 버튼 검정색으로" — 미담당 업체 옆 [배정] 빨강 → 검정 바탕 흰 글자 (빨강은 '미담당' 글자에만) */
+.work.ag.dash .own-go .own-plus{background:var(--ag-c-14,#0e0e0e);color:#fff}
+.work.ag.dash .own-go:hover .own-plus{filter:none;background:#3a3a3a}
