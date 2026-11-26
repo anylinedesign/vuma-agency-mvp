@@ -71,11 +71,16 @@ CAMP_TAB = {"cancel": "app", "msg": "inq"}      # 나머지(신고 · 지급 실
 def card(a, demo=False):
     kind, lv = a["kind"], KINDS[a["kind"]][0]
     tb = a.get("ty", "")
-    biz_go = f' <button type="button" class="mini-go bdr-go" popovertarget="bdr-{a["bid"]}">업체 보기</button>'
+    # [2026-11-26] 사용자: "업체이름삭제, 업체보기 빌딩같은 아이콘으로 체험단 아이콘 옆에 배치"
+    #   캠페인이 있는 카드 = 업체 이름 줄 없음, [업체 보기] = 빌딩 아이콘(go-biz)으로 캠페인 문서 아이콘 옆
+    #   캠페인이 없는 카드(담당 배정 · 충전 완료 …)는 업체를 알 길이 없어 이름 줄 + 빌딩 아이콘을 남긴다
+    #   업체 이름은 data-bizname 으로 (dashboard.js 가 왼쪽 열 '최근 업체'에 씀)
+    biz_go = (f'<button type="button" class="mini-go bdr-go go-biz" popovertarget="bdr-{a["bid"]}" title="업체 보기">업체 보기</button>')
     camp_title = f'[{a["biz"].split()[0]}] {a["camp"]}' if a.get("camp") else ""
     camp = (f'<span class="al-camp"><span class="ty ty-{tb}">{a["tyname"]}</span> {esc(camp_title)}'
             f'<a class="mini-go js-cm go-doc" title="캠페인 보기" href="campaigns.html#c-{a["bid"]}-{a["code"]}-{CAMP_TAB.get(kind, "rev")}" '
-            f'data-cm-title="{esc(a["biz"])} · {esc(camp_title)}">캠페인 보기</a></span>' if a.get("camp") else "")
+            f'data-cm-title="{esc(a["biz"])} · {esc(camp_title)}">캠페인 보기</a>{biz_go}</span>' if a.get("camp") else "")
+    biz_line = f'<p class="al-biz">{esc(a["biz"])} {biz_go}</p>'
     esc_tag = (f'<p class="al-esc">처리 안 된 지 2시간이 넘어 <b>팀장 {a["lead"]}</b>님에게도 알렸습니다</p>' if a.get("esc") else "")
     snooze = "" if lv == "i" else (
         '<details class="snooze"><summary>나중에</summary><div class="sz">'
@@ -83,11 +88,11 @@ def card(a, demo=False):
         + "</div></details>")
     done_btn = "" if lv == "i" or kind in ("assigned",) else '<button type="button" class="ag-btn sm ghost" data-adone="처리 완료">처리 완료</button>'
     attrs = f' data-demo hidden' if demo else ""
-    return (f'<article class="al-card lv-{lv} is-new" data-aid="{a["id"]}" data-biz="{a["bid"]}" data-lv="{lv}" data-kind="{kind}"'
+    return (f'<article class="al-card lv-{lv} is-new" data-aid="{a["id"]}" data-biz="{a["bid"]}" data-bizname="{esc(a["biz"])}" data-lv="{lv}" data-kind="{kind}"'
             f'{f" data-go=\"{a["go"]}\"" if a.get("go") else ""}{attrs}>'
             f'<div class="al-h"><span class="lvb lv-{lv}">{LEVEL[lv]}</span><b>{KINDS[kind][1]}</b>'
             f'<span class="al-t">{a["time"]}</span><i class="new-dot" aria-label="새 알림"></i></div>'
-            f'<p class="al-biz">{esc(a["biz"])}{biz_go}</p>{camp}'
+            f'{camp or biz_line}'
             f'<p class="al-txt">{_text(kind, a["rev"], a.get("camp"))}</p>{esc_tag}'
             f'<div class="al-acts">{_acts(kind, a["rev"])}{done_btn}{snooze}</div></article>')
 

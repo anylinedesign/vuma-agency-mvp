@@ -477,7 +477,8 @@
 			setText('.js-ak-' + k, list.length);
 			var first = list[0];
 			setText('.js-akt-' + k, first ? first.querySelector('.al-t').textContent : '');
-			var bizs = list.map(function (a) { return a.querySelector('.al-biz').firstChild.textContent.trim(); })
+			// [2026-11-26] 카드에서 업체 이름 줄이 빠져 data-bizname 으로 읽는다
+			var bizs = list.map(function (a) { return a.dataset.bizname; })
 				.filter(function (b, i, arr) { return arr.indexOf(b) === i; });
 			setText('.js-akb-' + k, bizs.length ? bizs[0] + (bizs.length > 1 ? ' 외 ' + (bizs.length - 1) + '곳' : '') : '없음');
 			document.querySelectorAll('.akind[data-open-kind="' + k + '"]').forEach(function (b) { b.classList.toggle('is-zero', !list.length); });

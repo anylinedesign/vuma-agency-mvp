@@ -248,8 +248,8 @@
 .work.ag.dash .panel .alv .lvb{font-size:12px}
 .work.ag.dash .panel .pane-b{padding:10px 12px 12px}
 .work.ag.dash .panel .sorts{margin:0 0 8px}
-.work.ag.dash .panel .mini-go:not(.go-doc,.go-iss){height:20px;margin-left:2px;padding:0 4px;border:0;background:none;font-size:12px;font-weight:500;color:var(--ag-c-8)}
-.work.ag.dash .panel .mini-go:not(.go-doc,.go-iss):hover{background:var(--ag-main-light);color:var(--ag-main)}
+.work.ag.dash .panel .mini-go:not(.go-doc,.go-iss,.go-biz){height:20px;margin-left:2px;padding:0 4px;border:0;background:none;font-size:12px;font-weight:500;color:var(--ag-c-8)}
+.work.ag.dash .panel .mini-go:not(.go-doc,.go-iss,.go-biz):hover{background:var(--ag-main-light);color:var(--ag-main)}
 .work.ag.dash .panel .ag-btn.sm{height:26px;padding:0 9px;font-size:12px}
 /* [2026-11-25] 사용자: "프라이머리 색상 버튼을 더 가볍게 — 처리, 승인 이런 우측 패널에 사용하는 버튼"
    패널 본문(.pane-b) 안의 주색 버튼(승인 · 선정 · 취소 승인 · 답장 · 발송 완료 · 선정 완료 …) = 꽉 찬 보라 → 옅은 보라 바탕 + 보라 글자
@@ -358,3 +358,10 @@
 @container (max-width:960px){
 	.work.ag.dash > .board > .toolbar{margin-left:1px;padding-left:12px}
 }
+
+/* ── 7) [2026-11-26] 알림 카드 [업체 보기] = 빌딩 아이콘, 캠페인 문서 아이콘 옆 (build/alerts.py) */
+.work.ag.dash{--ag-ico-biz:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M16 9h2a2 2 0 0 1 2 2v10M2 21h20M8 7h4M8 11h4M8 15h4'/%3E%3C/svg%3E")}
+.work.ag.dash .go-biz{display:inline-flex;align-items:center;justify-content:center;flex:none;width:20px;height:20px;margin-left:2px;padding:0;border:0;border-radius:4px;background:none;font-size:0;color:var(--ag-c-8);vertical-align:middle;cursor:pointer}
+.work.ag.dash .go-biz::after{content:none}
+.work.ag.dash .go-biz::before{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:var(--ag-ico-biz) center / contain no-repeat;mask:var(--ag-ico-biz) center / contain no-repeat}
+.work.ag.dash .go-biz:hover{background:var(--ag-main-light);color:var(--ag-main)}
